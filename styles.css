@@ -1,5 +1,6 @@
 #player {
-    --xCoord: 0;
+    /* To center player initially --xCoord: gamewidth(1000)- playerwidth(96)/2 */
+    --xCoord: 462;
     --yCoord: 0;
     background: url('assets/Player.png');
     width: 96px;

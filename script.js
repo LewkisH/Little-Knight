@@ -1,12 +1,23 @@
+import levelSprite from './levelSprite.js';
 import Player from './player.js'
 
 window.addEventListener('load', function () {
     const game = document.getElementById('game');
     const player = new Player(game.offsetWidth,game.offsetHeight,document.getElementById("player"))
+    const background = new levelSprite({
+        position: {
+            x: game.offsetWidth,
+            y: game.offsetHeight,
+        },
+        imageSrc: './assets/Level0Sprite.png',
+        gameElem: document.getElementById('game'),
+        playerObj: player
+    });
     let lastTime
     function update(time) {
         if (lastTime != null) {
             const delta = time - lastTime
+            background.update();
             player.update(input)
         }
         lastTime = time
