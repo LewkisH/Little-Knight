@@ -16,7 +16,7 @@ export default class Player {
         return parseFloat(getComputedStyle(this.playerElem).getPropertyValue("--xCoord"));
     }
     set x(value) {
-        console.log(value)
+        // console.log(value)
         if (value < 545 && value > 365) {
             this.playerElem.style.setProperty("--xCoord", Math.floor(value))
         } else {
