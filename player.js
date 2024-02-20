@@ -61,8 +61,8 @@ export default class Player {
 
         //horizontal movement
         this.x += this.speed * delta
-        if (this.x < 365) this.x = 366;
-        if (this.x > 545) this.x = 544;
+        if (this.x <= 365) this.x = 366;
+        if (this.x >= 545) this.x = 544;
         
         else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
 
