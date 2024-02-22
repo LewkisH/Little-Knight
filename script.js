@@ -210,11 +210,15 @@ window.addEventListener('load', function () {
                         //   console.log('right', env.id)
                         if (char.entity.vy > 0 && env.type === "platform") {
                             char.x = env.x + env.width
+                        }else if (env.type === "environment"){
+                            char.x = env.x + env.width
                         }
 
                     } else if (char.collisionSide(env) === "left") {
                         //  console.log('left', env.id)
                         if (char.entity.vy > 0 && env.type === "platform") {
+                            char.x = env.x - char.width
+                        } else if (env.type === "environment"){
                             char.x = env.x - char.width
                         }
                     }
