@@ -1,5 +1,6 @@
 import { bitmapObjects, generateWorld} from "./generateWorld.js";
 import { readBitmap } from "./bitmapReader.js";
+import { generateLevelMatrix } from "./tilesetMapper.js";
 
 window.addEventListener('load', async function () {
 
@@ -22,7 +23,13 @@ window.addEventListener('load', async function () {
     }; */
 
 //    let objArr = await readBitmap("assets/level0bitmap.bmp")
-    let objArr = await readBitmap("assets/bmpbruh.bmp")
+
+    //
+    let bitmapReaderOutput = await readBitmap("assets/bmpbruh.bmp")
+    // let objArr = await readBitmap("assets/bmpbruh.bmp")
+    let objArr = bitmapReaderOutput[0];
+    let colorArr = bitmapReaderOutput[1];
+    let levelMatrix = generateLevelMatrix(colorArr);
 
     console.log(objArr)
     // bitmapObjects.push(newObject);

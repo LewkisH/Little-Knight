@@ -16,7 +16,6 @@ export async function readBitmap(url) {
         var height = dataView.getUint32(22, true);
         let colorArr = create2DArray(width, height)
 
-
         var pixelArrayOffset = dataView.getUint32(10, true); // the offset for where the first pixel's first byte is
 
         let padding = (4 - (width * 3) % 4) % 4 //bmp wants each row of the picture to start at a bytevalue with a multiple of 4. so they added padding at the end of rows.
@@ -39,7 +38,8 @@ export async function readBitmap(url) {
 
         objArr = parseObjects(colorArr, width, height)
         console.log(objArr)
-        return objArr
+        // console.log("COLOR ARR:", colorArr);
+        return [objArr, colorArr]
 
     } catch (error) {
         console.error("Error reading bitmap:", error);
@@ -65,8 +65,8 @@ function readRGB(red, green, blue) {
     return rgbMap.get(key)
 }
 
-function create2DArray(x, y) {
-    const array = new Array(x);
+export function create2DArray(x, y) {
+    const array = new Array(y);
 
     for (let i = 0; i < y; i++) {
         array[i] = new Array;
