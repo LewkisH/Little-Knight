@@ -48,10 +48,10 @@ export default class Player {
         this.world.scrollLeft = this.x - 450
 
 
-        if (this.y < this.world.scrollTop+200) {
-            this.world.scrollTop = this.y-200;
-        } else if (this.y > this.world.scrollTop+480){
-            this.world.scrollTop = this.y-480;
+        if (this.y < this.world.scrollTop + 200) {
+            this.world.scrollTop = this.y - 200;
+        } else if (this.y > this.world.scrollTop + 480) {
+            this.world.scrollTop = this.y - 480;
         }
 
 
@@ -139,5 +139,8 @@ export default class Player {
          let backgroundDiv = document.getElementById("background");
          this.backgroundScroll -= 1.1
          backgroundDiv.style.backgroundPositionX = `${this.backgroundScroll}%`
+
+
+         
      } */
 }

@@ -18,7 +18,7 @@ window.addEventListener('load', async function () {
     //colMan.addEntity(playerAABB)
 
 
-    let objArr = await readBitmap("assets/bmpbruh.bmp")
+    let objArr = await readBitmap("assets/lala.bmp")
 
 
     let gameWorldElem = document.getElementById('gameWorld');
