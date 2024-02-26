@@ -1,5 +1,7 @@
 import { create2DArray } from "./bitmapReader.js";
 // Takes bitmapReader colorArr as input and generates a 2D Matrix
+
+
 export function generateLevelMatrix(colorArr) {
     console.log("hi!");
     // console.log(JSON.stringify(colorArr));
@@ -106,7 +108,7 @@ export function generateLevelMatrix(colorArr) {
                         // if solid determine tileMap pos
 
                         determineTilePos({levelData: tileMapValues, x: x, y: y, tileType: 1})
-
+                        getPlatform({levelData: tileMapValues, x: x, y: y})
 
 
                         break;
@@ -134,56 +136,164 @@ export function generateLevelMatrix(colorArr) {
         }
     }
 
-
-
-
-
-
-
-
     // DISPLAY IT
     for (let y = tileMapValues.length-1; y >= 0; y--) {
         console.log(JSON.stringify(tileMapValues[y]));
     }
 
-
-
     // console.log("tileMapValues: ", tileMapValues);
-
-
     // let newArr = create2DArray(colorArr[0].length, colorArr.length)
     // console.log(newArr);
 }
 
+// Generates an array of platforms
+function getPlatform({levelData, x, y}) {
+    // const newPlatform = {
+    //     platformType: platformType,
+    //     platformPositions: [],
+    // }
+    console.log(x, y);
+    console.log(levelData[y][x])
+    // initial coords
+    const tileCoords = {
+        x: x,
+        y: y
+    }
+    let visitedTiles = [];
+    // initial tiletype
+    let tileType = levelData[y][x]
+    visitedTiles.push(tileCoords)
+    console.log("visitedTiles --> Tile coords:", visitedTiles)
 
-// Determines which 16x16 tile to use from 48x48
+    while (true) {
+        const result = exploreAdjacentTiles({levelData: levelData, x: x, y: y, visitedTiles: visitedTiles, tileType: tileType});
+        visitedTiles = result.visitedTiles;
+        if (!result.newTilesAdded) {
+            break;
+        }
+
+        visitedTiles.forEach(tile => {
+            x = tile.x;
+            y = tile.y;
+        });
+    }
+    console.log(visitedTiles);
+
+
+    // add TilePositioning based on position
+    visitedTiles.forEach(tile => {
+        let positionValue = "";
+        // levelData[tile.y][tile.x] = 9;
+        
+        // Check if there is a tile ontop of current tile
+        if (containsObjectWithXY(visitedTiles, tile.x, tile.y+1)) {
+            // There is a tile ontop of current tile
+            positionValue = "C";
+            
+        } else {
+            // There isnt a tile ontop of current tile
+            // Check if there is a tile on the right of it
+            if (containsObjectWithXY(visitedTiles, tile.x+1, tile.y)) {
+                // There is a tile on the right
+                positionValue = "LT";
+            }
+            // Check if there is a tile on the left of it
+            if (containsObjectWithXY(visitedTiles, tile.x-1, tile.y)) {
+                // There is a tile on the left
+                positionValue = "RT";
+            }
+            // Check left & right
+            if (containsObjectWithXY(visitedTiles, tile.x-1, tile.y) && containsObjectWithXY(visitedTiles, tile.x+1, tile.y)) {
+                // There is a tile on the left AND right
+                positionValue = "T";
+                
+            }
+
+        }
+
+
+
+        levelData[tile.y][tile.x] = positionValue;
+
+
+    })
+
+
+}
+
+
+// return true if new tile is added false if not
+function exploreAdjacentTiles({levelData, x, y, visitedTiles, tileType}) {
+    console.log("exploringAdjacentTiles");
+    let newTilesCount = 0;
+    let newTilesAdded = false;
+    visitedTiles.forEach(tile => {
+        if (tileCheck({levelData: levelData, x: tile.x, y: tile.y, direction: "left"}) === tileType) {
+            if (!containsObjectWithXY(visitedTiles, x-1, y)) {
+                visitedTiles.push({y: y, x: x-1})
+                newTilesCount += 1
+            }
+        }
+        if (tileCheck({levelData: levelData, x: x, y: y, direction: "right"}) === tileType) {
+            if (!containsObjectWithXY(visitedTiles, x+1, y)) {
+                visitedTiles.push({y: y, x: x+1})
+                newTilesCount += 1
+            }
+        }
+        if (tileCheck({levelData: levelData, x: x, y: y, direction: "up"}) === tileType) {
+            if (!containsObjectWithXY(visitedTiles, x, y+1)) {
+                visitedTiles.push({y: y+1, x: x})
+                newTilesCount += 1
+            }
+        }
+        if (tileCheck({levelData: levelData, x: x, y: y, direction: "down"}) === tileType) {
+            if (!containsObjectWithXY(visitedTiles, x, y-1)) {
+                visitedTiles.push({y: y-1, x: x})
+                newTilesCount += 1
+            }
+        }
+    })
+
+    if (newTilesCount > 0) {
+        newTilesAdded = true
+    }
+    console.log("VisitedTIles:", visitedTiles)
+    console.log("NewTilesAdded?: ", newTilesAdded, newTilesCount)
+    return {newTilesAdded, visitedTiles}
+}
+
+function containsObjectWithXY(array, x, y) {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].x === x && array[i].y === y) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+// Determines which 16x16 tile to use from 48x48 (((Check adjacent tiles status)))
 function determineTilePos({levelData, x, y, tileType}) {
     console.log("DETERMINETILEPOSFUNC")
     let left, right, top, down;
 
     if (tileCheck({levelData: levelData, x: x, y: y, direction: "left"}) === tileType) {
-        console.log("--LEFT IS SAME")
         left = true;
     }
     if (tileCheck({levelData: levelData, x: x, y: y, direction: "right"}) === tileType) {
-        console.log("--RIGHT IS SAME")
         right = true;
     }
     if (tileCheck({levelData: levelData, x: x, y: y, direction: "up"}) === tileType) {
-        console.log("--UP IS SAME")
-        console.log("----DEB");
-        console.log("tileType:", tileType);
-        console.log("Check:", (tileCheck({levelData: levelData, x: x, y: y, direction: "up"})));
         top = true;
     }
     if (tileCheck({levelData: levelData, x: x, y: y, direction: "down"}) === tileType) {
-        console.log("--DOWN IS SAME")
         down = true;
     }
 
     console.log("------");
     console.log(`LEFT: ${left}, RIGHT: ${right}, TOP: ${top}, DOWN: ${down}`);
     console.log("------");
+    return {left: left, right: right, top: top, down: down};
 
     
     
@@ -230,7 +340,7 @@ function tileCheck({levelData, x, y, direction}) {
     console.log("GOING TO CHECK X:", toCheckCoords.x, " Y:", toCheckCoords.y);
     console.log("VALUE I REED at that pos:", levelData[toCheckCoords.y][toCheckCoords.x]);
     return levelData[toCheckCoords.y][toCheckCoords.x];
-    console.log(toCheckCoords.y, toCheckCoords.x);
+    // console.log(toCheckCoords.y, toCheckCoords.x);
 
 }
 
