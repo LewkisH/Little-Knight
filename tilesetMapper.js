@@ -183,36 +183,63 @@ function getPlatform({levelData, x, y}) {
     // add TilePositioning based on position
     visitedTiles.forEach(tile => {
         let positionValue = "";
-        // levelData[tile.y][tile.x] = 9;
-        
-        // Check if there is a tile ontop of current tile
-        if (containsObjectWithXY(visitedTiles, tile.x, tile.y+1)) {
-            // There is a tile ontop of current tile
-            positionValue = "C";
-            
+        let left, right, top, down;
+        left = containsObjectWithXY(visitedTiles, tile.x-1, tile.y);
+        right = containsObjectWithXY(visitedTiles, tile.x+1, tile.y);
+        top = containsObjectWithXY(visitedTiles, tile.x, tile.y+1);
+        down = containsObjectWithXY(visitedTiles, tile.x, tile.y-1);
+        let surroundingTiles = {left: left, right: right, top: top, down: down};
+
+        if (surroundingTiles.left === true) {
+            // Cases (1, 2, 3, 5, 7, 9)
+            if (surroundingTiles.right === true) {
+                // Cases (1, 2, 3)
+                if (surroundingTiles.top === true) {
+                    // Cases (1, 2)
+                    if (!surroundingTiles.down === true) {
+                        // Cases (2)
+                        positionValue = "B";
+
+                    } else {
+                        // Cases (1)
+                        positionValue = "C";
+                    }
+                } else {
+                    // Cases (3)
+                    positionValue = "T";
+                }
+            } else {
+                // Cases (5, 7, 9)
+                if (surroundingTiles.top === true) {
+                    // Cases (7, 9)
+                    if (surroundingTiles.down === true) {
+                        // Cases (9)
+                        positionValue = "RC";
+                    } else {
+                        // Cases (7)
+                        positionValue = "RB";
+                    }
+                } else {
+                    // Cases (5)
+                    positionValue = "RT";
+                }
+            }
         } else {
-            // There isnt a tile ontop of current tile
-            // Check if there is a tile on the right of it
-            if (containsObjectWithXY(visitedTiles, tile.x+1, tile.y)) {
-                // There is a tile on the right
+            // Cases (4, 6, 8)
+            if (surroundingTiles.top === true) {
+                // Cases (6, 8)
+                if (surroundingTiles.down === true) {
+                    // Cases (8)
+                    positionValue = "LC";
+                } else {
+                    // Cases (6)
+                    positionValue = "LB";
+                }
+            } else {
+                // Cases (4)
                 positionValue = "LT";
             }
-            // Check if there is a tile on the left of it
-            if (containsObjectWithXY(visitedTiles, tile.x-1, tile.y)) {
-                // There is a tile on the left
-                positionValue = "RT";
-            }
-            // Check left & right
-            if (containsObjectWithXY(visitedTiles, tile.x-1, tile.y) && containsObjectWithXY(visitedTiles, tile.x+1, tile.y)) {
-                // There is a tile on the left AND right
-                positionValue = "T";
-                
-            }
-
         }
-
-
-
         levelData[tile.y][tile.x] = positionValue;
 
 
