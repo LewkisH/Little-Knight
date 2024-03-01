@@ -18,20 +18,7 @@ export default class Player {
         return parseFloat(getComputedStyle(this.playerElem).getPropertyValue("--xCoord"));
     }
     set x(value) {
-        // console.log(value)
         this.playerElem.style.setProperty("--xCoord", Math.floor(value))
-
-
-        //scrolling logic
-        /* if (value < 545 && value > 365) {
-            this.playerElem.style.setProperty("--xCoord", Math.floor(value))
-        } else {
-            if (value > 500) {
-                this.ScrollGameRight();
-            } else {
-                this.ScrollGameLeft();
-            }
-        } */
     }
 
     get y() {
@@ -59,29 +46,30 @@ export default class Player {
         const horizontalSpeed = 0.5;
         const jumpVelocity = -3;
 
+
+        //horizontal input
         if (value.keys.indexOf('d') > -1) {
             this.playerElem.style.transform = 'scaleX(1)'
             this.speed = horizontalSpeed
-            // this.world.scrollLeft += horizontalSpeed *delta
+
 
         } else if (value.keys.indexOf('a') > -1) {
             this.playerElem.style.transform = 'scaleX(-1)'
             this.speed = -horizontalSpeed
-            // this.world.scrollLeft += this.speed*delta - 0.5
 
         } else this.speed = 0
 
-
+        //vertical input
         if ((value.keys.indexOf('w') > -1
             || value.keys.indexOf(' ') > -1) && (this.onGround())) {
+
             this.vy = jumpVelocity
             this.AABB.grounded = false
 
-            // console.log("JUMPING!")
+
         }
         if (value.keys.indexOf('s') > -1) {
             this.crouch = true
-            // console.log("JUMPING!")
         } else this.crouch = false;
 
         //horizontal movement
@@ -89,10 +77,6 @@ export default class Player {
 
         if (this.x <= 0) this.x = 0;
 
-
-        //old scrolling logic
-        //if (this.x <= 365) this.x = 366;
-        //if (this.x >= 545) this.x = 544;
 
         if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
 
@@ -111,36 +95,4 @@ export default class Player {
         return this.y >= this.gameHeight - this.height
     }
 
-
-    //scrolling logic
-    /*  ScrollGameRight() {
-         // console.log("scrolling right..")
-         let gameObjects = document.querySelectorAll("#game .gameObject");
-         gameObjects.forEach(function(elem) {
-             let currentLeft = parseFloat(window.getComputedStyle(elem).left);
-             let newLeft = currentLeft - 10;
-             elem.style.left = newLeft + "px";
-         });
-         // scroll background
-         let backgroundDiv = document.getElementById("background");
-         this.backgroundScroll += 1.1
-         backgroundDiv.style.backgroundPositionX = `${this.backgroundScroll}%`
-     }
- 
-     ScrollGameLeft() {
-         // console.log("scrolling left..")
-         let gameObjects = document.querySelectorAll("#game .gameObject");
-         gameObjects.forEach(function(elem) {
-             let currentLeft = parseFloat(window.getComputedStyle(elem).left);
-             let newLeft = currentLeft + 10;
-             elem.style.left = newLeft + "px";
-         });
-         // scroll background
-         let backgroundDiv = document.getElementById("background");
-         this.backgroundScroll -= 1.1
-         backgroundDiv.style.backgroundPositionX = `${this.backgroundScroll}%`
-
-
-         
-     } */
 }
