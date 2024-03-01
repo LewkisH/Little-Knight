@@ -65,6 +65,7 @@ body {
 }
 
 #pauseMenu {
+    user-select: none;
     display: none;
     flex-direction: column;
     justify-content: center;
@@ -72,7 +73,7 @@ body {
     z-index: 30;
     background: #0000008d;
     width: 1000px;
-    height: 600px;
+    height: 700px;
     position: absolute;
     text-align: center;
 }

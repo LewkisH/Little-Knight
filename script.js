@@ -1,4 +1,5 @@
 import { bitmapObjects, generateWorld } from "./generateWorld.js";
+import { createTextureLayerDiv, generateTextures } from "./tilemapper.js";
 import { readBitmap } from "./bitmapReader.js";
 import Player from './player.js'
 import { AABBItem, CollisionManager } from "./collision.js";
@@ -18,12 +19,14 @@ window.addEventListener('load', async function () {
     //colMan.addEntity(playerAABB)
 
 
-    let objArr = await readBitmap("assets/lala.bmp")
+    let objArr = await readBitmap("assets/lalala.bmp")
 
 
     let gameWorldElem = document.getElementById('gameWorld');
 
     generateWorld(objArr, gameWorldElem, colMan);
+    generateTextures(objArr); // tilemapper sub function 
+    createTextureLayerDiv(gameWorldElem, objArr); // tilemapper;
 
     // Initial vertical Scroll value
     let gameWorldWrapper = document.getElementById('gameWorldWrapper');
