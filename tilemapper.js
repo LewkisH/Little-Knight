@@ -157,6 +157,9 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
         case 'CP':
             tile.style.backgroundPosition =  `${-288}px ${-96}px`;
             break;
+        case 'BX':
+            tile.style.backgroundPosition =  `${-336}px ${-48}px`;
+            break;
         default:
             tile.style.backgroundColor = 'gray';
     }
@@ -743,10 +746,74 @@ function pickATile(gameTiles, tileType) {
                     assignedGameTiles[y][x] = 'MX';
                 }
             }
-
         }
     }
 
+    // Sevent layer check here for the thing in the end.... then should be done....
+    for (let y = 0; y < assignedGameTiles.length; y++) {
+        for (let x = 0; x < assignedGameTiles[y].length; x++) {
+            const value = assignedGameTiles[y][x];
+
+            if (value === 'RC') {
+                if (
+                checkTile(assignedGameTiles, 'left', y, x) === 'LT' &&
+                checkTile(gameTiles, 'right', y, x) !== tileType
+                ) {
+                    assignedGameTiles[y][x] = 'CP';
+                }
+            }
+
+            if (value === 'BB') {
+                if (
+                checkTile(gameTiles, 'dn', y, x) !== tileType &&
+                checkTile(assignedGameTiles, 'right', y, x) === 'RC' &&
+                checkTile(assignedGameTiles, 'left', y, x) === 'LT'
+                ) {
+                    assignedGameTiles[y][x] = 'BX';
+                }
+                if (
+                checkTile(gameTiles, 'dn', y, x) !== tileType &&
+                checkTile(assignedGameTiles, 'right', y, x) === 'BC' &&
+                checkTile(assignedGameTiles, 'left', y, x) === 'ST'
+                ) {
+                    assignedGameTiles[y][x] = 'BX';
+                }
+                if (
+                checkTile(gameTiles, 'dn', y, x) !== tileType &&
+                checkTile(assignedGameTiles, 'right', y, x) === 'ST' &&
+                checkTile(assignedGameTiles, 'left', y, x) === 'LT' &&
+                checkTile(gameTiles, 'up', y, x) === tileType
+
+                ) {
+                    assignedGameTiles[y][x] = 'MM';
+                }
+            }
+
+            if (value === 'LB') {
+
+                if (
+                checkTile(gameTiles, 'dn', y, x) !== tileType &&
+                checkTile(gameTiles, 'left', y, x) !== tileType &&
+                checkTile(assignedGameTiles, 'right', y, x) === 'RT' &&
+                checkTile(assignedGameTiles, 'up', y, x) === 'RC' 
+                ) {
+                    assignedGameTiles[y][x] = 'BL';
+                }
+            }
+
+            if (value === 'TT') {
+                if (
+                checkTile(gameTiles, 'left', y, x) !== tileType &&
+                checkTile(gameTiles, 'right', y, x) !== tileType &&
+                checkTile(gameTiles, 'up', y, x) !== tileType &&
+                checkTile(gameTiles, 'dn', y, x) === tileType
+                ) {
+                    assignedGameTiles[y][x] = 'SW';
+                }
+            }
+
+        }
+    }
 
     return assignedGameTiles;
 }
