@@ -151,6 +151,9 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
         case 'MM':
             tile.style.backgroundPosition =  `${-240}px ${-96}px`;
             break;
+        case 'MX':
+            tile.style.backgroundPosition =  `${-240}px ${-144}px`;
+            break;
         case 'CP':
             tile.style.backgroundPosition =  `${-288}px ${-96}px`;
             break;
@@ -396,7 +399,6 @@ function pickATile(gameTiles, tileType) {
                 ) {
                     // Inverse RB -- BR
                     assignedGameTiles[y][x] = 'BR';
-
                 }
             }
 
@@ -422,9 +424,7 @@ function pickATile(gameTiles, tileType) {
                 ) {
                     // Single width TT --> ST
                     assignedGameTiles[y][x] = 'ST';
-
                 }
-
             }
 
             if (value === 'CC') {
@@ -608,7 +608,6 @@ function pickATile(gameTiles, tileType) {
                     // out of descriptive 2 letter combos...
                     assignedGameTiles[y][x] = 'LS';
                 }
-
             }
 
             if (value === 'LT') {
@@ -618,8 +617,6 @@ function pickATile(gameTiles, tileType) {
                     assignedGameTiles[y][x] = 'SL';
                 }
             }
-
-
         }
     }
 
@@ -680,11 +677,68 @@ function pickATile(gameTiles, tileType) {
                     assignedGameTiles[y][x] = 'BC';
                 }
             }
-
-
         }
     }
 
+    // Sixth layer checks (on the assignedGameTiles) for 'advanced tiles'
+    // uses both assignedgameTiles and unassigned (gameTiles)
+    for (let y = 0; y < assignedGameTiles.length; y++) {
+        for (let x = 0; x < assignedGameTiles[y].length; x++) {
+            const value = assignedGameTiles[y][x];
+
+            if (value === 'LB') {
+                if (
+                checkTile(assignedGameTiles, 'right', y, x) === 'RT' &&
+                checkTile(assignedGameTiles, 'up', y, x) === 'SC' &&
+                checkTile(gameTiles, 'left', y, x) !== tileType &&
+                checkTile(gameTiles, 'dn', y, x) !== tileType
+                ) {
+                    assignedGameTiles[y][x] = 'BL';
+                }
+            }
+
+            if (value === 'CC') {
+                if (
+                (checkTile(assignedGameTiles, 'right', y, x) === 'TT' || 
+                checkTile(assignedGameTiles, 'right', y, x) === 'RT' ||
+                checkTile(assignedGameTiles, 'right', y, x) === 'SR') &&
+                checkTile(gameTiles, 'dn', y, x) === tileType &&
+                checkTile(gameTiles, 'left', y, x) === tileType
+                ) {
+                    assignedGameTiles[y][x] = 'CR';
+                }
+                if (
+                    checkTile(assignedGameTiles, 'left', y, x) === 'SL'
+    
+                    ) {
+                        assignedGameTiles[y][x] = 'CL';
+    
+                }
+                if (
+                checkTile(assignedGameTiles, 'left', y, x) === 'SL' &&
+                checkTile(assignedGameTiles, 'right', y, x) === 'SR' &&
+                checkTile(assignedGameTiles, 'up', y, x) === 'SW' &&
+                checkTile(gameTiles, 'dn', y, x) === tileType
+                ) {
+                    // Like MM but has something below
+                    assignedGameTiles[y][x] = 'MX';
+
+                }
+
+                if (
+                    checkTile(assignedGameTiles, 'left', y, x) === 'TT' &&
+                    checkTile(gameTiles, 'up', y, x) === tileType &&
+                    checkTile(gameTiles, 'right', y, x) === tileType &&
+                    checkTile(gameTiles, 'dn', y, x) === tileType
+                ) {
+                    assignedGameTiles[y][x] = 'CL';
+
+                }
+                
+            }
+
+        }
+    }
 
 
     return assignedGameTiles;
@@ -708,52 +762,34 @@ function checkTile(gameTiles, direction, y, x) {
     let tileValue;
     switch(direction) {
         case ('mid'):
-            // console.log(`Value at mid X:${checkX} Y:${checkY} | IS: ${gameTiles[checkY][checkX]}`)
-            // tileValue = gameTiles[checkY][checkX];
             break;
         case ('up'):
             checkY -= 1;
-            // console.log(`Value at up X:${checkX} Y:${checkY} | IS: ${gameTiles[checkY][checkX]}`)
-            // tileValue = gameTiles[checkY][checkX];
             break;
         case ('dn'):
             checkY += 1;
-            // console.log(`Value at dn X:${checkX} Y:${checkY} | IS: ${gameTiles[checkY][checkX]}`)
-            // tileValue = gameTiles[checkY][checkX];
             break;
         case ('right'):
             checkX += 1;
-            // console.log(`Value at right X:${checkX} Y:${checkY} | IS: ${gameTiles[checkY][checkX]}`)
-            // tileValue = gameTiles[checkY][checkX];
             break;
         case ('right-up'):
             checkX += 1;
             checkY -= 1;
-            // console.log(`Value at right-up X:${checkX} Y:${checkY} | IS: ${gameTiles[checkY][checkX]}`)
-            // tileValue = gameTiles[checkY][checkX];
             break;
         case ('right-dn'):
             checkX += 1;
             checkY += 1;
-            // console.log(`Value at right-dn X:${checkX} Y:${checkY} | IS: ${gameTiles[checkY][checkX]}`)
-            // tileValue = gameTiles[checkY][checkX];
             break;
         case ('left'):
             checkX -= 1;
-            // console.log(`Value at left X:${checkX} Y:${checkY} | IS: ${gameTiles[checkY][checkX]}`)
-            // tileValue = gameTiles[checkY][checkX];
             break;
         case ('left-up'):
             checkX -= 1;
             checkY -= 1;
-            // console.log(`Value at left-up X:${checkX} Y:${checkY} | IS: ${gameTiles[checkY][checkX]}`)
-            // tileValue = gameTiles[checkY][checkX];
             break;
         case ('left-dn'):
             checkX -= 1;
             checkY += 1;
-            // console.log(`Value at left-dn X:${checkX} Y:${checkY} | IS: ${gameTiles[checkY][checkX]}`)
-            // tileValue = gameTiles[checkY][checkX];
             break;
     }
 
@@ -768,12 +804,6 @@ function checkTile(gameTiles, direction, y, x) {
     } else {
         tileValue = -1;
     }
-
-
-    // // If tilevalue === undefined => out of boundaries
-    // if (typeof tileValue === undefined) {
-    //     tileValue = -1
-    // }
 
     return tileValue;
 }
@@ -831,5 +861,20 @@ function create2Dtilemap(height, width) {
     }
     return array;
 }
+
+// function c() {
+//     /**
+//      * 
+//      * 
+//      * 
+//      * 
+//      * 
+//      * 
+//      * 
+//      * 
+//      * 
+//      * 
+//      */
+// }
 
 export { generateTextures, createTextureLayerDiv };
