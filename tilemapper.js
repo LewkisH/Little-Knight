@@ -708,11 +708,10 @@ function pickATile(gameTiles, tileType) {
                     assignedGameTiles[y][x] = 'CR';
                 }
                 if (
-                    checkTile(assignedGameTiles, 'left', y, x) === 'SL'
-    
-                    ) {
-                        assignedGameTiles[y][x] = 'CL';
-    
+                checkTile(assignedGameTiles, 'left', y, x) === 'SL'
+
+                ) {
+                    assignedGameTiles[y][x] = 'CL';
                 }
                 if (
                 checkTile(assignedGameTiles, 'left', y, x) === 'SL' &&
@@ -722,7 +721,6 @@ function pickATile(gameTiles, tileType) {
                 ) {
                     // Like MM but has something below
                     assignedGameTiles[y][x] = 'MX';
-
                 }
 
                 if (
@@ -732,9 +730,18 @@ function pickATile(gameTiles, tileType) {
                     checkTile(gameTiles, 'dn', y, x) === tileType
                 ) {
                     assignedGameTiles[y][x] = 'CL';
-
                 }
-                
+            }
+
+            if (value === 'CL') {
+                if (
+                checkTile(assignedGameTiles, 'left', y, x) === 'LT' &&
+                checkTile(assignedGameTiles, 'right', y, x) === 'RT' &&
+                checkTile(gameTiles, 'up', y, x) === tileType &&
+                checkTile(gameTiles, 'dn', y, x) === tileType
+                ) {
+                    assignedGameTiles[y][x] = 'MX';
+                }
             }
 
         }
