@@ -1,5 +1,5 @@
 //
-
+// for commit
 function createTextureLayerDiv(gameWorldElem, objectArray) {
 
     const assignedGameTiles = (generateTextures(objectArray)).assignedTiles;
@@ -725,7 +725,6 @@ function pickATile(gameTiles, tileType) {
                     // Like MM but has something below
                     assignedGameTiles[y][x] = 'MX';
                 }
-
                 if (
                     checkTile(assignedGameTiles, 'left', y, x) === 'TT' &&
                     checkTile(gameTiles, 'up', y, x) === tileType &&
@@ -749,7 +748,7 @@ function pickATile(gameTiles, tileType) {
         }
     }
 
-    // Sevent layer check here for the thing in the end.... then should be done....
+    // Sevent layer check 
     for (let y = 0; y < assignedGameTiles.length; y++) {
         for (let x = 0; x < assignedGameTiles[y].length; x++) {
             const value = assignedGameTiles[y][x];
@@ -783,14 +782,12 @@ function pickATile(gameTiles, tileType) {
                 checkTile(assignedGameTiles, 'right', y, x) === 'ST' &&
                 checkTile(assignedGameTiles, 'left', y, x) === 'LT' &&
                 checkTile(gameTiles, 'up', y, x) === tileType
-
                 ) {
                     assignedGameTiles[y][x] = 'MM';
                 }
             }
 
             if (value === 'LB') {
-
                 if (
                 checkTile(gameTiles, 'dn', y, x) !== tileType &&
                 checkTile(gameTiles, 'left', y, x) !== tileType &&
@@ -811,7 +808,6 @@ function pickATile(gameTiles, tileType) {
                     assignedGameTiles[y][x] = 'SW';
                 }
             }
-
         }
     }
 
