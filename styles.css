@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 body {
     background-color: rgb(19, 40, 56);
     margin: 0;
@@ -25,8 +24,6 @@ body {
     overflow: hidden;
 }
 
-=======
->>>>>>> main
 @import url('https://fonts.googleapis.com/css2?family=Sixtyfour&display=swap');
 
 #player {
@@ -70,12 +67,8 @@ body {
     background-position-y: 66%;
 }
 
-<<<<<<< HEAD
 #pauseMenu {
     user-select: none;
-=======
-#pauseMenu{
->>>>>>> main
     display: none;
     flex-direction: column;
     justify-content: center;
@@ -83,20 +76,12 @@ body {
     z-index: 30;
     background: #0000008d;
     width: 1000px;
-<<<<<<< HEAD
     height: 700px;
-=======
-    height: 600px;
->>>>>>> main
     position: absolute;
     text-align: center;
 }
 
-<<<<<<< HEAD
 #pauseMenu h2 {
-=======
-#pauseMenu h2{
->>>>>>> main
     font-family: "Sixtyfour", sans-serif;
     font-size: xx-large;
     font-optical-sizing: auto;
@@ -104,31 +89,18 @@ body {
     font-style: normal;
     color: rgb(255, 255, 255);
     font-variation-settings:
-<<<<<<< HEAD
         "BLED" 0,
         "SCAN" 0;
     margin-bottom: 40px;
 }
 
 .options {
-=======
-    "BLED" 0,
-    "SCAN" 0;
-    margin-bottom: 40px;
-}
-
-.options{
->>>>>>> main
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-<<<<<<< HEAD
 .continue {
-=======
-.continue{
->>>>>>> main
     cursor: pointer;
     width: 220px;
     background-color: rgb(51, 51, 51);
@@ -150,11 +122,7 @@ body {
     border-color: rgb(34, 34, 34);
 }
 
-<<<<<<< HEAD
 .restart {
-=======
-.restart{
->>>>>>> main
     cursor: pointer;
     width: 220px;
     background-color: rgb(51, 51, 51);
@@ -183,22 +151,13 @@ body {
     font-style: normal;
     color: rgb(201, 172, 4);
     font-variation-settings:
-<<<<<<< HEAD
         "BLED" 0,
         "SCAN" 0;
-=======
-    "BLED" 0,
-    "SCAN" 0;
->>>>>>> main
     margin: 5px;
     padding-left: 5px;
     padding-right: 5px;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> main
 #game {
     width: 1000px;
     height: 600px;
@@ -207,30 +166,18 @@ body {
     border-style: solid;
 }
 
-<<<<<<< HEAD
 #ground {
     width: 96px;
     height: 96px;
-=======
-#ground{
-    width:120px;
-    height:100px;
->>>>>>> main
     background: black;
     position: absolute;
     top: 302px;
     left: 200px;
 }
 
-<<<<<<< HEAD
 #platform {
     width: 120px;
     height: 20px;
-=======
-#platform{
-    width:120px;
-    height:20px;
->>>>>>> main
     background: black;
     position: absolute;
     top: 402px;
