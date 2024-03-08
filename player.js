@@ -18,20 +18,7 @@ export default class Player {
         return parseFloat(getComputedStyle(this.playerElem).getPropertyValue("--xCoord"));
     }
     set x(value) {
-<<<<<<< HEAD
         this.playerElem.style.setProperty("--xCoord", Math.floor(value))
-=======
-        // console.log(value)
-        if (value < 545 && value > 365) {
-            this.playerElem.style.setProperty("--xCoord", Math.floor(value))
-        } else {
-            if (value > 500) {
-                this.ScrollGameRight();
-            } else {
-                this.ScrollGameLeft();
-            }
-        }
->>>>>>> main
     }
 
     get y() {
@@ -87,18 +74,11 @@ export default class Player {
 
         //horizontal movement
         this.x += this.speed * delta
-<<<<<<< HEAD
 
         if (this.x <= 0) this.x = 0;
 
 
         if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
-=======
-        if (this.x <= 365) this.x = 366;
-        if (this.x >= 545) this.x = 544;
-        
-        else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
->>>>>>> main
 
         //vertical movement
         this.y += this.vy / 2 * (delta)

@@ -2,11 +2,9 @@ import { bitmapObjects, generateWorld } from "./generateWorld.js";
 import { createTextureLayerDiv, generateTextures } from "./tilemapper.js";
 import { readBitmap } from "./bitmapReader.js";
 import Player from './player.js'
-<<<<<<< HEAD
 import { AABBItem, CollisionManager } from "./collision.js";
 let lastTime;
 let isPaused = false;
-let update;
 
 window.addEventListener('load', async function () {
 
@@ -42,17 +40,6 @@ window.addEventListener('load', async function () {
     let pausedPlayerState = null;
     // let lastTime
     const gameLoop = function (time) {
-=======
-    let lastTime;
-    let isPaused = false;
-    let update;
-window.addEventListener('load', function () {
-    let pausedPlayerState = null;
-    const game = document.getElementById('game');
-    const player = new Player(game.offsetWidth, game.offsetHeight, document.getElementById("player"))
-    // let lastTime
-    update = function(time) {
->>>>>>> main
         if (!isPaused) {
             if (lastTime != null) {
                 const delta = time - lastTime
@@ -61,11 +48,7 @@ window.addEventListener('load', function () {
                 // console.log(playerAABB.checkCollision(blackAABB))
             }
             lastTime = time
-<<<<<<< HEAD
             window.requestAnimationFrame(gameLoop)
-=======
-            window.requestAnimationFrame(update)
->>>>>>> main
         }
     }
 
@@ -118,182 +101,11 @@ window.addEventListener('load', function () {
     //if passing in entities other than player, use their html element
 
 
-<<<<<<< HEAD
 
     const input = new InputHandler()
     window.requestAnimationFrame(gameLoop)
     // Pause game
     window.addEventListener("keydown", function (e) {
-=======
-        get x() {
-            let rect = this.elem.getBoundingClientRect();
-            return rect.left;
-        }
-        set x(value) {
-            if (this.id === "player") {
-                this.elem.style.setProperty("--xCoord", Math.floor(value))
-            }
-        }
-        get y() {
-            let rect = this.elem.getBoundingClientRect();
-            return rect.top;
-        }
-        set y(value) {
-            if (this.id === "player") {
-                this.elem.style.setProperty("--yCoord", Math.floor(value))
-            }
-        }
-
-        //did we collide with 'other' entity?
-        checkCollision(other) {
-            return (
-                (this.x + this.width) > other.x &&
-                this.x < (other.x + other.width) &&
-                this.y < (other.y + other.height) &&
-                (this.y + this.height) > other.y
-            )
-        }
-        //calculates which side of 'other' entity did current object collide with
-        collisionSide(other) {
-            const dx = (this.x + this.width / 2) - (other.x + other.width / 2);
-            const dy = (this.y + this.height / 2) - (other.y + other.height / 2);
-            const width = (this.width + other.width) / 2;
-            const height = (this.height + other.height) / 2;
-            const crossWidth = width * dy;
-            const crossHeight = height * dx;
-
-            if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
-                if (crossWidth > crossHeight) {
-                    return crossWidth > -crossHeight ? 'bottom' : 'left';
-                } else {
-                    return crossWidth > -crossHeight ? 'right' : 'top';
-                }
-            }
-            return null;
-        }
-
-        //displays x,y,height,width under game window
-        addToDebug() {
-            this.debug = document.getElementById('collisiondebug');
-            this.name = document.createElement('p');
-            this.debugX = document.createElement('p')
-            this.debugY = document.createElement('p')
-            let debugH = document.createElement('p')
-            let debugW = document.createElement('p')
-            this.name.textContent = this.id
-            this.debugX.textContent = "X: " + this.x
-            this.debugY.textContent = "Y: " + this.y
-            debugH.textContent = "height: " + this.height
-            debugW.textContent = "width: " + this.width
-            this.debug.appendChild(this.name)
-            this.name.appendChild(this.debugY)
-            this.name.appendChild(this.debugX)
-            this.name.appendChild(debugH)
-            this.name.appendChild(debugW)
-        }
-
-        //put this in game loop to update moveable objects' coordinates when debugging
-        updateDebug() {
-
-            this.debugY.textContent = "Y: " + this.y
-            this.debugX.textContent = "X: " + this.x
-        }
-    }
-
-
-    class CollisionManager { // put all collidable objects into the manager
-        constructor() {
-            this.entities = [];
-        }
-        addEntity(entity) {
-            this.entities.push(entity)
-            //console.log("PUSHED: " + entity.id)
-        }
-
-        //checks collisions between all objects.
-        checkAllCollision() {
-            let playerCol = false;
-            for (let i = 0; i < this.entities.length; i++) {
-                for (let j = i + 1; j < this.entities.length; j++) {
-                    playerCol = this.handlePlayerCollision(i, j, playerCol)
-                }
-            }
-
-            if (!playerCol) {//if player has not collided with anything this frame then player is no longer grounded.
-                player.AABB.grounded = false
-            }
-        }
-
-
-
-        handlePlayerCollision(i, j, playerCol) {
-            if (this.entities[i].type === "character" &&
-                (this.entities[j].type === "environment" ||
-                    this.entities[j].type === "platform")) {
-
-                if (this.entities[i].checkCollision(this.entities[j])) {
-                    // console.log(this.entities[i].id + " collided with: " + this.entities[j].id)
-
-                    const char = this.entities[i];
-                    const env = this.entities[j];
-                    if (char.id === "player") { playerCol = true }
-
-                    if (char.collisionSide(env) === "top") {
-                        if (char.entity.crouch && env.type === "platform"){
-                            
-                        } else if (char.entity.vy >= 0) {
-                            char.entity.vy = 0;
-                            char.y = env.y - char.height
-                            console.log('top', env.id)
-                            char.grounded = true
-                        }
-                    } else if (char.collisionSide(env) === "right") {
-                        //   console.log('right', env.id)
-                        if (char.entity.vy > 0 && env.type === "platform") {
-                            char.x = env.x + env.width
-                        }else if (env.type === "environment"){
-                            char.x = env.x + env.width
-                        }
-
-                    } else if (char.collisionSide(env) === "left") {
-                        //  console.log('left', env.id)
-                        if (char.entity.vy > 0 && env.type === "platform") {
-                            char.x = env.x - char.width
-                        } else if (env.type === "environment"){
-                            char.x = env.x - char.width
-                        }
-                    }
-                    if (env.type !== "platform") {
-                        if (char.collisionSide(env) === "bottom") {
-                            // console.log('bot', env.id)
-                            char.y = env.y + env.height
-                            char.entity.vy += 1
-                        }
-                    }
-                }
-
-
-            }
-            return (playerCol)
-
-        }
-    }
-
-    const blackBox = document.getElementById('ground');
-    const platform = document.getElementById('platform');
-    const blackAABB = new AABBItem(blackBox, "environment")
-    const platAABB = new AABBItem(platform, "platform")
-    const playerAABB = new AABBItem(player, "character")
-    const colMan = new CollisionManager()
-    colMan.addEntity(playerAABB)
-    colMan.addEntity(blackAABB)
-    colMan.addEntity(platAABB)
-
-    const input = new InputHandler()
-    window.requestAnimationFrame(update)
-    // Pause game
-    window.addEventListener("keydown", function(e) {
->>>>>>> main
         if (e.key === "Escape") {
             isPaused = !isPaused;
             togglePauseMenu(isPaused);
@@ -308,7 +120,6 @@ window.addEventListener('load', function () {
                     player.position = pausedPlayerState.position;
                 }
                 lastTime = performance.now();
-<<<<<<< HEAD
                 window.requestAnimationFrame(gameLoop)
             }
         }
@@ -358,40 +169,3 @@ window.addEventListener('load', function () {
 
 
 //window.addEventListener('load', function () {
-=======
-                window.requestAnimationFrame(update)
-            }
-        }
-    });
-})
-
-
-function togglePauseMenu(isPaused) {
-    let pauseMenu = document.getElementById("pauseMenu");
-    pauseMenu.style.display = isPaused ? "flex" : "none";
-
-    const restartButton = document.querySelector(".restart");
-    const continueButton = document.querySelector(".continue");
-    if (isPaused) {
-        restartButton.addEventListener('click', handleRestart);
-        continueButton.addEventListener('click', handleContinue);
-    } else {
-        restartButton.removeEventListener('click', handleRestart);
-        continueButton.removeEventListener('click', handleContinue);
-    }
-}
-
-function handleContinue() {
-    console.log("Continue was pressed");
-    togglePauseMenu(false);
-    isPaused = false;
-    lastTime = performance.now();
-    window.requestAnimationFrame(update);
-}
-
-
-function handleRestart() {
-    console.log("Restart was pressed");
-    // Still needs functionality *TODO
-}
->>>>>>> main
