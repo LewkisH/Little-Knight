@@ -19,8 +19,11 @@ window.addEventListener('load', async function () {
 
 
     // let objArr = await readBitmap("assets/lalala.bmp")
-    let objArr = await readBitmap("assets/lava.bmp")
-
+    let result = await readBitmap("assets/spawntest.bmp")
+    let objArr = result[0];
+    let startPos = result[1];
+    player.x = startPos.x
+    player.y = startPos.y
     // let objArr = await readBitmap("assets/newTest.bmp")
     // let objArr = await readBitmap("assets/bmpbruh.bmp")
     // let objArr = await readBitmap("assets/test69.bmp")
@@ -153,7 +156,9 @@ window.addEventListener('load', async function () {
 
     function handleRestart() {
         console.log("Restart was pressed");
-        // Still needs functionality *TODO
+        player.x = startPos.x
+        player.y = startPos.y
+        handleContinue()
     }
 });
 

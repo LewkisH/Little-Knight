@@ -4,6 +4,7 @@
 export async function readBitmap(url) {
     console.log(url)
     let objArr
+    let spawnX, spawnY
     try {
         const response = await fetch(url);
         console.log(response)
@@ -29,7 +30,10 @@ export async function readBitmap(url) {
                 let blue = dataView.getUint8(pixelOffset)
                 // console.log(x, y, ": ", red, green, blue)
                 let colorValue = readRGB(red, green, blue)
-                //console.log(x, y, colorValue)
+                if (green === 255 && blue ===255 && red === 0){
+                    spawnX = x * 48;
+                    spawnY = ((height-1) * 48)- y * 48
+                }
 
                 colorArr[Math.abs(y - height) - 1].push({ objectType: colorValue, x: x, y: y, checked: false })
             }
@@ -38,9 +42,9 @@ export async function readBitmap(url) {
         }
 
         objArr = parseObjects(colorArr, width, height)
-        console.log(colorArr)
+        console.log("XY",spawnX, spawnY)
 
-        return objArr
+        return [objArr, {x: spawnX, y: spawnY}];
 
     } catch (error) {
         console.error("Error reading bitmap:", error);
