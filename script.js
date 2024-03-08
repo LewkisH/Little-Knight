@@ -5,7 +5,6 @@ import Player from './player.js'
 import { AABBItem, CollisionManager } from "./collision.js";
 let lastTime;
 let isPaused = false;
-let update;
 
 window.addEventListener('load', async function () {
 
@@ -19,7 +18,9 @@ window.addEventListener('load', async function () {
     //colMan.addEntity(playerAABB)
 
 
-    let objArr = await readBitmap("assets/Untitled.bmp")
+    // let objArr = await readBitmap("assets/lalala.bmp")
+    let objArr = await readBitmap("assets/lava.bmp")
+
     // let objArr = await readBitmap("assets/newTest.bmp")
     // let objArr = await readBitmap("assets/bmpbruh.bmp")
     // let objArr = await readBitmap("assets/test69.bmp")
@@ -61,6 +62,10 @@ window.addEventListener('load', async function () {
                     e.key === "a" ||
                     e.key === "w" ||
                     e.key === "s" ||
+                    e.key === "ArrowUp" ||
+                    e.key === "ArrowDown" ||
+                    e.key === "ArrowLeft" ||
+                    e.key === "ArrowRight" ||
                     e.key === " ")
                     && this.keys.indexOf(e.key) === -1) {
                     this.keys.push(e.key)
@@ -72,6 +77,10 @@ window.addEventListener('load', async function () {
                     e.key === "a" ||
                     e.key === "w" ||
                     e.key === "s" ||
+                    e.key === "ArrowUp" ||
+                    e.key === "ArrowDown" ||
+                    e.key === "ArrowLeft" ||
+                    e.key === "ArrowRight" ||
                     e.key === " ")) {
                     this.keys.splice(this.keys.indexOf(e.key), 1)
 
@@ -95,6 +104,8 @@ window.addEventListener('load', async function () {
 
     const input = new InputHandler()
     window.requestAnimationFrame(gameLoop)
+
+
     // Pause game
     window.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
@@ -147,16 +158,3 @@ window.addEventListener('load', async function () {
         // Still needs functionality *TODO
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-//window.addEventListener('load', function () {
