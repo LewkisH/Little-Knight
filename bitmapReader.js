@@ -44,7 +44,7 @@ export async function readBitmap(url) {
         objArr = parseObjects(colorArr, width, height)
         console.log("XY",spawnX, spawnY)
 
-        return [objArr, {x: spawnX, y: spawnY}];
+        return [objArr, {x: spawnX || 0, y: spawnY || 0}];
 
     } catch (error) {
         console.error("Error reading bitmap:", error);
