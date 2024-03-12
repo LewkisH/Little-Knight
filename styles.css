@@ -30,9 +30,9 @@ body {
     --xCoord: 30;
     --yCoord: 2000;
     /* For testing */
-    /* --xCoord: 3293;
+    /* --xCoord: 3293;s
     --yCoord: 1778; */
-    background: url('assets/Player.png');
+    background: url('assets/Bob.png');
     width: 64px;
     height: 96px;
     position: absolute;

@@ -32,7 +32,7 @@ export async function readBitmap(url) {
                 let colorValue = readRGB(red, green, blue)
                 if (green === 255 && blue ===255 && red === 0){
                     spawnX = x * 48;
-                    spawnY = ((height-1) * 48)- y * 48
+                    spawnY = ((height-2) * 48)- y * 48
                 }
 
                 colorArr[Math.abs(y - height) - 1].push({ objectType: colorValue, x: x, y: y, checked: false })

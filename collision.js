@@ -132,20 +132,53 @@ export class CollisionManager { // put all collidable objects into the manager
 
     handlePlayerCollision(player, env, playerCol) {
         //console.log(player.id + " checking: " + env.id)
+
+        if (env.type === "red") {
+            if (player.checkCollision(env)) {
+                console.log(player.collisionSide(env))
+                player.entity.playerElem.style.backgroundImage = "url('assets/BobHurt.png')";
+
+
+                player.entity.vy = -3
+                if (player.collisionSide(env) === "right") {
+                    console.log("yo")
+                    player.entity.speed += 50
+                }
+                if (player.collisionSide(env) === "left") {
+
+                    player.entity.speed -= 50
+                }
+                if (!player.entity.stunned) {
+                    player.entity.lives--
+                }
+                player.entity.stunned = true
+                setTimeout(() => {
+                    if (player.entity.lives > 0) {
+                        player.entity.playerElem.style.backgroundImage = "url('assets/Bob.png')";
+                    }
+                    player.entity.stunned = false;
+                }, 200); // 1000 milliseconds = 1 second
+
+            }
+        }
+
         if ((env.type === "blue" || env.type === "green")) {
 
             if (player.checkCollision(env)) {
                 env.elem.style.backgroundColor = "white"
 
+
+
+                //console.log(env.id)
                 //console.log(player.id + " collided with: " + env.id)
 
                 playerCol = true
 
                 if (player.collisionSide(env) === "top") {
                     //console.log(`top collision: PLAYER: ${player.x};${player.y}, ENV: ${env.x};${env.y}`)
+                    console.log(env.y, player.y)
                     if (player.entity.crouch && env.type === "blue") {
-
-                    } else if (player.entity.vy >=0) {
+                    } else if (player.entity.vy >= 0) {
                         player.entity.vy = 0;
                         player.y = env.y - player.height
                         player.grounded = true
@@ -154,26 +187,26 @@ export class CollisionManager { // put all collidable objects into the manager
                 if (env.type === "blue") {
                     return
                 }
-                    if (player.collisionSide(env) === "right") {
-                        // console.log(`right collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
-                        player.x = env.x + env.width
+                if (player.collisionSide(env) === "right") {
+                    // console.log(`right collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
+                    player.x = env.x + env.width
 
-                    } else if (player.collisionSide(env) === "left") {
-                        //console.log(`left collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
+                } else if (player.collisionSide(env) === "left") {
+                    //console.log(`left collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
 
 
-                        player.x = env.x - player.width
+                    player.x = env.x - player.width
 
-                    }
-                    if (player.collisionSide(env) === "bottom") {
-                        //console.log(`bottom collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
-                        player.y = env.y + env.height
-                        player.entity.vy += 1
-                    }
-                
+                }
+                if (player.collisionSide(env) === "bottom") {
+                    //console.log(`bottom collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
+                    player.y = env.y + env.height
+                    player.entity.vy += 1
+                }
+
 
             }
-            else {env.elem.style.backgroundColor = env.id}
+            else { env.elem.style.backgroundColor = env.id }
             if (playerCol === false) {//if player has not collided with anything this frame then player is no longer grounded.
                 player.grounded = false
             }

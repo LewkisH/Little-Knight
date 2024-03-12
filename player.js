@@ -2,13 +2,19 @@ export default class Player {
     constructor(gameWidth, gameHeight, playerElem) {
         this.playerElem = playerElem
         this.id = 'player'
+
+        //these are gonnna change
         this.speed = 0
+        this.lives = 3
+        this.vy = 0
+        this.stunned = false
+//
+
         this.gameWidth = gameWidth
         this.gameHeight = gameHeight
         this.width = playerElem.clientWidth;
         this.height = playerElem.clientHeight;
-        this.vy = 0
-        this.gravity = 0.02;
+        this.gravity = 0.022;
         this.backgroundScroll = 0;
         this.world = document.getElementById('gameWorldWrapper');
 
@@ -32,32 +38,47 @@ export default class Player {
     update(value, delta) {
 
         //move cam
-        this.world.scrollLeft = this.x - 450
+        //this.world.scrollLeft = this.x - 450
 
 
-        if (this.y < this.world.scrollTop + 200) {
-            this.world.scrollTop = this.y - 200;
-        } else if (this.y > this.world.scrollTop + 480) {
-            this.world.scrollTop = this.y - 480;
+        if (this.x < this.world.scrollLeft + 400) {
+            this.world.scrollLeft = this.x - 400;
+        } else if (this.x > this.world.scrollLeft + 500) {
+            this.world.scrollLeft = this.x - 500;
+        }
+        if (this.y < this.world.scrollTop + 350) {
+            this.world.scrollTop = this.y - 350;
+        } else if (this.y > this.world.scrollTop + 400) {
+            this.world.scrollTop = this.y - 400;
         }
 
 
         //move player
-        const horizontalSpeed = 0.5;
+        const friction = 0.4
+        const horizontalAcceleration = 0.8;
+        const maxHorizontalSpeed = 1;
         const jumpVelocity = -3;
+        
 
 
-        //horizontal input
-        if (value.keys.indexOf('d') > -1) {
-            this.playerElem.style.transform = 'scaleX(1)'
-            this.speed = horizontalSpeed
+        if (value.keys.indexOf('d') > -1 && !this.stunned) {
+            this.playerElem.style.transform = 'scaleX(1)';
+            this.speed += horizontalAcceleration;
+        } else if (value.keys.indexOf('a') > -1 && !this.stunned) {
+            this.playerElem.style.transform = 'scaleX(-1)';
+            this.speed -= horizontalAcceleration;
 
 
-        } else if (value.keys.indexOf('a') > -1) {
-            this.playerElem.style.transform = 'scaleX(-1)'
-            this.speed = -horizontalSpeed
+        } else { // Apply friction when there's no input
+            if (this.speed > 0) {
+                this.speed = Math.max(0, this.speed - friction);
+            } else if (this.speed < 0) {
+                this.speed = Math.min(0, this.speed + friction);
+            }
+        }
 
-        } else this.speed = 0
+         // Cap horizontal velocity
+    this.speed = Math.max(-maxHorizontalSpeed, Math.min(maxHorizontalSpeed, this.speed));
 
         //vertical input
         if ((value.keys.indexOf('w') > -1

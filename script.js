@@ -45,9 +45,13 @@ window.addEventListener('load', async function () {
     const gameLoop = function (time) {
         if (!isPaused) {
             if (lastTime != null) {
+                console.log(player.lives)
                 const delta = time - lastTime
+                if (player.lives <= 0){
+                    playerDead()
+                } else {
                 player.update(input, delta)
-                colMan.checkAllCollision()
+                colMan.checkAllCollision()}
                 // console.log(playerAABB.checkCollision(blackAABB))
             }
             lastTime = time
@@ -158,7 +162,24 @@ window.addEventListener('load', async function () {
         console.log("Restart was pressed");
         player.x = startPos.x
         player.y = startPos.y
+        player.lives = 3
+        player.stunned = false
+        player.vy = 0
+        player.speed = 0
         handleContinue()
+    }
+    
+    function playerDead(){
+        player.playerElem.style.backgroundImage = "url('assets/BobDead.gif')"
+        isPaused=true
+        console.log("player died.")
+        player.stunned = true
+        setTimeout(() => {
+            
+            handleRestart()
+           player.playerElem.style.backgroundImage = "url('assets/Bob.png')";
+        }, 950);
+        
     }
 });
 
