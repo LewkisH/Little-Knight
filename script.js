@@ -43,7 +43,7 @@ window.addEventListener('load', async function () {
     const gameLoop = function (time) {
         if (!isPaused) {
             if (lastTime != null) {
-                console.log(player.lives)
+                // console.log(player.lives)
                 const delta = time - lastTime
                 if (player.lives <= 0){
                     playerDead()

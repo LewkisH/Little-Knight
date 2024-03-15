@@ -55,6 +55,15 @@ function createTextureLayerDiv(gameWorldElem, objectArray) {
                     textureLayer.appendChild(tile);
                 }
             }
+
+            // for 8-magenta (level-end-door) objs
+            if (value === 8) {
+                let tileChunck = assignedGameTiles[y][x];
+                if (tileChunck !== 8) {
+                    const tile = buildTileDiv({className: 'tile-end', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/EndDoorTileSet.webp")`});
+                    textureLayer.appendChild(tile);
+                }
+            }
         }
     }
     // console.log(assignedGameTiles[1][1]);
@@ -192,6 +201,10 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
         case 'COL1':
             tile.style.backgroundPosition =  `${-48}px ${0}px`;
             break;
+        // End-Door Magenta cases
+        case 'EDR':
+            tile.style.backgroundPosition =  `${0}px ${0}px`;
+            break;
 
         default:
             tile.style.backgroundColor = 'gray';
@@ -211,6 +224,11 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
     if (className === 'tile-platform') {
         tile.style.zIndex = 9
         tile.style.bottom = ((y * 48)+2) + 'px';
+    }
+
+    if (className === 'tile-end') {
+        tile.style.width = '96px'
+        tile.style.height = '96px'
     }
     
     
@@ -259,6 +277,9 @@ function generateTextures(objectArray) {
                     case ('brown'): // brown
                     gameTiles[i][j] = 7;
                     break;
+                    case ('magenta'): // magenta levelEnd door
+                    gameTiles[i][j] = 8;
+                    break;
                     default:
                     gameTiles[i][j] = -1;
                     break;
@@ -286,6 +307,9 @@ function generateTextures(objectArray) {
     assignedGameTiles = pickATile(assignedGameTiles, 3);
     // Collectibles
     assignedGameTiles = pickATile(assignedGameTiles, 4);
+    // End-Door/Magenta
+    assignedGameTiles = pickATile(assignedGameTiles, 8);
+
 
     let reversedAssignedGTiles = reverse2Darray(assignedGameTiles);
     let reversedGameTiles = reverse2Darray(gameTiles);
@@ -978,6 +1002,17 @@ function pickATile(gameTiles, tileType) {
                 const value = gameTiles[y][x]
                 if (value === tileType) {
                     assignedGameTiles[y][x] = 'COL1';
+                }
+            }
+        }
+    }
+    // for 8-magenta level-end-door tiles
+    if (tileType === 8) {
+        for (let y = 0; y < gameTiles.length; y++) {
+            for (let x = 0; x < gameTiles[y].length; x++) {
+                const value = gameTiles[y][x]
+                if (value === tileType) {
+                    assignedGameTiles[y][x] = 'EDR';
                 }
             }
         }

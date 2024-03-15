@@ -82,12 +82,12 @@ body {
 
 
 
-#background {
+/* #background {
     width: 1000px;
     height: 600px;
     background-image: url("./assets/Level0Sprite.png");
     background-position-y: 66%;
-}
+} */
 
 #pauseMenu {
     user-select: none;

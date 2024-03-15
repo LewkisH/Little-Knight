@@ -135,7 +135,7 @@ export class CollisionManager { // put all collidable objects into the manager
 
         if (env.type === "red") {
             if (player.checkCollision(env)) {
-                console.log(player.collisionSide(env))
+                // console.log(player.collisionSide(env))
                 player.entity.playerElem.style.backgroundImage = "url('assets/BobHurt.png')";
 
 
@@ -176,7 +176,7 @@ export class CollisionManager { // put all collidable objects into the manager
 
                 if (player.collisionSide(env) === "top") {
                     //console.log(`top collision: PLAYER: ${player.x};${player.y}, ENV: ${env.x};${env.y}`)
-                    console.log(env.y, player.y)
+                    // console.log(env.y, player.y)
                     if (player.entity.crouch && env.type === "blue") {
                     } else if (player.entity.vy >= 0) {
                         player.entity.vy = 0;
