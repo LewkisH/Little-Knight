@@ -46,6 +46,15 @@ function createTextureLayerDiv(gameWorldElem, objectArray) {
                 // const tile = buildTileDiv({className: 'tile-lava', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/LavaTileSet.webp")`});
                 // textureLayer.appendChild(tile);
             }
+
+            // for 4-collectible objects
+            if (value === 4) {
+                let tileChunck = assignedGameTiles[y][x];
+                if (tileChunck !== 4) {
+                    const tile = buildTileDiv({className: 'tile-collectible', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/CollectibleTileSet.webp")`});
+                    textureLayer.appendChild(tile);
+                }
+            }
         }
     }
     // console.log(assignedGameTiles[1][1]);
@@ -179,6 +188,11 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
         case 'LBB':
             tile.style.backgroundPosition =  `${-48}px ${-96}px`;
             break;
+        // Collectible cases
+        case 'COL1':
+            tile.style.backgroundPosition =  `${-48}px ${0}px`;
+            break;
+
         default:
             tile.style.backgroundColor = 'gray';
     }
@@ -268,8 +282,11 @@ function generateTextures(objectArray) {
     assignedGameTiles = overlayPlatformTiles(gameTiles, assignedGameTiles, assignedPlatformTiles, 2)
     console.log("Platform + Ground tiles:");
     displayGameTiles(assignedGameTiles);
-
+    // Hazard/Lava
     assignedGameTiles = pickATile(assignedGameTiles, 3);
+    // Collectibles
+    assignedGameTiles = pickATile(assignedGameTiles, 4);
+
     let reversedAssignedGTiles = reverse2Darray(assignedGameTiles);
     let reversedGameTiles = reverse2Darray(gameTiles);
     // displayGameTiles(gameTiles);
@@ -950,6 +967,17 @@ function pickATile(gameTiles, tileType) {
                         assignedGameTiles[y][x] = 'LBB'
                         } 
                     }
+                }
+            }
+        }
+    }
+    // for 4-collectible tiles
+    if (tileType === 4) {
+        for (let y = 0; y < gameTiles.length; y++) {
+            for (let x = 0; x < gameTiles[y].length; x++) {
+                const value = gameTiles[y][x]
+                if (value === tileType) {
+                    assignedGameTiles[y][x] = 'COL1';
                 }
             }
         }
