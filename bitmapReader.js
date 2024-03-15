@@ -59,6 +59,7 @@ function readRGB(red, green, blue) {
     //console.log(red,green,blue)
     let key = String(red) + String(green) + String(blue)
 
+    rgbMap.set('2550255', 'magenta'); //magenta filler block for chris
     rgbMap.set('02550', 'green'); //green solid
     rgbMap.set('00255', 'blue'); //blue platform
     rgbMap.set('25500', 'red');//red hazard
