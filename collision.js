@@ -206,11 +206,7 @@ export class CollisionManager { // put all collidable objects into the manager
 
 
             }
-<<<<<<< HEAD
             else { env.elem.style.backgroundColor = env.id }
-=======
-            // else {env.elem.style.backgroundColor = env.id}
->>>>>>> mainMenu
             if (playerCol === false) {//if player has not collided with anything this frame then player is no longer grounded.
                 player.grounded = false
             }
