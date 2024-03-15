@@ -22,6 +22,11 @@ body {
     width: 1000px;
     height: 700px;
     overflow: hidden;
+    border: solid 2px #575757;
+    /* background-color: rgb(126, 176, 236); */
+
+
+
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Sixtyfour&display=swap');
@@ -59,6 +64,23 @@ body {
     position: absolute;
 }
 */
+
+
+/* Lava CSS */
+/* .LTT {
+    position: relative;
+    overflow: hidden;
+    box-shadow: -10px 8px 15px -5px #f37e02, 
+    10px 8px 15px -5px #f37e02; /* Adjust shadow parameters as needed */
+    /* z-index: 3; */
+/* } */
+/* .LTT { */
+    /* width: calc(100% + 10px);
+    position: ; */
+/* } */
+
+
+
 
 #background {
     width: 1000px;
@@ -158,6 +180,340 @@ body {
     padding-right: 5px;
 }
 
+<<<<<<< HEAD
+=======
+#mainMenu {
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 30;
+    background: #0000008d;
+    width: 1000px;
+    height: 700px;
+    position: absolute;
+    text-align: center;
+}
+
+#mainMenuBg {
+    display: absolute;
+    width: 1000px;
+    height: 700px;
+    background-color: black;
+    background-image: url("./assets/menubackground.png");
+    filter: blur(4px);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#mainMenuBg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+}
+
+.mainMenuOption {
+    cursor: pointer;
+    width: 220px;
+    background-color: rgb(51, 51, 51);
+    text-align: center;
+    border-style: solid;
+    border-color: rgb(44, 44, 44);
+    border-radius: 4px;
+    border-width: 5px;
+    margin-bottom: 20px;
+}
+
+.mainMenuOption:hover {
+    background-color: rgb(58, 58, 58);
+    border-color: rgb(50, 50, 50);
+}
+
+.mainMenuOption:active {
+    background-color: rgb(41, 41, 41);
+    border-color: rgb(34, 34, 34);
+}
+
+.settingsMenu {
+    display: none; 
+    position: absolute; 
+    width: 90%;
+    height: 90%;
+    z-index: 35; 
+}
+
+.customBackButton {
+    position: absolute;
+    margin: 0;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    border-style: solid;
+    border-color: rgb(44, 44, 44);
+    background-color: rgb(51, 51, 51);
+    border-radius: 4px;
+    border-width: 5px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.customBackButton::before {
+    display: flex;
+    content: '↤';
+    font-size: 45px;
+    justify-content: center;
+    font-weight: bolder;
+    color: rgb(201, 172, 4);
+}
+
+.customBackButton:hover {
+    background-color: rgb(58, 58, 58);
+    border-color: rgb(50, 50, 50);
+}
+
+.customBackButton:active {
+    background-color: rgb(41, 41, 41);
+    border-color: rgb(34, 34, 34);
+}
+
+input[type="range"] {
+    height: 15px;
+    background: rgb(138, 118, 5);
+    border-radius: 16px;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 15px;
+    background: none;
+    border-radius: 16px;
+}
+
+input[type="range"]::-moz-range-track {
+    height: 15px;
+    background: none;
+    border-radius: 16px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 12px;
+    width: 12px;
+    background-color: rgb(84, 84, 84);
+    border-radius: 50%;
+    border: 2px solid rgb(34, 34, 34);
+    box-shadow: -407px 0 0 400px rgb(201, 172, 4);
+}
+
+input[type="range"]::-moz-range-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 12px;
+    width: 12px;
+    background-color: rgb(84, 84, 84);
+    border-radius: 50%;
+    border: 2px solid rgb(34, 34, 34);
+    box-shadow: -407px 0 0 400px rgb(201, 172, 4);
+}
+
+.enableDev{
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+    font-size: 13px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.enableDev input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 2px;
+    right: -25px;
+    height: 15px;
+    width: 15px;
+    border-style: solid;
+    background-color: rgb(51, 51, 51);
+    border-color: rgb(29, 29, 29);
+    border-radius: 2px;
+    border-width: 3px;
+}
+
+.enableDev:hover input ~ .checkmark {
+    background-color: rgb(77, 77, 77);
+}
+
+.enableDev input:checked ~ .checkmark {
+    background-color: rgb(29, 29, 29);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.enableDev input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.enableDev .checkmark:after {
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.playMenu {
+    width: 93%;
+    height: 90%;
+    position: absolute;
+    display: none;
+}
+
+#mainMenuLevelBg {
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    background-image: url("./assets/1x1platform.webp");
+    filter: blur(1px);
+    background-repeat: repeat;
+    background-position: center;
+}
+
+.levelContainer {
+    display: flex;
+    align-items:flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    position: absolute;
+    top: 82px;
+    right: 115px;
+    width: 700px;
+    height: 460px;
+}
+
+.levelCard {
+    margin-right: 40px;
+    display: block;
+    z-index: 20;
+    cursor: pointer;
+    position: relative;
+    left: 20px;
+    top: 20px;
+    width: 150px;
+    height: 100px;
+    background-color: #333333;
+    border-style: outset;
+    border-color: #5f5f5fe6;
+}
+
+.levelCard img {
+    position: absolute;
+    max-width: 120px;
+    max-height: 80px;
+    right: 1px;
+    top: 1px;
+    /* width: 79%;
+    height: 70%; */
+    width: 120px;
+    height: 80px;
+    z-index: 5;
+}
+
+.emeralds {
+    height: 98px;
+    width : 30px;
+    position: absolute;
+    background-color: #333333;
+    left: 1px;
+    top: 1px;
+}
+
+.emeralds img {
+    width: 31px;
+    height: 27px;
+}
+
+.emeralds span {
+    font-size: 11px;
+    font-weight: 600;
+    position: absolute;
+    left : 0px;
+    top: 27px;
+}
+
+.levelName {
+    height: 18px;
+    width : 124px;
+    position: absolute;
+    left: 3px;
+    bottom: 1px;
+}
+
+.levelName a {
+    text-align: center;
+    align-items: center;
+    color:rgb(201, 172, 4);
+    font-weight: 600;
+    font-size: small;
+}
+
+.notSelectedOverlay {
+    position: absolute;
+    z-index: 10;
+    background-color: rgba(33, 33, 33, 0.625);
+    width: 100%;
+    height: 100%;
+}
+
+.selectedOverlay {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+}
+
+.mapselect {
+    z-index: 10;
+    position: absolute;
+    display: block;
+    width: 19px;
+    height: 19px;
+    right: 0px;
+    bottom: 7px;
+    color: #e7c60e;
+    font-size: 24px;
+}
+
+>>>>>>> mainMenu
 #game {
     width: 1000px;
     height: 600px;

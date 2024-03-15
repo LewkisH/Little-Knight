@@ -16,6 +16,88 @@
 
 <body>
     <div id="gameWorldWrapper">
+<<<<<<< HEAD
+=======
+        <div id="mainMenu">
+            <div class="options mainMenuMenu" style="position: absolute; z-index: 35; top:150px;">
+                <h2>OurGameNameHere</h2>
+                <!-- Probably would look cool with a custom logo -->
+                <div class="mainMenuOption mainMenuPlay">
+                    <h1>Play</h1>
+                </div>
+                <div class="mainMenuOption mainMenuSettings">
+                    <h1>Settings</h1>
+                </div>
+                <div class="mainMenuOption mainMenuAbout">
+                    <h1>About</h1>
+                </div>
+            </div>
+            <div class="options settingsMenu">
+                <div class="settingsWrapper">
+                    <div class="customBackButton backButton1" style="left: 10px; top: 10px"></div>
+                    <h2>Settings</h2>
+                    <!-- <div class="mainMenuOption mainMenuPlay">
+                        <h1>Play</h1>
+                    </div> -->
+                    <div class="audio">
+                        <h3 style="margin-bottom: 5px;">Volume: <span id="volumeValue">50</span></h3>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="50"/>
+                    </div>
+                    <div class="difficulty">
+                        <h3 style="margin-bottom: 5px;">Difficulty: <span id="difficultyValue">0</span></h3>
+                        <input type="range" id="difficultySlider" min="0" max="2" value="1"/>
+                    </div>
+                    <label class="enableDev">
+                        <h3 style="margin:3px;">Developer Tools</h3>
+                        <input type="checkbox" class="devMenuBox">
+                        <span class="checkmark"></span>
+                    </label>
+                    <div class="developerMenu">
+                        <h3>DevTools:</h3>
+                        <button class="clearLocalCache">Clear userData</button><br><br>
+                        <form id="devForm" style="display:block;">
+                            <label for="level">Level:</label><br>
+                            <input type="number" id="level" name="level"><br><br>
+                            <label for="gems">Gems:</label><br>
+                            <input type="number" id="gems" name="gems"><br><br>
+                            <button type="submit" id="devApply">Apply</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="options playMenu" style="z-index: 36;">
+                <div id="mainMenuLevelBg" class="darkOverlay"></div>
+                <!-- Import isnt implemented yet *TODO -->
+                <div class="mainMenuOption goButton" style=" max-width: 99px; position: absolute; right: 20px; bottom: 0;">
+                    <h1>Go!</h1>
+                </div>
+                <div class="mainMenuOption" style="position: absolute; left: 20px; bottom: 0;">
+                    <h1>Import map</h1>
+                </div>
+            <div class="customBackButton backButton2" style="left: 20px; top: 10px"></div>
+            <div class="levelContainer">
+                <div class="levelCard" id="level00" selected="no" style="display: none;">
+                    <div class="selectedOverlay" style="display: none;">
+                        <div class="mapselect">
+                            <a>✓</a>
+                        </div>
+                    </div>
+                    <div class="notSelectedOverlay"></div>
+                    <img class="levelPreview" src="./data/level01.bmp" alt="level preview">
+                    <div class="emeralds">
+                        <img src="./assets/emeraldicon.webp" alt="emeralds">
+                        <span class="emeraldCount"><a>8</a>/<a>10</a></span>
+                    </div>
+                    <div class="levelName">
+                        <a>Level 00</a>
+                    </div>
+                </div>
+            </div>
+                
+            </div>
+            <div id="mainMenuBg" class="darkOverlay"></div>
+        </div>
+>>>>>>> mainMenu
         <div id="pauseMenu">
             <h2>Game Paused</h2>
             <div class="options">

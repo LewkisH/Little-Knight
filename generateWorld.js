@@ -42,7 +42,7 @@ function parseObjToDiv(bitmapObj, gameWorldDimension) {
     newDivElem.style.height = (bitmapObj.height * ScaleRatio) + 'px';
     // Color depending on the object Type *TODO
    
-    newDivElem.style.backgroundColor = bitmapObj.objectType;
+    newDivElem.style.backgroundColor = 'none';
     console.log(bitmapObj);
 
         

@@ -1,3 +1,4 @@
+import { waitForMainMenu } from "./mainMenu.js";
 import { bitmapObjects, generateWorld } from "./generateWorld.js";
 import { createTextureLayerDiv, generateTextures } from "./tilemapper.js";
 import { readBitmap } from "./bitmapReader.js";
@@ -7,27 +8,27 @@ let lastTime;
 let isPaused = false;
 
 window.addEventListener('load', async function () {
-
-
-
-    //    let objArr = await readBitmap("assets/level0bitmap.bmp")
+    const userDataCache = await waitForMainMenu();
     const game = document.getElementById('gameWorld');
     const player = new Player(game.offsetWidth, game.offsetHeight, document.getElementById("player"))
     const playerAABB = new AABBItem(player, "character")
     const colMan = new CollisionManager(playerAABB)
     //colMan.addEntity(playerAABB)
 
-
+    let objArr = await readBitmap(`data/${userDataCache.selectedLevel}.bmp`)
     // let objArr = await readBitmap("assets/lalala.bmp")
+    // let objArr = await readBitmap("assets/lava.bmp")
+    // let objArr = await readBitmap("assets/newTest.bmp")
+    // let objArr = await readBitmap("assets/bmpbruh.bmp")
+    // let objArr = await readBitmap("assets/test69.bmp")
+    // CONFLICT (NOT RESOLVED):
+    /*
     let result = await readBitmap("assets/spawntest.bmp")
     let objArr = result[0];
     let startPos = result[1];
     player.x = startPos.x
     player.y = startPos.y
-    // let objArr = await readBitmap("assets/newTest.bmp")
-    // let objArr = await readBitmap("assets/bmpbruh.bmp")
-    // let objArr = await readBitmap("assets/test69.bmp")
-
+    */
 
 
 
