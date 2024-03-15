@@ -319,7 +319,8 @@ function displayMainSettings(defaultUserData) {
 }
 
 async function collectibleCount(bitmapURL) {
-    const objArr = await readBitmap("data/" + bitmapURL)
+    const res = await readBitmap("data/" + bitmapURL)
+    const objArr = res[0]
     let count = 0;
     objArr.forEach(obj => {
         if (obj.objectType === "yellow") {
