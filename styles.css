@@ -9,7 +9,8 @@ body {
 
 #gameWorld {
     position: relative;
-    background-color: rgb(126, 176, 236);
+    background-image: url(assets/sky.png);
+    background-size: 100%; 
     /* Width has to be (bitmap.width(100) * Scalefactor(48))  */
     width: 4800px;
     /* Height has to be (bitmap.height(50) * Scalefactor(48))  */
@@ -79,15 +80,6 @@ body {
     position: ; */
 /* } */
 
-
-
-
-#background {
-    width: 1000px;
-    height: 600px;
-    background-image: url("./assets/Level0Sprite.png");
-    background-position-y: 66%;
-}
 
 #pauseMenu {
     user-select: none;

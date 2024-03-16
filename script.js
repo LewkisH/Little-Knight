@@ -170,7 +170,7 @@ window.addEventListener('load', async function () {
             gameWorldElem.appendChild(goblin.AABB.elem)
             goblin.AABB.elem.style.left = goblin.startPos.x;
             goblin.AABB.elem.style.top = goblin.startPos.y;
-            goblin.speed = 4;
+            goblin.speed = 3;
             goblin.dead = false
             goblin.AABB.elem.style.transform = 'scaleX(1)'
             goblin.AABB.elem.style.backgroundImage = "url('assets/goblin-export.png')"
