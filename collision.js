@@ -192,7 +192,8 @@ export class CollisionManager { // put all collidable objects into the manager
                         },300)
                 } else {
                 player.entity.playerElem.style.backgroundImage = "url('assets/BobHurt.png')";
-                player.entity.vy = -3
+                player.entity.vy = env.type === "goblin" ? -1 : -3;
+
                 if (side === "right") {
                     console.log("yo")
                     player.entity.speed += 50
