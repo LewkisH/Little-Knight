@@ -5,10 +5,11 @@ export default class Player {
 
         //these are gonnna change
         this.speed = 0
-        this.lives = 3
+        this.lives = 5
         this.vy = 0
         this.stunned = false
-//
+        this.crouch = true
+        //
 
         this.gameWidth = gameWidth
         this.gameHeight = gameHeight
@@ -56,9 +57,9 @@ export default class Player {
         //move player
         const friction = 0.4
         const horizontalAcceleration = 0.8;
-        const maxHorizontalSpeed = 1;
+        const maxHorizontalSpeed = 0.7;
         const jumpVelocity = -3;
-        
+
 
 
         if (value.keys.indexOf('d') > -1 && !this.stunned) {
@@ -77,8 +78,8 @@ export default class Player {
             }
         }
 
-         // Cap horizontal velocity
-    this.speed = Math.max(-maxHorizontalSpeed, Math.min(maxHorizontalSpeed, this.speed));
+        // Cap horizontal velocity
+        this.speed = Math.max(-maxHorizontalSpeed, Math.min(maxHorizontalSpeed, this.speed));
 
         //vertical input
         if ((value.keys.indexOf('w') > -1
@@ -86,12 +87,16 @@ export default class Player {
 
             this.vy = jumpVelocity
             this.AABB.grounded = false
-
-
         }
+
+
+        let crouchTimeout
         if (value.keys.indexOf('s') > -1) {
+            console.log("crouching")
             this.crouch = true
-        } else this.crouch = false;
+        } else {
+                this.crouch = false;
+        }
 
         //horizontal movement
         this.x += this.speed * delta

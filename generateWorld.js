@@ -16,8 +16,9 @@
  */
 
 import { CollisionManager, AABBItem } from "./collision.js";
+import { Goblin } from "./goblin.js";
 
-function generateWorld(objectArray, gameWorldElem, colMan) {
+function generateWorld(objectArray, gameWorldElem, colMan, goblinArr) {
     // Contains the gameWorld div height/width (for dynamic purpowses)
     // Bring this in from style, rather than clientHeight/width
     const gameWorldDimension = {
@@ -25,29 +26,49 @@ function generateWorld(objectArray, gameWorldElem, colMan) {
         width: gameWorldElem.clientWidth,
     };
     objectArray.forEach(object => {
-        let elem =parseObjToDiv(object, gameWorldDimension)
+        let objCol;
+        let elem = parseObjToDiv(object, gameWorldDimension)
         gameWorldElem.appendChild(elem);
-        let objCol = new AABBItem(elem, object.objectType)
+        if (object.objectType === "brown") {
+            let goblin = new Goblin(elem)
+            goblinArr.push(goblin)
+            objCol = new AABBItem(goblin, "goblin")
+        } else {
+            objCol = new AABBItem(elem, object.objectType)
+        }
+
         colMan.addEntity(objCol)
+
     });
 }
 
 // This function turns a single bitmap Obj to a Div ready to be placed in the gameworld
 function parseObjToDiv(bitmapObj, gameWorldDimension) {
+    let SizeRatio
     const ScaleRatio = 48;
+    if (bitmapObj.objectType === "brown") {
+        SizeRatio = 64
+    } else SizeRatio = 48;
+
     const newDivElem = document.createElement('div');
     newDivElem.className = bitmapObj.objectType;
     newDivElem.id = bitmapObj.objectType;
-    newDivElem.style.width = (bitmapObj.width * ScaleRatio) + 'px';
-    newDivElem.style.height = (bitmapObj.height * ScaleRatio) + 'px';
+    newDivElem.style.width = (bitmapObj.width * SizeRatio) + 'px';
+    newDivElem.style.height = (bitmapObj.height * SizeRatio) + 'px';
     // Color depending on the object Type *TODO
-   
-    newDivElem.style.backgroundColor = 'none';
-    console.log(bitmapObj);
 
-        
+
+
+    if (bitmapObj.objectType === "brown") {
+        newDivElem.style.backgroundImage = "url('assets/goblin-export.png')"
+    } else {
+        newDivElem.style.backgroundColor = 'none';
+    }
+    //console.log(bitmapObj);
+
+
     let leftPos = bitmapObj.x * ScaleRatio + 'px';
-    let topPos = (gameWorldDimension.height - (bitmapObj.y * ScaleRatio)) - (bitmapObj.height * ScaleRatio) + 'px';
+    let topPos = (gameWorldDimension.height - (bitmapObj.y * ScaleRatio)) - (bitmapObj.height * SizeRatio) + 'px';
     newDivElem.style.position = 'absolute';
     newDivElem.style.left = leftPos;
     newDivElem.style.top = topPos;

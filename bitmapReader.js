@@ -67,7 +67,7 @@ function readRGB(red, green, blue) {
     rgbMap.set('0255255', 'cyan'); //cyan spawn
     rgbMap.set('255255255', 'invisible');//white invisible
     rgbMap.set('000', 'air');//black air
-    rgbMap.set('1257653', "brown")
+    rgbMap.set('1257653', "brown") //enemy
     return rgbMap.get(key)
 }
 

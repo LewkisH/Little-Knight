@@ -22,6 +22,7 @@ window.addEventListener('load', async function () {
     // let objArr = await readBitmap("assets/bmpbruh.bmp")
     // let objArr = await readBitmap("assets/test69.bmp")
     // let result = await readBitmap("assets/spawntest.bmp")
+    let goblinArr = []
     let objArr = result[0];
     let startPos = result[1];
     player.x = startPos.x
@@ -31,7 +32,7 @@ window.addEventListener('load', async function () {
 
     let gameWorldElem = document.getElementById('gameWorld');
 
-    generateWorld(objArr, gameWorldElem, colMan);
+    generateWorld(objArr, gameWorldElem, colMan, goblinArr);
     generateTextures(objArr); // tilemapper sub function 
     createTextureLayerDiv(gameWorldElem, objArr); // tilemapper;
 
@@ -43,12 +44,18 @@ window.addEventListener('load', async function () {
     const gameLoop = function (time) {
         if (!isPaused) {
             if (lastTime != null) {
-                console.log(player.lives)
                 const delta = time - lastTime
                 if (player.lives <= 0){
                     playerDead()
                 } else {
+
                 player.update(input, delta)
+                //update all goblins
+                goblinArr.forEach((goblin => {
+                    goblin.update(delta)
+                }));
+
+
                 colMan.checkAllCollision()}
                 // console.log(playerAABB.checkCollision(blackAABB))
             }
@@ -92,14 +99,6 @@ window.addEventListener('load', async function () {
                 }
 
             })
-        }
-    }
-
-    class Enemy {
-        constructor(enemyElem) {
-            this.enemyElem = enemyElem;
-            this.speed = 0;
-
         }
     }
 
@@ -160,10 +159,23 @@ window.addEventListener('load', async function () {
         console.log("Restart was pressed");
         player.x = startPos.x
         player.y = startPos.y
-        player.lives = 3
+        player.lives = 5
         player.stunned = false
         player.vy = 0
         player.speed = 0
+
+        //respawn goblins
+        goblinArr.forEach((goblin)=>{
+
+            gameWorldElem.appendChild(goblin.AABB.elem)
+            goblin.AABB.elem.style.left = goblin.startPos.x;
+            goblin.AABB.elem.style.top = goblin.startPos.y;
+            goblin.speed = 4;
+            goblin.dead = false
+            goblin.AABB.elem.style.transform = 'scaleX(1)'
+            goblin.AABB.elem.style.backgroundImage = "url('assets/goblin-export.png')"
+
+        })
         handleContinue()
     }
     

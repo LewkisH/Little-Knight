@@ -10,9 +10,16 @@ export class AABBItem { //class to turn any object into a collidable.
             entity.AABB = this
             this.entity = entity;
             this.grounded = false
+
+
         } else {
-            this.elem = entity
-            let rect = entity.getBoundingClientRect();
+            if (type === "goblin") {
+                entity.AABB = this
+                this.entity = entity
+                this.elem = entity.entity
+            } else this.elem = entity
+
+            let rect = this.elem.getBoundingClientRect();
             this.id = entity.id;
             this.width = rect.right - rect.left;
             this.height = rect.bottom - rect.top;
@@ -38,6 +45,8 @@ export class AABBItem { //class to turn any object into a collidable.
     set x(value) {
         if (this.id === "player") {
             this.elem.style.setProperty("--xCoord", Math.floor(value))
+        } else {
+            this.elem.style.left = value + "px"
         }
     }
     get y() {
@@ -121,30 +130,74 @@ export class CollisionManager { // put all collidable objects into the manager
     checkAllCollision() {
         let playerCol = false;
         for (let i = 0; i < this.entities.length; i++) {
-
+            if (this.entities[i].type === "goblin") {
+                this.handleGoblinCollision(this.entities[i])
+            }
             playerCol = this.handlePlayerCollision(this.player, this.entities[i], playerCol)
 
         }
 
     }
 
-
+    handleGoblinCollision(goblin) {
+        let pointCollision = false
+        for (let j = 0; j < this.entities.length; j++) {
+            if (this.entities[j] !== goblin && this.entities[j].id !== "undefined") {
+                if (goblin.checkCollision(this.entities[j])) {
+                    let side = goblin.collisionSide(this.entities[j])
+                    if (side === "left" || side === "right") {
+                        goblin.entity.speed *= -1;
+                        goblin.elem.style.transform = goblin.entity.speed < 0 ? 'scaleX(-1)' : 'scaleX(1)';
+                    }   
+                }
+                if (
+                    ((goblin.entity.leftPoint.x) > this.entities[j].x &&
+                    (goblin.entity.leftPoint.y) > this.entities[j].y &&
+                    goblin.entity.leftPoint.x < (this.entities[j].x + this.entities[j].width) &&
+                    goblin.entity.leftPoint.y < (this.entities[j].y + this.entities[j].height))
+                    &&
+                    ((goblin.entity.rightPoint.x) > this.entities[j].x &&
+                    (goblin.entity.rightPoint.y) > this.entities[j].y &&
+                    goblin.entity.rightPoint.x < (this.entities[j].x + this.entities[j].width) &&
+                    goblin.entity.rightPoint.y < (this.entities[j].y + this.entities[j].height))
+                ) {
+                    pointCollision = true
+                }
+            }
+        }
+        if (pointCollision ===false){
+            goblin.entity.speed *= -1;
+            goblin.elem.style.transform = goblin.entity.speed < 0 ? 'scaleX(-1)' : 'scaleX(1)';
+        }
+    }
 
     handlePlayerCollision(player, env, playerCol) {
         //console.log(player.id + " checking: " + env.id)
 
-        if (env.type === "red") {
+        if (env.type === "red" || (env.type === "goblin" && !env.entity.dead)) {
+
+
+
+            
             if (player.checkCollision(env)) {
-                console.log(player.collisionSide(env))
+               let side = player.collisionSide(env)
+               console.log(side)
+                if (env.type === "goblin" && side === "top"){
+                    env.entity.speed = 0
+                    env.elem.style.backgroundImage = "url('assets/goblindead.png')"
+                    env.entity.dead = true
+                    player.entity.vy = -1
+                        setTimeout(()=>{
+                            env.elem.remove()
+                        },300)
+                } else {
                 player.entity.playerElem.style.backgroundImage = "url('assets/BobHurt.png')";
-
-
                 player.entity.vy = -3
-                if (player.collisionSide(env) === "right") {
+                if (side === "right") {
                     console.log("yo")
                     player.entity.speed += 50
                 }
-                if (player.collisionSide(env) === "left") {
+                if (side === "left") {
 
                     player.entity.speed -= 50
                 }
@@ -158,26 +211,23 @@ export class CollisionManager { // put all collidable objects into the manager
                     }
                     player.entity.stunned = false;
                 }, 200); // 1000 milliseconds = 1 second
-
+            }
             }
         }
 
         if ((env.type === "blue" || env.type === "green")) {
 
             if (player.checkCollision(env)) {
-                // env.elem.style.backgroundColor = "white"
-
-
-
-                //console.log(env.id)
-                //console.log(player.id + " collided with: " + env.id)
 
                 playerCol = true
+                let side = player.collisionSide(env)
 
-                if (player.collisionSide(env) === "top") {
+
+                if (side === "top") {
                     //console.log(`top collision: PLAYER: ${player.x};${player.y}, ENV: ${env.x};${env.y}`)
-                    console.log(env.y, player.y)
-                    if (player.entity.crouch && env.type === "blue") {
+                    //console.log(env.y, player.y)
+                    if (env.type === "blue" && (player.entity.crouch || player.y + player.height - 25 > env.y)) {
+
                     } else if (player.entity.vy >= 0) {
                         player.entity.vy = 0;
                         player.y = env.y - player.height
@@ -187,18 +237,18 @@ export class CollisionManager { // put all collidable objects into the manager
                 if (env.type === "blue") {
                     return
                 }
-                if (player.collisionSide(env) === "right") {
+                if (side === "right") {
                     // console.log(`right collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
                     player.x = env.x + env.width
 
-                } else if (player.collisionSide(env) === "left") {
+                } else if (side === "left") {
                     //console.log(`left collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
 
 
                     player.x = env.x - player.width
 
                 }
-                if (player.collisionSide(env) === "bottom") {
+                if (side === "bottom") {
                     //console.log(`bottom collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
                     player.y = env.y + env.height
                     player.entity.vy += 1
@@ -206,7 +256,7 @@ export class CollisionManager { // put all collidable objects into the manager
 
 
             }
-            else { env.elem.style.backgroundColor = env.id }
+            // else {env.elem.style.backgroundColor = env.id}
             if (playerCol === false) {//if player has not collided with anything this frame then player is no longer grounded.
                 player.grounded = false
             }

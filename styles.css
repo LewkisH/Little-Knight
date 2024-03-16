@@ -14,7 +14,7 @@ body {
     width: 4800px;
     /* Height has to be (bitmap.height(50) * Scalefactor(48))  */
     height: 2400px;
-    border: solid 2px #575757;
+    /* border: solid 2px #575757; */
 }
 
 /* Wrapper for gameWorld to allow scrolling with negative top values and set the gamewindow size */
@@ -22,7 +22,7 @@ body {
     width: 1000px;
     height: 700px;
     overflow: hidden;
-    border: solid 2px #575757;
+   /*border: solid 2px #575757;
     /* background-color: rgb(126, 176, 236); */
 
 
@@ -509,14 +509,6 @@ input[type="range"]::-moz-range-thumb {
     bottom: 7px;
     color: #e7c60e;
     font-size: 24px;
-}
-
-#game {
-    width: 1000px;
-    height: 600px;
-    border: 2px;
-    color: black;
-    border-style: solid;
 }
 
 #ground {
