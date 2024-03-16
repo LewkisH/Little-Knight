@@ -9,6 +9,8 @@ export default class Player {
         this.vy = 0
         this.stunned = false
         this.crouch = true
+        this.coyoteTime = 0; // Initialize coyote time counter
+        this.coyoteDuration = 90; // Set coyote time duration in seconds
         //
 
         this.gameWidth = gameWidth
@@ -82,43 +84,68 @@ export default class Player {
         this.speed = Math.max(-maxHorizontalSpeed, Math.min(maxHorizontalSpeed, this.speed));
 
         //vertical input
-        if ((value.keys.indexOf('w') > -1
-            || value.keys.indexOf(' ') > -1) && (this.onGround())) {
-
-            this.vy = jumpVelocity
-            this.AABB.grounded = false
-        }
-
-
-        let crouchTimeout
+        
+        
         if (value.keys.indexOf('s') > -1) {
             console.log("crouching")
             this.crouch = true
         } else {
-                this.crouch = false;
+            this.crouch = false;
         }
-
+        
+        
         //horizontal movement
         this.x += this.speed * delta
-
+        
         if (this.x <= 0) this.x = 0;
-
-
+        
+        
         if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
-
+        
         //vertical movement
-        this.y += this.vy / 2 * (delta)
-        if (!this.onGround()) {
-            this.vy += this.gravity / 2 * (delta)
-        } else { this.vy = 0 }
+        const onGround = this.onGround();
+        
+        // Increment coyote time if the player is not on the ground
+        if (!onGround) {
+            this.vy += this.gravity / 2 * delta;
+            this.coyoteTime += delta;
+        } else {
+            this.isJumping = false; 
+            this.vy = 0;
+            this.coyoteTime = 0; // Reset coyote time if the player is on the ground
+        }
+        
+        if ((value.keys.indexOf('w') > -1 || value.keys.indexOf(' ') > -1) && (onGround || (this.coyoteTime < this.coyoteDuration && !this.isJumping))) {
+            this.vy = jumpVelocity;
+            this.AABB.grounded = false;
+            this.coyoteTime = 0; // Reset coyote time when jumping
+            this.isJumping = true
+        }
+        // Vertical movement
+        this.y += this.vy / 2 * delta; // Adjust y position based on velocity
+
+        // Apply gravity if not on the ground
+     /*    if (!onGround) {
+            this.vy += this.gravity / 2 * delta;
+        } else {
+            this.vy = 0; // Reset velocity when on the ground
+        } */
+
+        // Limit player's y position to the game height
         if (this.y > this.gameHeight - this.height) {
-            this.y = this.gameHeight - this.height
+            this.y = this.gameHeight - this.height;
         }
 
+        // Vertical input (jump)
+     
+
+        // Other movement code
     }
+
     onGround() {
+        // Check if the player is grounded based on AABB or y position
         if (this.AABB.grounded) return true;
-        return this.y >= this.gameHeight - this.height
+        return this.y >= this.gameHeight - this.height;
     }
 
 }
