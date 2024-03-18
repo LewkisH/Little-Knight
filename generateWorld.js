@@ -60,7 +60,7 @@ function parseObjToDiv(bitmapObj, gameWorldDimension) {
 
 
     if (bitmapObj.objectType === "brown") {
-        newDivElem.style.backgroundImage = "url('assets/goblin-export.png')"
+        newDivElem.style.backgroundImage = "url('assets/goblin.png')"
     } else {
         newDivElem.style.backgroundColor = 'none';
     }
