@@ -48,11 +48,7 @@ window.addEventListener('load', async function () {
     // Initial HUD update
     let HUD = {
         maxTime: 120, // seconds
-        // deltaTime: 0,
         maxHealth: player.lives,
-        // pausedState: false,
-        // bobState: "right",
-        // gemCount: 0,
     }
 
     updateHud(HUD, hudElem, "init")
@@ -184,7 +180,8 @@ window.addEventListener('load', async function () {
         player.vy = 0
         player.speed = 0
         updateHud(HUD, hudElem, "restart")
-
+        //respawn gems
+        resetCollectibles(game);
         //respawn goblins
         goblinArr.forEach((goblin)=>{
 
@@ -211,6 +208,16 @@ window.addEventListener('load', async function () {
            player.playerElem.style.backgroundImage = "url('assets/Bob.png')";
         }, 950);
         
+    }
+
+    function resetCollectibles(gameWorldElem) {
+        const collectibles = gameWorldElem.querySelectorAll('div[id="yellow"]');
+        collectibles.forEach(collectible => {
+            if (collectible.getAttribute('gem-collected') === 'true') {
+                collectible.removeAttribute('gem-collected');
+                collectible.style.removeProperty('opacity');
+            }
+        });
     }
 });
 

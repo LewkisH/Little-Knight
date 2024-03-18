@@ -1,3 +1,6 @@
+import {updateHud} from "./hud.js";
+
+
 const gameWorld = document.getElementById('gameWorldWrapper')
 const wrapperRect = gameWorld.getBoundingClientRect();
 export class AABBItem { //class to turn any object into a collidable.
@@ -172,64 +175,33 @@ export class CollisionManager { // put all collidable objects into the manager
     }
 
     handlePlayerCollision(player, env, playerCol) {
-        //console.log(player.id + " checking: " + env.id)
 
         if (env.type === "yellow" && env.elem.getAttribute('gem-collected') !== 'true') {
-            playerCol = true;
-            console.log("COLLECTING GEM");
-            // Check if has attribute "collected"
-           if (player.checkCollision(env)) {
-            // console.log("COlisIoN", player.collisionSide(env));
-            // Animation before removal also log it and add to memory
-            // console.log(env.elem);
-            // console.log(player.y, player.x);
-            env.elem.setAttribute('gem-collected', 'true');
-
-
-
-            const playerCenter = {
-                Y: player.y+48,
-                X: player.x+32,
+            if (player.checkCollision(env)) {
+                env.elem.setAttribute('gem-collected', 'true');
+                const playerCenter = {
+                    Y: player.y+48,
+                    X: player.x+32,
+                }
+                // console.log("COLLECTING GEM");
+                updateHud(undefined, undefined, "increaseGems")
+                const envLeft = parseFloat(window.getComputedStyle(env.elem).getPropertyValue('left'));
+                const envTop = parseFloat(window.getComputedStyle(env.elem).getPropertyValue('top'));
+                const horizontal = playerCenter.X - envLeft
+                const vertical = playerCenter.Y - envTop
+                env.elem.style.transition = 'left 0.3s linear, top 0.3s linear, opacity 0.3s linear';
+                env.elem.style.left = (envLeft + horizontal) + 'px';
+                env.elem.style.top = (envTop + vertical) + 'px';
+                env.elem.style.opacity = '0';
+                // Reset the position 
+                setTimeout(() => {
+                    env.elem.style.transition = '';
+                    env.elem.style.left = (envLeft) + 'px';
+                    env.elem.style.top = (envTop) + 'px';
+                }, 350);
             }
-
-            const envLeft = parseFloat(window.getComputedStyle(env.elem).getPropertyValue('left'));
-            const envTop = parseFloat(window.getComputedStyle(env.elem).getPropertyValue('top'));
-
-            const horizontal = playerCenter.X - envLeft
-            const vertical = playerCenter.Y - envTop
-
-            env.elem.style.transition = 'left 0.3s linear, top 0.3s linear, opacity 0.3s linear';
-            env.elem.style.left = (envLeft + horizontal) + 'px';
-            env.elem.style.top = (envTop + vertical) + 'px';
-            env.elem.style.opacity = '0';
-
-            // Reset the position 
-            setTimeout(() => {
-                env.elem.style.transition = '';
-                env.elem.style.left = (envLeft) + 'px';
-                env.elem.style.top = (envTop) + 'px';
-                // env.elem.style.opacity = '1';
-            }, 350);
-
-            // left: 336px; top: 1632px;"></div>
-
-
-            // env.elem.style.backgroundColor = 'black';
-            // env.elem.classList.add('gem-collected');
-            // env.elem.style.backgroundImage = "url('./assets/PlatformTileSet.webp')"
-            // env.elem.remove()
-
-
-            // Move Animate left
-
-
-
-           }
         }
-        // <div id="tile-collectible" class="COL1" style="width: 48px; height: 48px; posi
-        // tion: absolute; bottom: 240px; left: 672px; background-image: url(&quot;./assets/CollectibleTileSet.webp&quot;); background-position: -48px 0px; background-repeat: no-repeat; z-index: 10;"></div>
-        // <div class="yellow" id="yellow" style="width: 48px; height: 48px; position: absolute; left: 672px; top: 2112px;"></div>
-
+        
         if (env.type === "red" || (env.type === "goblin" && !env.entity.dead)) {
 
 
