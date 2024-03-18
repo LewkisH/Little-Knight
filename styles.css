@@ -31,6 +31,7 @@ body {
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Sixtyfour&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Micro+5&display=swap');
 
 #player {
     --xCoord: 30;
@@ -502,6 +503,104 @@ input[type="range"]::-moz-range-thumb {
     color: #e7c60e;
     font-size: 24px;
 }
+
+#HUD {
+    position: fixed;
+    /* background-color:rgba(0, 255, 255, 0.309); */
+    /* same width as wrapper */
+    width: 320px;
+    height: 110px;
+
+    z-index: 31;
+}
+.HUDcontainer {
+    margin: 15px;
+    /* background-color:rgba(255, 0, 0, 0.594); */
+    background-image: url("./assets/HUD.webp");
+    background-repeat: no-repeat;
+    background-size: contain;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 90px;
+    z-index: 32;
+}
+
+.gemCount {
+    width: 25px;
+    height: 20px;
+    /* background-color: #e7c60e; */
+    position: absolute;
+    left: 139px;
+    top: 72px;
+    text-align: center;
+}
+
+.gemCount a {
+    font-family: "Micro 5", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    user-select: none;
+}
+
+.timer {
+    width: 50px;
+    height: 20px;
+    /* background-color: #e7c60e73; */
+    position: absolute;
+    left: 240px;
+    top: 33px;
+    text-align: center;
+
+}
+
+.timer a {
+    font-family: "Micro 5", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    user-select: none;
+}
+ 
+#healthbar {
+    position: absolute; 
+    /* width: 198px; */
+    width: 200px;
+    height: 4px;
+    top: 58px;
+    left: 103px;
+    background-color: #c92323;
+    z-index: -1;
+    border-right: 3px solid #c92323;
+    border-radius: 7px;
+    -webkit-box-shadow:0px 0px 6px 5px #df1919;
+    -moz-box-shadow: 0px 0px 6px 5px #df1919;
+    box-shadow: 0px 0px 6px 5px #df1919;
+}
+
+#blinkAnimation {
+    display: none;
+    position: relative;
+    width: 200px;
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.749);
+    border-right: 3px solid rgba(255, 255, 255, 0.749);
+    border-radius: 7px;
+    -webkit-box-shadow:0px 0px 6px 5px rgba(255, 255, 255, 0.749);
+    -moz-box-shadow: 0px 0px 6px 5px rgba(255, 255, 255, 0.749);
+    box-shadow: 0px 0px 6px 5px rgba(255, 255, 255, 0.749);
+    z-index: -1;
+}
+
+
+/* Gem */
+.yellow {
+    background-image: url('./assets/CollectibleTileSet.webp'); 
+    background-position: -48px 0px; 
+    background-repeat: no-repeat; 
+    z-index: 10;
+    transition: left 0.1s linear, opacity 0.1s linear;
+}
+
 
 #ground {
     width: 96px;

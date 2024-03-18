@@ -4,13 +4,18 @@ import { createTextureLayerDiv, generateTextures } from "./tilemapper.js";
 import { readBitmap } from "./bitmapReader.js";
 import Player from './player.js'
 import { AABBItem, CollisionManager } from "./collision.js";
+import { updateHud } from "./hud.js";
 let lastTime;
 let isPaused = false;
 
 window.addEventListener('load', async function () {
     const userDataCache = await waitForMainMenu();
+    const hudElem = document.getElementById('HUD');
     const game = document.getElementById('gameWorld');
     const player = new Player(game.offsetWidth, game.offsetHeight, document.getElementById("player"))
+    // Something todo here:
+    // update player.lives based on userDataCache (difficulty)
+    // e.g. 5 lives, 3 lives, 2 lives
     const playerAABB = new AABBItem(player, "character")
     const colMan = new CollisionManager(playerAABB)
     //colMan.addEntity(playerAABB)
@@ -40,11 +45,24 @@ window.addEventListener('load', async function () {
     let gameWorldWrapper = document.getElementById('gameWorldWrapper');
     gameWorldWrapper.scrollTop = player.y;
     let pausedPlayerState = null;
+    // Initial HUD update
+    let HUD = {
+        maxTime: 120, // seconds
+        // deltaTime: 0,
+        maxHealth: player.lives,
+        // pausedState: false,
+        // bobState: "right",
+        // gemCount: 0,
+    }
+
+    updateHud(HUD, hudElem, "init")
     // let lastTime
     const gameLoop = function (time) {
         if (!isPaused) {
             if (lastTime != null) {
                 const delta = time - lastTime
+                if (player.lives !== HUD.currentHealth) HUD.currentHealth = player.lives;
+                updateHud(HUD, hudElem);
                 if (player.lives <= 0){
                     playerDead()
                 } else {
@@ -118,11 +136,13 @@ window.addEventListener('load', async function () {
                     velocity: player.velocity,
                     position: player.position
                 }
+                updateHud(HUD, hudElem, "pause")
             } else {
                 if (pausedPlayerState) {
                     player.velocity = pausedPlayerState.velocity;
                     player.position = pausedPlayerState.position;
                 }
+                updateHud(HUD, hudElem, "unpause")
                 lastTime = performance.now();
                 window.requestAnimationFrame(gameLoop)
             }
@@ -163,6 +183,7 @@ window.addEventListener('load', async function () {
         player.stunned = false
         player.vy = 0
         player.speed = 0
+        updateHud(HUD, hudElem, "restart")
 
         //respawn goblins
         goblinArr.forEach((goblin)=>{

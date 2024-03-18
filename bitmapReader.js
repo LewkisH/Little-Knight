@@ -104,6 +104,12 @@ function getObjectRect(matrix, row, col, width, height) {
 
     //uncomment below to have a div for each tile
     //   return { objectType: findType, x: col, y: Math.abs(row - height) - 1, width: xLen, height: yCount }
+
+    // For collectibles
+    if (findType === "yellow") {
+        console.log("FOUND YELLOW", findType);
+        return { objectType: findType, x: col, y: Math.abs(row - height) - 1, width: 1, height: 1 }
+    }
     if (width + col > worldWidth) {
         width = worldWidth - col
     }

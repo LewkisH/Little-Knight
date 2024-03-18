@@ -4,6 +4,8 @@ function createTextureLayerDiv(gameWorldElem, objectArray) {
 
     const assignedGameTiles = (generateTextures(objectArray)).assignedTiles;
     const tilemap = (generateTextures(objectArray)).tilemap;
+    console.log("TILETILE")
+    displayGameTiles(tilemap);
     const textureLayer = document.createElement('div');
     textureLayer.id = 'textureLayer';
     textureLayer.style.width = gameWorldElem.offsetWidth + 'px';
@@ -11,6 +13,7 @@ function createTextureLayerDiv(gameWorldElem, objectArray) {
     textureLayer.style.position = 'absolute';
     textureLayer.style.top = '0';
     textureLayer.style.left = '0';
+    let collectibleCount = 0;
     // tiles
 
 
@@ -46,15 +49,17 @@ function createTextureLayerDiv(gameWorldElem, objectArray) {
                 // const tile = buildTileDiv({className: 'tile-lava', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/LavaTileSet.webp")`});
                 // textureLayer.appendChild(tile);
             }
-
-            // for 4-collectible objects
-            if (value === 4) {
-                let tileChunck = assignedGameTiles[y][x];
-                if (tileChunck !== 4) {
-                    const tile = buildTileDiv({className: 'tile-collectible', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/CollectibleTileSet.webp")`});
-                    textureLayer.appendChild(tile);
-                }
-            }
+            // MIGRATE COLLECTIBLES TO GENERATEWORLD ONLY. NO TEXTURE LAYER #LOG001
+            // // for 4-collectible objects
+            // if (value === 4) {
+            //     collectibleCount ++;
+            //     let tileChunck = assignedGameTiles[y][x];
+            //     if (tileChunck !== 4) {
+            //         const tile = buildTileDiv({className: 'tile-collectible', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/CollectibleTileSet.webp")`});
+            //         textureLayer.appendChild(tile);
+            //     }
+            //     console.log("Collectible count: ",collectibleCount)
+            // }
         }
     }
     // console.log(assignedGameTiles[1][1]);
@@ -188,10 +193,11 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
         case 'LBB':
             tile.style.backgroundPosition =  `${-48}px ${-96}px`;
             break;
-        // Collectible cases
-        case 'COL1':
-            tile.style.backgroundPosition =  `${-48}px ${0}px`;
-            break;
+        // MIGRATE COLLECTIBLES TO GENERATEWORLD ONLY. NO TEXTURE LAYER #LOG001
+        // // Collectible cases
+        // case 'COL1':
+        //     tile.style.backgroundPosition =  `${-48}px ${0}px`;
+        //     break;
 
         default:
             tile.style.backgroundColor = 'gray';
@@ -247,7 +253,8 @@ function generateTextures(objectArray) {
                     case ('red'): // red hazard
                     gameTiles[i][j] = 3;
                     break;
-                    case ('yellow'): // yellow collectible
+                    // MIGRATE COLLECTIBLES TO GENERATEWORLD ONLY. NO TEXTURE FOR THIS LAYER #LOG001 keep it for matrix tho.
+                    case ('yellow'): // yellow collectible 
                     gameTiles[i][j] = 4;
                     break;
                     case ('cyan'): // cyan spawn
@@ -284,8 +291,13 @@ function generateTextures(objectArray) {
     displayGameTiles(assignedGameTiles);
     // Hazard/Lava
     assignedGameTiles = pickATile(assignedGameTiles, 3);
-    // Collectibles
-    assignedGameTiles = pickATile(assignedGameTiles, 4);
+
+    // MIGRATE COLLECTIBLES TO GENERATEWORLD ONLY. NO TEXTURE LAYER #LOG001
+    // // Collectibles
+    // assignedGameTiles = pickATile(assignedGameTiles, 4);
+    // console.log("COLLECTIBLES");
+    // displayGameTiles(assignedGameTiles);
+
 
     let reversedAssignedGTiles = reverse2Darray(assignedGameTiles);
     let reversedGameTiles = reverse2Darray(gameTiles);

@@ -125,6 +125,8 @@ function displayMainPlay(defaultUserData, levelData) {
             // Emerald/gem count
             let emeraldCountElem = clonedTemplate.querySelector('.emeraldCount');
             let emeraldCountChild = emeraldCountElem.children;
+            // console.log(typeof defaultUserData.gemsPerMap[level]);
+            // There is a bug here ^ UNRESOLVED
             let realEmeraldCount = (defaultUserData.gemsPerMap[level]).split('/');
             emeraldCountChild[0].innerHTML = realEmeraldCount[0];
             emeraldCountChild[1].innerHTML = realEmeraldCount[1];
