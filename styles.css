@@ -506,16 +506,12 @@ input[type="range"]::-moz-range-thumb {
 
 #HUD {
     position: fixed;
-    /* background-color:rgba(0, 255, 255, 0.309); */
-    /* same width as wrapper */
     width: 320px;
     height: 110px;
-
     z-index: 31;
 }
 .HUDcontainer {
     margin: 15px;
-    /* background-color:rgba(255, 0, 0, 0.594); */
     background-image: url("./assets/HUD.webp");
     background-repeat: no-repeat;
     background-size: contain;
@@ -529,7 +525,6 @@ input[type="range"]::-moz-range-thumb {
 .gemCount {
     width: 25px;
     height: 20px;
-    /* background-color: #e7c60e; */
     position: absolute;
     left: 139px;
     top: 72px;
@@ -546,7 +541,6 @@ input[type="range"]::-moz-range-thumb {
 .timer {
     width: 50px;
     height: 20px;
-    /* background-color: #e7c60e73; */
     position: absolute;
     left: 240px;
     top: 33px;
@@ -563,7 +557,6 @@ input[type="range"]::-moz-range-thumb {
  
 #healthbar {
     position: absolute; 
-    /* width: 198px; */
     width: 200px;
     height: 4px;
     top: 58px;
@@ -598,7 +591,6 @@ input[type="range"]::-moz-range-thumb {
     background-position: -48px 0px; 
     background-repeat: no-repeat; 
     z-index: 10;
-    transition: left 0.1s linear, opacity 0.1s linear;
 }
 
 

@@ -179,24 +179,15 @@ export class CollisionManager { // put all collidable objects into the manager
         if (env.type === "yellow" && env.elem.getAttribute('gem-collected') !== 'true') {
             if (player.checkCollision(env)) {
                 env.elem.setAttribute('gem-collected', 'true');
-                const playerCenter = {
-                    Y: player.y+48,
-                    X: player.x+32,
-                }
-                // console.log("COLLECTING GEM");
                 updateHud(undefined, undefined, "increaseGems")
-                const envLeft = parseFloat(window.getComputedStyle(env.elem).getPropertyValue('left'));
                 const envTop = parseFloat(window.getComputedStyle(env.elem).getPropertyValue('top'));
-                const horizontal = playerCenter.X - envLeft
-                const vertical = playerCenter.Y - envTop
-                env.elem.style.transition = 'left 0.3s linear, top 0.3s linear, opacity 0.3s linear';
-                env.elem.style.left = (envLeft + horizontal) + 'px';
-                env.elem.style.top = (envTop + vertical) + 'px';
+                env.elem.style.transition = 'top 0.3s linear, opacity 0.3s linear';
+                env.elem.style.top = (envTop - 20) + 'px';
                 env.elem.style.opacity = '0';
+                // Could also add pickup .webp here
                 // Reset the position 
                 setTimeout(() => {
                     env.elem.style.transition = '';
-                    env.elem.style.left = (envLeft) + 'px';
                     env.elem.style.top = (envTop) + 'px';
                 }, 350);
             }
