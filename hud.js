@@ -1,7 +1,7 @@
 function updateHud(HUD=JSON.parse(sessionStorage.getItem('HUD')), HUDelem=document.getElementById('HUD'), action="") {
     if (action === "init" || action === "restart") {
         if (action === "init") sessionStorage.clear();
-        HUD.bobState = "right";
+        HUD.bobState = {direction: "right", state: "Bob"};
         HUD.gemCount = 0;
         HUD.pausedState = false;
         HUD.startTime = performance.now();
@@ -9,11 +9,12 @@ function updateHud(HUD=JSON.parse(sessionStorage.getItem('HUD')), HUDelem=docume
         HUD.currentHealth = HUD.maxHealth;
         HUD.lastHealth = HUD.maxHealth;
         HUD.timer = HUD.maxTime;
-        sessionStorage.setItem('HUD', JSON.stringify(HUD))
-        sessionStorage.setItem('HUD_gems', JSON.stringify(HUD.gemCount))
         updateTimer(HUD, HUDelem)
         updateHealthbar(HUD, HUDelem)
         updateGems(HUD, HUDelem)
+        updateBobState(HUD, HUDelem)
+        sessionStorage.setItem('HUD', JSON.stringify(HUD))
+        sessionStorage.setItem('HUD_gems', JSON.stringify(HUD.gemCount))
         return null;
     }
     if (action === "pause") {
@@ -31,6 +32,11 @@ function updateHud(HUD=JSON.parse(sessionStorage.getItem('HUD')), HUDelem=docume
         increaseGems();
         updateGems(HUD, HUDelem);
         return null;
+    }
+    // Bob's Pic
+    if (checkBobState() !== HUD.bobState) {
+        HUD.bobState = checkBobState();
+        updateBobState(HUD, HUDelem);
     }
     // HealthBar
     if (HUD.currentHealth !== HUD.lastHealth) updateHealthbar(HUD, HUDelem)
@@ -53,6 +59,53 @@ function updateHud(HUD=JSON.parse(sessionStorage.getItem('HUD')), HUDelem=docume
     sessionStorage.setItem('HUD', JSON.stringify(HUD))
 
     return null;
+}
+
+function updateBobState(HUD, HUDelem) {
+    const bobPicElem = HUDelem.querySelector('#bobPic-img')
+    const bobDeadFXElem = HUDelem.querySelector('#bobDead')
+    if (HUD.bobState.direction === "right") {
+        bobPicElem.style.transform = 'scaleX(1)'
+        bobPicElem.style.left = '26px';
+    }
+    if (HUD.bobState.direction === "left") {
+        bobPicElem.style.transform = 'scaleX(-1)'
+        bobPicElem.style.left = '25px';
+    }
+    switch (HUD.bobState.state) {
+        case 'Bob':
+            bobDeadFXElem.style.display = 'none';
+            bobPicElem.style.backgroundImage = 'url("./assets/Bob.png")'
+            break;
+        case 'BobHurt':
+            bobPicElem.style.backgroundImage = 'url("./assets/BobHurt.png")'
+            break;
+        case 'BobDead':
+            bobPicElem.style.backgroundImage = 'url("./assets/BobDeadnoloop.gif")'
+            bobDeadFXElem.style.display = 'block';
+            break;
+        default:
+            break;
+    }
+}
+
+function checkBobState() {
+    const playerElem = document.getElementById('player')
+    const playerDirectionProp = window.getComputedStyle(playerElem).getPropertyValue('transform');
+    const playerStateProp = window.getComputedStyle(playerElem).getPropertyValue('background-image');
+    const playerState = (playerStateProp.split('/assets/')[1]).split('.')[0];
+    let playerDirection = ""
+    if (playerDirectionProp === 'none') {
+        playerDirection = '1';
+    } else {
+        playerDirection = (playerDirectionProp.split('matrix(')[1]).split(',')[0]
+    }
+    let bobState = {
+        direction: playerDirection === '1' ? "right" : "left",
+        state: playerState
+    }
+
+    return (bobState)
 }
 
 function updateGems(HUD, HUDelem) {
@@ -80,6 +133,7 @@ function updateHealthbar(HUD, HUDelem) {
     const healthBarWidth =  (200 / HUD.maxHealth) * HUD.currentHealth
     const healthbar = HUDelem.querySelector('#healthbar')
     const healthBlink = HUDelem.querySelector('#blinkAnimation')
+    const pictureBlink = HUDelem.querySelector('#bobHurt')
     healthbar.style.transition = `width 300ms linear`;
     if (HUD.currentHealth === HUD.maxHealth) {
         healthbar.style.width = `${healthBarWidth}px`;
@@ -93,14 +147,17 @@ function updateHealthbar(HUD, HUDelem) {
     let blinkCount = 0;
     function blinkHealth() {
         if (blinkCount % 2 === 0) {
+            pictureBlink.style.display = 'block';
             healthBlink.style.display = 'block';
         } else {
+            pictureBlink.style.display = 'none';
             healthBlink.style.display = 'none';
         }
         blinkCount++;
         if (blinkCount >= 4) {
             clearInterval(interval);
             healthBlink.style.display = 'none';
+            pictureBlink.style.display = 'none';
             healthbar.style.width = `${healthBarWidth}px`;
         }
     }

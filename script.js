@@ -199,6 +199,7 @@ window.addEventListener('load', async function () {
     
     function playerDead(){
         player.playerElem.style.backgroundImage = "url('assets/BobDead.gif')"
+        updateHud(HUD, hudElem, undefined)
         isPaused=true
         console.log("player died.")
         player.stunned = true

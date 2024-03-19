@@ -584,7 +584,6 @@ input[type="range"]::-moz-range-thumb {
     z-index: -1;
 }
 
-
 /* Gem */
 .yellow {
     background-image: url('./assets/CollectibleTileSet.webp'); 
@@ -593,6 +592,56 @@ input[type="range"]::-moz-range-thumb {
     z-index: 10;
 }
 
+#bobPic {
+    position: absolute; 
+    width: 69px;
+    height: 52px;
+    top: 0px;
+    left: 0px;
+    z-index: 35;
+}
+
+#bobPic-img {
+    position: absolute; 
+    width: 69px;
+    height: 52px;
+    top: 33px;
+    left: 26px;
+    background-image: url('./assets/Bob.png');
+    background-repeat: no-repeat;
+    background-position: 2px -4px;
+    z-index: 36;
+}
+
+#bobDead {
+    display: none;
+    position: absolute; 
+    width: 69px;
+    height: 52px;
+    top: 33px;
+    left: 26px;
+    background-color: rgba(255, 0, 0, 0.607);
+    border-radius: 0px;
+    -webkit-box-shadow:0px 0px 8px 3px rgba(255, 0, 0, 0.607);
+    -moz-box-shadow: 0px 0px 8px 3px rgba(255, 0, 0, 0.607);
+    box-shadow: 0px 0px 8px 3px rgba(255, 0, 0, 0.607);
+    z-index: 37;
+}
+
+#bobHurt {
+    display: none;
+    position: absolute; 
+    width: 69px;
+    height: 52px;
+    top: 33px;
+    left: 26px;
+    background-color: rgba(255, 0, 0, 0.805);
+    border-radius: 0px;
+    -webkit-box-shadow:0px 0px 8px 3px rgba(255, 0, 0, 0.805);
+    -moz-box-shadow: 0px 0px 8px 3px rgba(255, 0, 0, 0.805);
+    box-shadow: 0px 0px 8px 3px rgba(255, 0, 0, 0.805);
+    z-index: 35;
+}
 
 #ground {
     width: 96px;
