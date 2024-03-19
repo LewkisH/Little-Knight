@@ -8,6 +8,7 @@ import { updateHud } from "./hud.js";
 let lastTime;
 let isPaused = false;
 
+
 window.addEventListener('load', async function () {
     const userDataCache = await waitForMainMenu();
     const hudElem = document.getElementById('HUD');
@@ -40,6 +41,9 @@ window.addEventListener('load', async function () {
     generateWorld(objArr, gameWorldElem, colMan, goblinArr);
     generateTextures(objArr); // tilemapper sub function 
     createTextureLayerDiv(gameWorldElem, objArr); // tilemapper;
+    /* let audio = new Audio('/assets/Audio/Ner_music.mp3')
+    audio.play()
+    audio.volume = 0.3; */
 
     // Initial vertical Scroll value
     let gameWorldWrapper = document.getElementById('gameWorldWrapper');
@@ -191,7 +195,7 @@ window.addEventListener('load', async function () {
             goblin.speed = 3;
             goblin.dead = false
             goblin.AABB.elem.style.transform = 'scaleX(1)'
-            goblin.AABB.elem.style.backgroundImage = "url('assets/goblin-export.png')"
+            goblin.AABB.elem.style.backgroundImage = "url('assets/goblin.png')"
 
         })
         handleContinue()

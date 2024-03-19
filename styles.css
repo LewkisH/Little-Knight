@@ -96,6 +96,17 @@ body {
     text-align: center;
 }
 
+#gameTitle{
+    font-family: "Sixtyfour", sans-serif;
+    font-size: 40px;
+    background-color: rgb(58, 58, 58);
+    border-radius: 20px;
+    text-shadow: 1px 1px 2px rgb(255, 174, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(255, 255, 255);
+    color: gold;
+    padding:12px;
+    border: solid black;
+}
+
 #pauseMenu h2 {
     font-family: "Sixtyfour", sans-serif;
     font-size: xx-large;

@@ -211,7 +211,8 @@ export class CollisionManager { // put all collidable objects into the manager
                         },300)
                 } else {
                 player.entity.playerElem.style.backgroundImage = "url('assets/BobHurt.png')";
-                player.entity.vy = -3
+                player.entity.vy = env.type === "goblin" ? -1 : -3;
+
                 if (side === "right") {
                     console.log("yo")
                     player.entity.speed += 50
@@ -276,11 +277,11 @@ export class CollisionManager { // put all collidable objects into the manager
 
             }
             // else {env.elem.style.backgroundColor = env.id}
-            if (playerCol === false) {//if player has not collided with anything this frame then player is no longer grounded.
-                player.grounded = false
-            }
-            return (playerCol)
         }
+        if (playerCol === false) {//if player has not collided with anything this frame then player is no longer grounded.
+            player.grounded = false
+        }
+        return (playerCol)
 
     }
 }
