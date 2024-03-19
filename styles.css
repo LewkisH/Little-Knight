@@ -88,7 +88,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 30;
+    z-index: 50;
     background: #0000008d;
     width: 1000px;
     height: 700px;
@@ -538,6 +538,22 @@ input[type="range"]::-moz-range-thumb {
     user-select: none;
 }
 
+.gemPic {
+    overflow: hidden;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    left: 115px;
+    top: 69px;
+}
+
+.gemPic img {
+    position: absolute;
+    left: -198px;
+    top: -166px;
+    transform: scale(0.7);
+}
+
 .timer {
     width: 50px;
     height: 20px;
@@ -545,7 +561,6 @@ input[type="range"]::-moz-range-thumb {
     left: 240px;
     top: 33px;
     text-align: center;
-
 }
 
 .timer a {
@@ -584,6 +599,15 @@ input[type="range"]::-moz-range-thumb {
     z-index: -1;
 }
 
+.healthbar-bg {
+    position: absolute; 
+    width: 200px;
+    height: 4px;
+    top: 58px;
+    left: 103px;
+    background-color: #737373;
+    z-index: -2;
+}
 /* Gem */
 .yellow {
     background-image: url('./assets/CollectibleTileSet.webp'); 

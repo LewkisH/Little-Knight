@@ -11,7 +11,7 @@ function updateHud(HUD=JSON.parse(sessionStorage.getItem('HUD')), HUDelem=docume
         HUD.timer = HUD.maxTime;
         updateTimer(HUD, HUDelem)
         updateHealthbar(HUD, HUDelem)
-        updateGems(HUD, HUDelem)
+        updateGems(HUD, HUDelem, true)
         updateBobState(HUD, HUDelem)
         sessionStorage.setItem('HUD', JSON.stringify(HUD))
         sessionStorage.setItem('HUD_gems', JSON.stringify(HUD.gemCount))
@@ -108,9 +108,23 @@ function checkBobState() {
     return (bobState)
 }
 
-function updateGems(HUD, HUDelem) {
+function updateGems(HUD, HUDelem, init=false) {
     const gemCount = HUDelem.querySelector('.gemCount a');
     gemCount.innerHTML = HUD.gemCount;
+    // Dont run when init=true
+    if (init) return null;
+    const gemIcon = HUDelem.querySelector('.gemPic img');
+    const gemFramesTop = [-65,-99,-133, -166, -166]
+    let frameI = 0;
+    // Cycle animation frames
+    function gemPickup() {
+        gemIcon.style.top = `${gemFramesTop[frameI]}px`;
+        frameI++;
+        if (frameI >= gemFramesTop.length) {
+            clearInterval(interval);
+        }
+    }
+    const interval = setInterval(gemPickup, 100);
 }
 
 function increaseGems() {
