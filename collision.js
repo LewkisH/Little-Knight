@@ -1,3 +1,6 @@
+import {updateHud} from "./hud.js";
+
+
 const gameWorld = document.getElementById('gameWorldWrapper')
 const wrapperRect = gameWorld.getBoundingClientRect();
 export class AABBItem { //class to turn any object into a collidable.
@@ -179,8 +182,24 @@ export class CollisionManager { // put all collidable objects into the manager
     }
 
     handlePlayerCollision(player, env, playerCol) {
-        //console.log(player.id + " checking: " + env.id)
 
+        if (env.type === "yellow" && env.elem.getAttribute('gem-collected') !== 'true') {
+            if (player.checkCollision(env)) {
+                env.elem.setAttribute('gem-collected', 'true');
+                updateHud(undefined, undefined, "increaseGems")
+                const envTop = parseFloat(window.getComputedStyle(env.elem).getPropertyValue('top'));
+                env.elem.style.transition = 'top 0.3s linear, opacity 0.3s linear';
+                env.elem.style.top = (envTop - 20) + 'px';
+                env.elem.style.opacity = '0';
+                // Could also add pickup .webp here
+                // Reset the position 
+                setTimeout(() => {
+                    env.elem.style.transition = '';
+                    env.elem.style.top = (envTop) + 'px';
+                }, 350);
+            }
+        }
+        
         if (env.type === "door") {
             if (player.checkCollision(env)) {
                 console.log("PLAYER TOUCHED DOOR")
