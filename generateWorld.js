@@ -17,8 +17,9 @@
 
 import { CollisionManager, AABBItem } from "./collision.js";
 import { Goblin } from "./goblin.js";
+import { Door } from "./door.js";
 
-function generateWorld(objectArray, gameWorldElem, colMan, goblinArr) {
+function generateWorld(objectArray, gameWorldElem, colMan, goblinArr, level) {
     // Contains the gameWorld div height/width (for dynamic purpowses)
     // Bring this in from style, rather than clientHeight/width
     const gameWorldDimension = {
@@ -29,7 +30,15 @@ function generateWorld(objectArray, gameWorldElem, colMan, goblinArr) {
         let objCol;
         let elem = parseObjToDiv(object, gameWorldDimension)
         gameWorldElem.appendChild(elem);
-        if (object.objectType === "brown") {
+
+
+        if (object.objectType === "magenta") {
+           let door = new Door(elem, level)
+           
+            objCol = new AABBItem(door, "door")
+
+
+        } else if (object.objectType === "brown") {
             let goblin = new Goblin(elem)
             goblinArr.push(goblin)
             objCol = new AABBItem(goblin, "goblin")
@@ -48,6 +57,8 @@ function parseObjToDiv(bitmapObj, gameWorldDimension) {
     const ScaleRatio = 48;
     if (bitmapObj.objectType === "brown") {
         SizeRatio = 64
+    } else if (bitmapObj.objectType === "magenta") {
+        SizeRatio = 96;
     } else SizeRatio = 48;
 
     const newDivElem = document.createElement('div');
@@ -57,8 +68,9 @@ function parseObjToDiv(bitmapObj, gameWorldDimension) {
     newDivElem.style.height = (bitmapObj.height * SizeRatio) + 'px';
     // Color depending on the object Type *TODO
 
-
-
+    if (bitmapObj.objectType === "magenta") {
+        newDivElem.style.backgroundImage = "url('assets/EndDoorTileSet.webp')"
+    }
     if (bitmapObj.objectType === "brown") {
         newDivElem.style.backgroundImage = "url('assets/goblin.png')"
     } else {

@@ -12,13 +12,20 @@ export class AABBItem { //class to turn any object into a collidable.
             this.grounded = false
 
 
+      /*   } else if (type === "goblin") {
+            entity.AABB = this
+            this.entity = entity
+            this.elem = entity.elem */
+        } else if ( type === "door" || type === "goblin") {
+            entity.AABB = this
+            this.entity = entity
+            this.elem = entity.elem
+            let rect = this.elem.getBoundingClientRect();
+            this.width = rect.right - rect.left;
+            this.height = rect.bottom - rect.top;
         } else {
-            if (type === "goblin") {
-                entity.AABB = this
-                this.entity = entity
-                this.elem = entity.entity
-            } else this.elem = entity
 
+            this.elem = entity
             let rect = this.elem.getBoundingClientRect();
             this.id = entity.id;
             this.width = rect.right - rect.left;
@@ -148,24 +155,24 @@ export class CollisionManager { // put all collidable objects into the manager
                     if (side === "left" || side === "right") {
                         goblin.entity.speed *= -1;
                         goblin.elem.style.transform = goblin.entity.speed < 0 ? 'scaleX(-1)' : 'scaleX(1)';
-                    }   
+                    }
                 }
                 if (
                     ((goblin.entity.leftPoint.x) > this.entities[j].x &&
-                    (goblin.entity.leftPoint.y) > this.entities[j].y &&
-                    goblin.entity.leftPoint.x < (this.entities[j].x + this.entities[j].width) &&
-                    goblin.entity.leftPoint.y < (this.entities[j].y + this.entities[j].height))
+                        (goblin.entity.leftPoint.y) > this.entities[j].y &&
+                        goblin.entity.leftPoint.x < (this.entities[j].x + this.entities[j].width) &&
+                        goblin.entity.leftPoint.y < (this.entities[j].y + this.entities[j].height))
                     &&
                     ((goblin.entity.rightPoint.x) > this.entities[j].x &&
-                    (goblin.entity.rightPoint.y) > this.entities[j].y &&
-                    goblin.entity.rightPoint.x < (this.entities[j].x + this.entities[j].width) &&
-                    goblin.entity.rightPoint.y < (this.entities[j].y + this.entities[j].height))
+                        (goblin.entity.rightPoint.y) > this.entities[j].y &&
+                        goblin.entity.rightPoint.x < (this.entities[j].x + this.entities[j].width) &&
+                        goblin.entity.rightPoint.y < (this.entities[j].y + this.entities[j].height))
                 ) {
                     pointCollision = true
                 }
             }
         }
-        if (pointCollision ===false){
+        if (pointCollision === false) {
             goblin.entity.speed *= -1;
             goblin.elem.style.transform = goblin.entity.speed < 0 ? 'scaleX(-1)' : 'scaleX(1)';
         }
@@ -174,45 +181,52 @@ export class CollisionManager { // put all collidable objects into the manager
     handlePlayerCollision(player, env, playerCol) {
         //console.log(player.id + " checking: " + env.id)
 
+        if (env.type === "door") {
+            if (player.checkCollision(env)) {
+                console.log("PLAYER TOUCHED DOOR")
+            }
+        }
+
+
         if (env.type === "red" || (env.type === "goblin" && !env.entity.dead)) {
 
 
 
-            
+
             if (player.checkCollision(env)) {
-               let side = player.collisionSide(env)
-               console.log(side)
-                if (env.type === "goblin" && side === "top"){
+                let side = player.collisionSide(env)
+                console.log(side)
+                if (env.type === "goblin" && side === "top") {
                     env.entity.speed = 0
                     env.elem.style.backgroundImage = "url('assets/goblindead.png')"
                     env.entity.dead = true
                     player.entity.vy = -1
-                        setTimeout(()=>{
-                            env.elem.remove()
-                        },300)
+                    setTimeout(() => {
+                        env.elem.remove()
+                    }, 300)
                 } else {
-                player.entity.playerElem.style.backgroundImage = "url('assets/BobHurt.png')";
-                player.entity.vy = env.type === "goblin" ? -1 : -3;
+                    player.entity.playerElem.style.backgroundImage = "url('assets/BobHurt.png')";
+                    player.entity.vy = env.type === "goblin" ? -1 : -3;
 
-                if (side === "right") {
-                    console.log("yo")
-                    player.entity.speed += 50
-                }
-                if (side === "left") {
-
-                    player.entity.speed -= 50
-                }
-                if (!player.entity.stunned) {
-                    player.entity.lives--
-                }
-                player.entity.stunned = true
-                setTimeout(() => {
-                    if (player.entity.lives > 0) {
-                        player.entity.playerElem.style.backgroundImage = "url('assets/Bob.png')";
+                    if (side === "right") {
+                        console.log("yo")
+                        player.entity.speed += 50
                     }
-                    player.entity.stunned = false;
-                }, 200); // 1000 milliseconds = 1 second
-            }
+                    if (side === "left") {
+
+                        player.entity.speed -= 50
+                    }
+                    if (!player.entity.stunned) {
+                        player.entity.lives--
+                    }
+                    player.entity.stunned = true
+                    setTimeout(() => {
+                        if (player.entity.lives > 0) {
+                            player.entity.playerElem.style.backgroundImage = "url('assets/Bob.png')";
+                        }
+                        player.entity.stunned = false;
+                    }, 200); // 1000 milliseconds = 1 second
+                }
             }
         }
 

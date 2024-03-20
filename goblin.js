@@ -1,7 +1,7 @@
 export class Goblin {
     constructor(goblinEntity) {
         this.startPos = {x:goblinEntity.style.left,y:goblinEntity.style.top}
-        this.entity = goblinEntity;
+        this.elem = goblinEntity;
         this.speed = 4;
         this.dead = false
         

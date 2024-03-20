@@ -33,7 +33,7 @@ window.addEventListener('load', async function () {
 
     let gameWorldElem = document.getElementById('gameWorld');
 
-    generateWorld(objArr, gameWorldElem, colMan, goblinArr);
+    generateWorld(objArr, gameWorldElem, colMan, goblinArr, userDataCache.selectedLevel);
     generateTextures(objArr); // tilemapper sub function 
     createTextureLayerDiv(gameWorldElem, objArr); // tilemapper;
     /* let audio = new Audio('/assets/Audio/Ner_music.mp3')

@@ -21,7 +21,6 @@ export async function readBitmap(url) {
         var pixelArrayOffset = dataView.getUint32(10, true); // the offset for where the first pixel's first byte is
 
         let padding = (4 - (width * 3) % 4) % 4 //bmp wants each row of the picture to start at a bytevalue with a multiple of 4. so they added padding at the end of rows.
-        let tre;
         for (var y = 0; y < height; y++) {
             for (var x = 0; x < width; x++) {
                 let pixelOffset = pixelArrayOffset + x * 3 + y * width * 3 + padding * y
@@ -59,7 +58,7 @@ function readRGB(red, green, blue) {
     //console.log(red,green,blue)
     let key = String(red) + String(green) + String(blue)
 
-    rgbMap.set('2550255', 'magenta'); //magenta filler block for chris
+    rgbMap.set('2550255', 'magenta'); //endDoor
     rgbMap.set('02550', 'green'); //green solid
     rgbMap.set('00255', 'blue'); //blue platform
     rgbMap.set('25500', 'red');//red hazard
