@@ -137,13 +137,13 @@ export class CollisionManager { // put all collidable objects into the manager
     }
 
     //checks collisions between all objects and player.
-    checkAllCollision() {
+    checkAllCollision(atEnd) {
         let playerCol = false;
         for (let i = 0; i < this.entities.length; i++) {
             if (this.entities[i].type === "goblin") {
                 this.handleGoblinCollision(this.entities[i])
             }
-            playerCol = this.handlePlayerCollision(this.player, this.entities[i], playerCol)
+            playerCol = this.handlePlayerCollision(this.player, this.entities[i], playerCol, atEnd)
 
         }
 
@@ -181,8 +181,8 @@ export class CollisionManager { // put all collidable objects into the manager
         }
     }
 
-    handlePlayerCollision(player, env, playerCol) {
-
+    handlePlayerCollision(player, env, playerCol, atEnd) {
+        
         if (env.type === "yellow" && env.elem.getAttribute('gem-collected') !== 'true') {
             if (player.checkCollision(env)) {
                 env.elem.setAttribute('gem-collected', 'true');
@@ -202,7 +202,8 @@ export class CollisionManager { // put all collidable objects into the manager
         
         if (env.type === "door") {
             if (player.checkCollision(env)) {
-                console.log("PLAYER TOUCHED DOOR")
+                atEnd.end = true
+                return 
             }
         }
 
@@ -298,4 +299,5 @@ export class CollisionManager { // put all collidable objects into the manager
         return (playerCol)
 
     }
+    
 }

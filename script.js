@@ -7,6 +7,7 @@ import { AABBItem, CollisionManager } from "./collision.js";
 import { updateHud } from "./hud.js";
 let lastTime;
 let isPaused = false;
+let atEnd = {end: false}
 
 
 window.addEventListener('load', async function () {
@@ -58,6 +59,10 @@ window.addEventListener('load', async function () {
     updateHud(HUD, hudElem, "init")
     // let lastTime
     const gameLoop = function (time) {
+        if (atEnd.end){
+            isPaused = true;
+            toggleEndMenu(true)
+        }
         if (!isPaused) {
             if (lastTime != null) {
                 const delta = time - lastTime
@@ -74,7 +79,7 @@ window.addEventListener('load', async function () {
                 }));
 
 
-                colMan.checkAllCollision()}
+                colMan.checkAllCollision(atEnd)}
                 // console.log(playerAABB.checkCollision(blackAABB))
             }
             lastTime = time
@@ -148,6 +153,23 @@ window.addEventListener('load', async function () {
             }
         }
     });
+
+    
+    function toggleEndMenu(isEnd) {
+        let pauseMenu = document.getElementById("endMenu");
+        pauseMenu.style.display = isEnd ? "flex" : "none";
+    
+        const restartButton = document.querySelector("#endTryAgain");
+        const continueButton = document.querySelector("#endMainMenu");
+        if (isEnd) {
+            restartButton.addEventListener('click', console.log("I WANNA TRY AGAIN"));
+            continueButton.addEventListener('click', console.log("OK LETS CONTINUE"));
+        } else {
+            restartButton.removeEventListener('click', handleRestart);
+            continueButton.removeEventListener('click', handleContinue);
+        }
+    }
+
 
 
 
