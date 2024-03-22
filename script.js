@@ -149,20 +149,21 @@ window.addEventListener('load', async function () {
         }
     });
 
-
-
     function togglePauseMenu(isPaused) {
         let pauseMenu = document.getElementById("pauseMenu");
         pauseMenu.style.display = isPaused ? "flex" : "none";
 
         const restartButton = document.querySelector(".restart");
         const continueButton = document.querySelector(".continue");
+        const toMainMenu = document.querySelector(".toMainMenu")
         if (isPaused) {
             restartButton.addEventListener('click', handleRestart);
             continueButton.addEventListener('click', handleContinue);
+            toMainMenu.addEventListener('click', handleBackToMainMenu);
         } else {
             restartButton.removeEventListener('click', handleRestart);
             continueButton.removeEventListener('click', handleContinue);
+            toMainMenu.addEventListener('click', handleBackToMainMenu);
         }
     }
 
@@ -173,7 +174,6 @@ window.addEventListener('load', async function () {
         lastTime = performance.now();
         window.requestAnimationFrame(gameLoop);
     }
-
 
     function handleRestart() {
         console.log("Restart was pressed");
@@ -200,6 +200,10 @@ window.addEventListener('load', async function () {
         })
         handleContinue()
     }
+
+    function handleBackToMainMenu() {
+        location.reload();
+    }
     
     function playerDead(){
         player.playerElem.style.backgroundImage = "url('assets/BobDead.gif')"
@@ -225,16 +229,3 @@ window.addEventListener('load', async function () {
         });
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-//window.addEventListener('load', function () {
