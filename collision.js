@@ -34,15 +34,60 @@ export class AABBItem { //class to turn any object into a collidable.
             this.width = rect.right - rect.left;
             this.height = rect.bottom - rect.top;
         }
+        this._x = null;
+        this._y = null;
+
+        // Calculate initial x and y coordinates
+        this.calculatePosition();
         this.type = type
         this.debug = null
         this.name = null;
         this.debugX = null;
         this.debugY = null;
     }
+    calculatePosition() {
+        const rect = this.elem.getBoundingClientRect();
+        this._x = rect.left + gameWorld.scrollLeft - wrapperRect.left;
+        this._y = rect.top + gameWorld.scrollTop - wrapperRect.top;
+    }
 
-
+    // Getter for x coordinate
     get x() {
+        if (this.id === "player") {
+            return parseFloat(getComputedStyle(this.elem).getPropertyValue("--xCoord"));
+
+        }
+        return this._x;
+    }
+
+    // Getter for y coordinate
+    get y() {
+        if (this.id === "player") {
+            return parseFloat(getComputedStyle(this.elem).getPropertyValue("--yCoord"));
+        }
+        return this._y;
+    }
+
+    // Setter for x coordinate
+    set x(value) {
+        if (this.id === "player") {
+            this.elem.style.setProperty("--xCoord", Math.floor(value));
+        } else {
+            this.elem.style.left = value + "px";
+        }
+        this._x = value; // Update stored x coordinate
+    }
+
+    // Setter for y coordinate
+    set y(value) {
+        if (this.id === "player") {
+            this.elem.style.setProperty("--yCoord", Math.floor(value));
+        }
+        this._y = value; // Update stored y coordinate
+    }
+
+
+    /* get x() {
         const rect = this.elem.getBoundingClientRect();
         return rect.left + gameWorld.scrollLeft - wrapperRect.left
 
@@ -50,7 +95,7 @@ export class AABBItem { //class to turn any object into a collidable.
 
         /*  let rect = this.elem.getBoundingClientRect();
          //console.log(this.elem, rect.left)
-         return rect.left; */
+         return rect.left; 
     }
     set x(value) {
         if (this.id === "player") {
@@ -67,7 +112,7 @@ export class AABBItem { //class to turn any object into a collidable.
         if (this.id === "player") {
             this.elem.style.setProperty("--yCoord", Math.floor(value))
         }
-    }
+    } */
 
     //did we collide with 'other' entity?
     checkCollision(other) {
@@ -202,13 +247,13 @@ export class CollisionManager { // put all collidable objects into the manager
 
         if (env.type === "door" && !player.entity.stunned && !env.entity.collided) {
             if (player.checkCollision(env)) {
-                
+
                 let side = player.collisionSide(env);
                 env.entity.collided = true
                 player.entity.stunned = true;
                 player.elem.style.opacity = "0";
                 env.elem.style.width = "160px";
-                if (side === "left" || side ==="top") {
+                if (side === "left" || side === "top") {
                     env.elem.style.left = (parseFloat(env.elem.style.left || 0) - 64) + "px";
                     env.elem.style.backgroundImage = "url('assets/enterdoor-left.gif')";
                 } else {
@@ -221,7 +266,7 @@ export class CollisionManager { // put all collidable objects into the manager
                     env.elem.style.width = "96px"
                     if (side === "left" || side === "top") {
                         env.elem.style.left = (parseFloat(env.elem.style.left || 0) + 64) + "px";
-                    } 
+                    }
                     env.entity.collided = false;
                     return
                 }, 1000)
@@ -274,7 +319,6 @@ export class CollisionManager { // put all collidable objects into the manager
         if ((env.type === "blue" || env.type === "green")) {
 
             if (player.checkCollision(env)) {
-
                 playerCol = true
                 let side = player.collisionSide(env)
 
