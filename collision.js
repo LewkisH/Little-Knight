@@ -222,7 +222,7 @@ export class CollisionManager { // put all collidable objects into the manager
                     if (side === "left" && side === "top") {
                         env.elem.style.left = (parseFloat(env.elem.style.left || 0) + 64) + "px";
                     } else {
-                        //env.elem.style.left = (parseFloat(env.elem.style.left || 0) - 64) + "px";
+                        env.elem.style.left = (parseFloat(env.elem.style.left || 0) - 64) + "px";
 
                     }
                     env.elem.style.width = "96px"
