@@ -140,8 +140,8 @@ export class CollisionManager { // put all collidable objects into the manager
     checkAllCollision(atEnd) {
         let playerCol = false;
         for (let i = 0; i < this.entities.length; i++) {
-            if (this.entities[i].type === "goblin" && !this.player.entity.stunned) {
-                this.handleGoblinCollision(this.entities[i])
+            if (this.entities[i].type === "goblin") {
+                this.handleGoblinCollision(this.entities[i],)
             }
             playerCol = this.handlePlayerCollision(this.player, this.entities[i], playerCol, atEnd)
 
@@ -212,20 +212,16 @@ export class CollisionManager { // put all collidable objects into the manager
                     env.elem.style.left = (parseFloat(env.elem.style.left || 0) - 64) + "px";
                     env.elem.style.backgroundImage = "url('assets/enterdoor-left.gif')";
                 } else {
-                    env.elem.style.left = (parseFloat(env.elem.style.left || 0) + 64) + "px";
                     env.elem.style.backgroundImage = "url('assets/enterdoor-right.gif')";
                 }
                 setTimeout(() => {
 
                     atEnd.end = true
                     env.elem.style.backgroundImage = "url('assets/EndDoorTileSet.webp')"
-                    if (side === "left" && side === "top") {
-                        env.elem.style.left = (parseFloat(env.elem.style.left || 0) + 64) + "px";
-                    } else {
-                        env.elem.style.left = (parseFloat(env.elem.style.left || 0) - 64) + "px";
-
-                    }
                     env.elem.style.width = "96px"
+                    if (side === "left" || side === "top") {
+                        env.elem.style.left = (parseFloat(env.elem.style.left || 0) + 64) + "px";
+                    } 
                     env.entity.collided = false;
                     return
                 }, 1000)
