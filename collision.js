@@ -212,7 +212,7 @@ export class CollisionManager { // put all collidable objects into the manager
                     env.elem.style.left = (parseFloat(env.elem.style.left || 0) - 64) + "px";
                     env.elem.style.backgroundImage = "url('assets/enterdoor-left.gif')";
                 } else {
-                    //env.elem.style.left = (parseFloat(env.elem.style.left || 0) + 64) + "px";
+                    env.elem.style.left = (parseFloat(env.elem.style.left || 0) + 64) + "px";
                     env.elem.style.backgroundImage = "url('assets/enterdoor-right.gif')";
                 }
                 setTimeout(() => {
