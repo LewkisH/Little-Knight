@@ -146,7 +146,7 @@ window.addEventListener('load', async function () {
                 }
                 updateHud(HUD, hudElem, "unpause")
                 lastTime = performance.now();
-                window.requestAnimationFrame(gameLoop)
+                window.requestAnimationFrame(gameLoop)  
             }
         }
     });
@@ -205,6 +205,8 @@ window.addEventListener('load', async function () {
     }
 
     function handleContinue() {
+        player.playerElem.style.opacity = "1";
+
         console.log("Continue was pressed");
         togglePauseMenu(false);
         toggleEndMenu(false);
@@ -241,6 +243,7 @@ window.addEventListener('load', async function () {
     }
 
     function handleBackToMainMenu() {
+        player.playerElem.style.opacity = "1";
         location.reload();
     }
     

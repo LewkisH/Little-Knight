@@ -200,9 +200,11 @@ export class CollisionManager { // put all collidable objects into the manager
             }
         }
 
-        if (env.type === "door" && !player.entity.stunned) {
+        if (env.type === "door" && !player.entity.stunned && !env.entity.collided) {
             if (player.checkCollision(env)) {
+                
                 let side = player.collisionSide(env);
+                env.entity.collided = true
                 player.entity.stunned = true;
                 player.elem.style.opacity = "0";
                 env.elem.style.width = "160px";
@@ -217,14 +219,14 @@ export class CollisionManager { // put all collidable objects into the manager
 
                     atEnd.end = true
                     env.elem.style.backgroundImage = "url('assets/EndDoorTileSet.webp')"
-                    if (side === "left") {
+                    if (side === "left" && side === "top") {
                         env.elem.style.left = (parseFloat(env.elem.style.left || 0) + 64) + "px";
                     } else {
                         //env.elem.style.left = (parseFloat(env.elem.style.left || 0) - 64) + "px";
 
                     }
                     env.elem.style.width = "96px"
-
+                    env.entity.collided = false;
                     return
                 }, 1000)
             }
