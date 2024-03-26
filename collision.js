@@ -1,4 +1,4 @@
-import {updateHud} from "./hud.js";
+import { updateHud } from "./hud.js";
 
 
 const gameWorld = document.getElementById('gameWorldWrapper')
@@ -15,11 +15,11 @@ export class AABBItem { //class to turn any object into a collidable.
             this.grounded = false
 
 
-      /*   } else if (type === "goblin") {
-            entity.AABB = this
-            this.entity = entity
-            this.elem = entity.elem */
-        } else if ( type === "door" || type === "goblin") {
+            /*   } else if (type === "goblin") {
+                  entity.AABB = this
+                  this.entity = entity
+                  this.elem = entity.elem */
+        } else if (type === "door" || type === "goblin") {
             entity.AABB = this
             this.entity = entity
             this.elem = entity.elem
@@ -140,7 +140,7 @@ export class CollisionManager { // put all collidable objects into the manager
     checkAllCollision(atEnd) {
         let playerCol = false;
         for (let i = 0; i < this.entities.length; i++) {
-            if (this.entities[i].type === "goblin") {
+            if (this.entities[i].type === "goblin" && !this.player.entity.stunned) {
                 this.handleGoblinCollision(this.entities[i])
             }
             playerCol = this.handlePlayerCollision(this.player, this.entities[i], playerCol, atEnd)
@@ -182,7 +182,7 @@ export class CollisionManager { // put all collidable objects into the manager
     }
 
     handlePlayerCollision(player, env, playerCol, atEnd) {
-        
+
         if (env.type === "yellow" && env.elem.getAttribute('gem-collected') !== 'true') {
             if (player.checkCollision(env)) {
                 env.elem.setAttribute('gem-collected', 'true');
@@ -199,11 +199,34 @@ export class CollisionManager { // put all collidable objects into the manager
                 }, 350);
             }
         }
-        
-        if (env.type === "door") {
+
+        if (env.type === "door" && !player.entity.stunned) {
             if (player.checkCollision(env)) {
-                atEnd.end = true
-                return 
+                let side = player.collisionSide(env);
+                player.entity.stunned = true;
+                player.elem.style.opacity = "0";
+                env.elem.style.width = "160px";
+                if (side === "left" || side ==="top") {
+                    env.elem.style.left = (parseFloat(env.elem.style.left || 0) - 64) + "px";
+                    env.elem.style.backgroundImage = "url('assets/enterdoor-left.gif')";
+                } else {
+                    //env.elem.style.left = (parseFloat(env.elem.style.left || 0) + 64) + "px";
+                    env.elem.style.backgroundImage = "url('assets/enterdoor-right.gif')";
+                }
+                setTimeout(() => {
+
+                    atEnd.end = true
+                    env.elem.style.backgroundImage = "url('assets/EndDoorTileSet.webp')"
+                    if (side === "left") {
+                        env.elem.style.left = (parseFloat(env.elem.style.left || 0) + 64) + "px";
+                    } else {
+                        //env.elem.style.left = (parseFloat(env.elem.style.left || 0) - 64) + "px";
+
+                    }
+                    env.elem.style.width = "96px"
+
+                    return
+                }, 1000)
             }
         }
 
@@ -299,5 +322,5 @@ export class CollisionManager { // put all collidable objects into the manager
         return (playerCol)
 
     }
-    
+
 }
