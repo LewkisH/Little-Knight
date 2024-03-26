@@ -126,9 +126,6 @@ window.addEventListener('load', async function () {
     }
 
     //if passing in entities other than player, use their html element
-
-
-
     const input = new InputHandler()
     window.requestAnimationFrame(gameLoop)
     // Pause game
@@ -154,24 +151,40 @@ window.addEventListener('load', async function () {
         }
     });
 
-    
     function toggleEndMenu(isEnd) {
+        if (isEnd) {
+            updateScore()
+            updateEndMenuDOMvalues()
+        }
         let pauseMenu = document.getElementById("endMenu");
         pauseMenu.style.display = isEnd ? "flex" : "none";
     
         const restartButton = document.querySelector("#endTryAgain");
         const continueButton = document.querySelector("#endMainMenu");
         if (isEnd) {
-            restartButton.addEventListener('click', console.log("I WANNA TRY AGAIN"));
-            continueButton.addEventListener('click', console.log("OK LETS CONTINUE"));
+            restartButton.addEventListener('click', handleRestart);
+            continueButton.addEventListener('click', handleBackToMainMenu);
         } else {
             restartButton.removeEventListener('click', handleRestart);
-            continueButton.removeEventListener('click', handleContinue);
+            continueButton.removeEventListener('click', handleBackToMainMenu);
         }
     }
 
-
-
+    // Updates EndMenu Values based on local/session storage (gems, time)
+    function updateEndMenuDOMvalues() {
+        let gemCountElem = document.querySelector('.endGemCount');
+        let timeElem = document.querySelector('.completionTime');
+        let currentSessionData = JSON.parse(sessionStorage.getItem('HUD'))
+        let minutes = Math.floor(currentSessionData.timer / 60);
+        let seconds = currentSessionData.timer % 60;
+        let formatMinutes = String(minutes).padStart(2, '0');
+        let formatSeconds = String(seconds).padStart(2, '0');
+        let collectedGems = currentSessionData.gemCount
+        let localData = JSON.parse(localStorage.getItem('userData'))
+        let gemsForCurrentMap = ((localData.gemsPerMap)[`${localData.selectedLevel}.bmp`]).split('/')[1]
+        gemCountElem.innerHTML = `${collectedGems}/${gemsForCurrentMap}`;
+        timeElem.innerHTML = `${formatMinutes}:${formatSeconds}`;
+    }
 
     function togglePauseMenu(isPaused) {
         let pauseMenu = document.getElementById("pauseMenu");
@@ -191,11 +204,12 @@ window.addEventListener('load', async function () {
     function handleContinue() {
         console.log("Continue was pressed");
         togglePauseMenu(false);
+        toggleEndMenu(false);
         isPaused = false;
+        atEnd.end = false;
         lastTime = performance.now();
         window.requestAnimationFrame(gameLoop);
     }
-
 
     function handleRestart() {
         console.log("Restart was pressed");
@@ -245,6 +259,30 @@ window.addEventListener('load', async function () {
                 collectible.style.removeProperty('opacity');
             }
         });
+    }
+
+    function handleBackToMainMenu() {
+        window.location.reload()
+    }
+
+    // Updates Local cache gemsPerMap with session cache gemCount
+    function updateScore() {
+        // If max time was surpassed, exit (invalid score log)
+        let currentSessionData = JSON.parse(sessionStorage.getItem('HUD'))
+        if (currentSessionData.timer >= currentSessionData.maxTime) {
+            console.log("Timer exceeded maxTime Value! Not Logging.")
+            return;
+        }
+        let currentLocalData = JSON.parse(localStorage.getItem('userData'))
+        let currentGemsForMap = (currentLocalData.gemsPerMap)[`${currentLocalData.selectedLevel}.bmp`]
+        let localGemValue = currentGemsForMap.split('/')[0]
+        let localTotalGemValue = currentGemsForMap.split('/')[1]
+        // If currentSession gems > localStorageGemsPer[x]map -> Update local storage
+        if (currentSessionData.gemCount > parseInt(localGemValue, 10)) {
+            let updatedLocalStorage = JSON.parse(localStorage.getItem('userData'))
+            updatedLocalStorage.gemsPerMap[`${updatedLocalStorage.selectedLevel}.bmp`] = `${currentSessionData.gemCount}/${localTotalGemValue}`
+            localStorage.setItem('userData', JSON.stringify(updatedLocalStorage))
+        }
     }
 });
 
