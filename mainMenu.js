@@ -25,14 +25,15 @@ async function waitForMainMenu() {
     };
 
     // add all GameLevels to map with default values (This will need total emeralds in the bmp + how many user collected (after finishing the level))
-    GameLevels.forEach(async level => {
+    await Promise.all(GameLevels.map(async level => {
         let totalCollectibles = await collectibleCount(level);
         defaultUserData.gemsPerMap[level] = `0/${totalCollectibles}`;
 
         // how many emeralds user got after finishing map/ total emeralds in that map *TODO !!!!
-    });
+    }));
 
     // Initialize 
+    console.log('yey')
     const storedUserData = localStorage.getItem('userData');
     if (!storedUserData) {
         localStorage.setItem('userData', JSON.stringify(defaultUserData));

@@ -115,7 +115,7 @@ export default class Player {
             this.coyoteTime = 0; // Reset coyote time if the player is on the ground
         }
         //console.log(onGround)
-        if ((value.keys.indexOf('w') > -1 || value.keys.indexOf(' ') > -1) && (onGround || (this.coyoteTime < this.coyoteDuration && !this.isJumping))) {
+        if ((value.keys.indexOf('w') > -1 || value.keys.indexOf(' ') > -1) && (onGround || (this.coyoteTime < this.coyoteDuration && !this.isJumping)) && !this.stunned) {
             this.vy = jumpVelocity;
             this.AABB.grounded = false;
             this.coyoteTime = 0; // Reset coyote time when jumping
