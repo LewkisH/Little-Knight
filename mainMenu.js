@@ -33,7 +33,6 @@ async function waitForMainMenu() {
     }));
 
     // Initialize 
-    console.log('yey')
     const storedUserData = localStorage.getItem('userData');
     if (!storedUserData) {
         localStorage.setItem('userData', JSON.stringify(defaultUserData));
@@ -61,16 +60,21 @@ async function waitForMainMenu() {
         console.log(JSON.parse(localStorage.getItem('userData')));
     });
 
+   
     const goButtonPromise = new Promise((resolve) => {
         const goButton = document.querySelector('.goButton');
         goButton.addEventListener('click', () => {
-            let userSettings = JSON.parse(localStorage.getItem('userData'));
-            // Resolve when 'Go' button is clicked
-            resolve(userSettings);
+            console.log("AAAAA")
+            if (!goButton.disabled) {
+                let userSettings = JSON.parse(localStorage.getItem('userData'));
+                // Resolve when 'Go' button is clicked
+                resolve(userSettings);
+            }
         });
     });
 
-    return await goButtonPromise;
+        return await goButtonPromise;
+    
 }
 
 function displayMainPlay(defaultUserData, levelData) {
@@ -86,9 +90,10 @@ function displayMainPlay(defaultUserData, levelData) {
 
     // Go! button
     const goButton = document.querySelector('.goButton');
-    const goButtonlistener = function(event) {
+    const goButtonlistener = function (event) {
+        if (!goButton.disabled) {
         // Remove event listeners on cards/goButton
-        eventListeners.forEach(({element, listener}) => {
+        eventListeners.forEach(({ element, listener }) => {
             element.removeEventListener('click', listener);
         });
         // Clear listener arr
@@ -101,9 +106,10 @@ function displayMainPlay(defaultUserData, levelData) {
         const parentMainMenu = document.getElementById('mainMenu');
         parentMainMenu.style.display = 'none';
     }
+    }
 
     goButton.addEventListener('click', goButtonlistener);
-    eventListeners.push({element: goButton, listener: goButtonlistener});
+    eventListeners.push({ element: goButton, listener: goButtonlistener });
 
     // Load in all the levels/previews (This is the template)
     const levelContainer = document.querySelector('.levelContainer');
@@ -112,10 +118,10 @@ function displayMainPlay(defaultUserData, levelData) {
 
     levelData.levels.forEach(level => {
         // Check if it exists, before adding
-        if (!document.getElementById(level.replace(/\.bmp$/,""))) {
+        if (!document.getElementById(level.replace(/\.bmp$/, ""))) {
             let clonedTemplate = templateCard.cloneNode(true);
             // Modify
-            clonedTemplate.id = level.replace(/\.bmp$/,"");
+            clonedTemplate.id = level.replace(/\.bmp$/, "");
             let imgElement = clonedTemplate.querySelector('.levelPreview');
             let newSrc = levelData.path + level;
             imgElement.setAttribute('src', newSrc)
@@ -153,7 +159,7 @@ function displayMainPlay(defaultUserData, levelData) {
         });
     }
     levelCards.forEach(levelCard => {
-        const listener = function(event) {
+        const listener = function (event) {
             // Deselect all other cards
             levelCards.forEach(card => {
                 if (card !== this && card.getAttribute('selected') === 'yes') {
@@ -162,6 +168,7 @@ function displayMainPlay(defaultUserData, levelData) {
             });
             // Toggle selection for clicked
             const isSelected = this.getAttribute('selected') === 'yes';
+
             this.setAttribute('selected', isSelected ? 'no' : 'yes');
             // Update userData and localstorage
             defaultUserData.selectedLevel = isSelected ? "" : this.id;
@@ -171,7 +178,7 @@ function displayMainPlay(defaultUserData, levelData) {
         };
 
         levelCard.addEventListener('click', listener);
-        eventListeners.push({element: levelCard, listener: listener});
+        eventListeners.push({ element: levelCard, listener: listener });
     });
 
     // Initial state update
@@ -181,7 +188,7 @@ function displayMainPlay(defaultUserData, levelData) {
     const backButton2 = document.querySelector('.backButton2')
     backButton2.addEventListener('click', () => {
         // Remove event listeners on cards/goButton
-        eventListeners.forEach(({element, listener}) => {
+        eventListeners.forEach(({ element, listener }) => {
             element.removeEventListener('click', listener);
         });
         // Clear listener arr
@@ -195,6 +202,17 @@ function displayMainPlay(defaultUserData, levelData) {
 function updateSelectedState(levelCards) {
     const storedSelectedLevel = localStorage.getItem('userData');
     const userData = storedSelectedLevel ? JSON.parse(storedSelectedLevel) : {};
+    let goButton = document.querySelector('.goButton');
+    if (userData.selectedLevel) {
+        goButton.disabled = false; // Enable the button
+        goButton.style.opacity = '1'; // Reset opacity to normal
+        goButton.style.cursor = 'pointer'; // Reset cursor to 'pointer'
+    } else {
+        goButton.disabled = true; // Disable the button
+        goButton.style.opacity = '0.5'; // Change opacity to make it appear grayed out
+        goButton.style.cursor = 'not-allowed'; // Change cursor to 'not-allowed' to indicate it's disabled
+
+    }
 
     levelCards.forEach(levelCard => {
         const cardId = levelCard.id;
@@ -204,6 +222,7 @@ function updateSelectedState(levelCards) {
         const notSelectedOverlay = levelCard.querySelector('.notSelectedOverlay');
         if (isSelected) {
             selectedOverlay.style.display = 'block';
+
             if (notSelectedOverlay) {
                 notSelectedOverlay.style.display = 'none';
             }
@@ -228,18 +247,18 @@ function displayMainSettings(defaultUserData) {
     // Volume slider
     const volumeSlider = document.getElementById('volumeSlider');
     const volumeValue = document.getElementById('volumeValue');
-    volumeSlider.addEventListener('input', function() {
+    volumeSlider.addEventListener('input', function () {
         updateVolume(this.value);
     });
     // Difficulty slider
     const difficultySlider = document.getElementById('difficultySlider');
     const difficultyValue = document.getElementById('difficultyValue');
-    difficultySlider.addEventListener('input', function() {
+    difficultySlider.addEventListener('input', function () {
         updateDifficulty(this.value);
     });
     // Dev tools
     const customCheckbox = document.querySelector('.devMenuBox')
-    customCheckbox.addEventListener('click', function() {
+    customCheckbox.addEventListener('click', function () {
         toggleDevTools(customCheckbox.checked);
     });
 
@@ -252,14 +271,14 @@ function displayMainSettings(defaultUserData) {
         difficultySlider.value = value;
         switch (difficultySlider.value) {
             case "0":
-            difficultyValue.textContent = 'casual';
-            break;
+                difficultyValue.textContent = 'casual';
+                break;
             case "1":
-            difficultyValue.textContent = 'moderate';
-            break;
+                difficultyValue.textContent = 'moderate';
+                break;
             case "2":
-            difficultyValue.textContent = 'difficult';
-            break;
+                difficultyValue.textContent = 'difficult';
+                break;
         }
     }
 
@@ -270,7 +289,7 @@ function displayMainSettings(defaultUserData) {
             devTools.checked = true;
             developerMenu.style.display = 'block';
             // Local cache clear button
-            document.querySelector('.clearLocalCache').addEventListener('click', function(event) {
+            document.querySelector('.clearLocalCache').addEventListener('click', function (event) {
                 event.preventDefault();
                 localStorage.removeItem('userData');
                 devTools.checked = false;
@@ -335,4 +354,4 @@ async function collectibleCount(bitmapURL) {
 }
 
 
-export {waitForMainMenu}
+export { waitForMainMenu }

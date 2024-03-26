@@ -22,6 +22,7 @@ window.addEventListener('load', async function () {
     const colMan = new CollisionManager(playerAABB)
     //colMan.addEntity(playerAABB)
 
+    
     let result = await readBitmap(`data/${userDataCache.selectedLevel}.bmp`)
     // let objArr = await readBitmap("assets/lalala.bmp")
     // let objArr = await readBitmap("assets/lava.bmp")

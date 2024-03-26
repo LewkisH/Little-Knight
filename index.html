@@ -7,11 +7,12 @@
     <script src="script.js" type="module"></script>
     <style>
         /* Disable scrollbars */
-        html, body {
-          overflow: hidden;
-          height: 100%;
+        html,
+        body {
+            overflow: hidden;
+            height: 100%;
         }
-      </style>
+    </style>
 </head>
 
 <body>
@@ -32,7 +33,7 @@
                 <div class="gemCount">
                     <a>0</a>
                 </div>
-                <div id="healthbar">  
+                <div id="healthbar">
                     <div id="blinkAnimation"></div>
                 </div>
                 <div class="healthbar-bg"></div>
@@ -58,11 +59,11 @@
                     <h2>Settings</h2>
                     <div class="audio">
                         <h3 style="margin-bottom: 5px;">Volume: <span id="volumeValue">50</span></h3>
-                        <input type="range" id="volumeSlider" min="0" max="100" value="50"/>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="50" />
                     </div>
                     <div class="difficulty">
                         <h3 style="margin-bottom: 5px;">Difficulty: <span id="difficultyValue">0</span></h3>
-                        <input type="range" id="difficultySlider" min="0" max="2" value="1"/>
+                        <input type="range" id="difficultySlider" min="0" max="2" value="1" />
                     </div>
                     <label class="enableDev">
                         <h3 style="margin:3px;">Developer Tools</h3>
@@ -85,32 +86,33 @@
             <div class="options playMenu" style="z-index: 36;">
                 <div id="mainMenuLevelBg" class="darkOverlay"></div>
                 <!-- Import isnt implemented yet *TODO -->
-                <div class="mainMenuOption goButton" style=" max-width: 99px; position: absolute; right: 20px; bottom: 0;">
+                <div class="mainMenuOption goButton"
+                    style=" max-width: 99px; position: absolute; right: 20px; bottom: 0;">
                     <h1>Go!</h1>
                 </div>
                 <div class="mainMenuOption" style="position: absolute; left: 20px; bottom: 0;">
                     <h1>Import map</h1>
                 </div>
-            <div class="customBackButton backButton2" style="left: 20px; top: 10px"></div>
-            <div class="levelContainer">
-                <div class="levelCard" id="level00" selected="no" style="display: none;">
-                    <div class="selectedOverlay" style="display: none;">
-                        <div class="mapselect">
-                            <a>✓</a>
+                <div class="customBackButton backButton2" style="left: 20px; top: 10px"></div>
+                <div class="levelContainer">
+                    <div class="levelCard" id="level00" selected="no" style="display: none;">
+                        <div class="selectedOverlay" style="display: none;">
+                            <div class="mapselect">
+                                <a>✓</a>
+                            </div>
+                        </div>
+                        <div class="notSelectedOverlay"></div>
+                        <img class="levelPreview" src="./data/level01.bmp" alt="level preview">
+                        <div class="emeralds">
+                            <img src="./assets/emeraldicon.webp" alt="emeralds">
+                            <span class="emeraldCount"><a>8</a>/<a>10</a></span>
+                        </div>
+                        <div class="levelName">
+                            <a>Level 00</a>
                         </div>
                     </div>
-                    <div class="notSelectedOverlay"></div>
-                    <img class="levelPreview" src="./data/level01.bmp" alt="level preview">
-                    <div class="emeralds">
-                        <img src="./assets/emeraldicon.webp" alt="emeralds">
-                        <span class="emeraldCount"><a>8</a>/<a>10</a></span>
-                    </div>
-                    <div class="levelName">
-                        <a>Level 00</a>
-                    </div>
                 </div>
-            </div>
-            
+
             </div>
             <div id="mainMenuBg" class="darkOverlay"></div>
         </div>
@@ -162,4 +164,5 @@
         </div>
     </div>
 </body>
+
 </html>
