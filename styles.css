@@ -95,6 +95,19 @@ body {
     position: absolute;
     text-align: center;
 }
+#endMenu {
+    user-select: none;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    background: #0000008d;
+    width: 1000px;
+    height: 700px;
+    position: absolute;
+    text-align: center;
+}
 
 #gameTitle{
     font-family: "Sixtyfour", sans-serif;
