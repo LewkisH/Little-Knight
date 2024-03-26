@@ -87,33 +87,6 @@ export class AABBItem { //class to turn any object into a collidable.
     }
 
 
-    /* get x() {
-        const rect = this.elem.getBoundingClientRect();
-        return rect.left + gameWorld.scrollLeft - wrapperRect.left
-
-
-
-        /*  let rect = this.elem.getBoundingClientRect();
-         //console.log(this.elem, rect.left)
-         return rect.left; 
-    }
-    set x(value) {
-        if (this.id === "player") {
-            this.elem.style.setProperty("--xCoord", Math.floor(value))
-        } else {
-            this.elem.style.left = value + "px"
-        }
-    }
-    get y() {
-        let rect = this.elem.getBoundingClientRect();
-        return rect.top + gameWorld.scrollTop - wrapperRect.top;
-    }
-    set y(value) {
-        if (this.id === "player") {
-            this.elem.style.setProperty("--yCoord", Math.floor(value))
-        }
-    } */
-
     //did we collide with 'other' entity?
     checkCollision(other) {
         return (
@@ -206,13 +179,13 @@ export class CollisionManager { // put all collidable objects into the manager
                     }
                 }
                 if (
-                    ((goblin.entity.leftPoint.x) > this.entities[j].x &&
-                        (goblin.entity.leftPoint.y) > this.entities[j].y &&
+                    ((goblin.entity.leftPoint.x + goblin.entity.leftPoint.width) > this.entities[j].x &&
+                        (goblin.entity.leftPoint.y + goblin.entity.leftPoint.height) > this.entities[j].y &&
                         goblin.entity.leftPoint.x < (this.entities[j].x + this.entities[j].width) &&
                         goblin.entity.leftPoint.y < (this.entities[j].y + this.entities[j].height))
                     &&
-                    ((goblin.entity.rightPoint.x) > this.entities[j].x &&
-                        (goblin.entity.rightPoint.y) > this.entities[j].y &&
+                    ((goblin.entity.rightPoint.x + goblin.entity.rightPoint.width) > this.entities[j].x &&
+                        (goblin.entity.rightPoint.y + goblin.entity.rightPoint.height) > this.entities[j].y &&
                         goblin.entity.rightPoint.x < (this.entities[j].x + this.entities[j].width) &&
                         goblin.entity.rightPoint.y < (this.entities[j].y + this.entities[j].height))
                 ) {

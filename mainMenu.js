@@ -39,10 +39,10 @@ async function waitForMainMenu() {
     }
 
     defaultUserData = JSON.parse(localStorage.getItem('userData'));
-    const mainMenuSettings = document.querySelector('.mainMenuSettings');
+    /* const mainMenuSettings = document.querySelector('.mainMenuSettings');
     mainMenuSettings.addEventListener('click', () => {
         displayMainSettings(defaultUserData);
-    });
+    }); */
 
     const mainMenuPlay = document.querySelector('.mainMenuPlay')
     mainMenuPlay.addEventListener('click', () => {
@@ -55,11 +55,11 @@ async function waitForMainMenu() {
     });
 
     // Currently using this just to stdout the object (ABOUT BUTTON)
-    const mainMenuAbout = document.querySelector('.mainMenuAbout')
+ /*    const mainMenuAbout = document.querySelector('.mainMenuAbout')
     mainMenuAbout.addEventListener('click', () => {
         console.log(JSON.parse(localStorage.getItem('userData')));
     });
-
+ */
    
     const goButtonPromise = new Promise((resolve) => {
         const goButton = document.querySelector('.goButton');

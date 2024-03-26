@@ -13,10 +13,14 @@ export class Goblin {
         this.AABB.x += -this.speed;
         this.leftPoint = {
             x:this.AABB.x,
-            y:this.AABB.y+this.AABB.height+10}
+            y:this.AABB.y+this.AABB.height+10,
+            width: 5,
+            height:5}
 
         this.rightPoint = {
             x:this.AABB.x+this.AABB.width+10,
-            y:this.AABB.y+this.AABB.height+10,}
+            y:this.AABB.y+this.AABB.height+10,
+            width: 5,
+            height:5}
     }
 }

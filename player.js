@@ -124,13 +124,6 @@ export default class Player {
         // Vertical movement
         this.y += this.vy / 2 * delta; // Adjust y position based on velocity
 
-        // Apply gravity if not on the ground
-     /*    if (!onGround) {
-            this.vy += this.gravity / 2 * delta;
-        } else {
-            this.vy = 0; // Reset velocity when on the ground
-        } */
-
         // Limit player's y position to the game height
         if (this.y > this.gameHeight - this.height) {
             this.y = this.gameHeight - this.height;

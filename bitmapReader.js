@@ -127,7 +127,7 @@ function getObjectRect(matrix, row, col, width, height) {
                 }
                 else width = xCount;
                 break
-            }
+            } else break
         }
         xLen = xCount
         xCount = 0
@@ -143,7 +143,7 @@ function getObjectRect(matrix, row, col, width, height) {
 
 }
 
-function markChecked(matrix, col, row, x, y, type) {
+function markChecked(matrix, col, row, x, y) {
 
     //console.log(`marking ${x} by ${y} square starting from (${col};${row}) out of ${type}`)
     for (let i = row; i > row - y; i--) {
