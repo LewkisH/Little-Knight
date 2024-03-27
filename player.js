@@ -2,8 +2,6 @@ export default class Player {
     constructor(gameWidth, gameHeight, playerElem) {
         this.playerElem = playerElem
         this.id = 'player'
-
-        //these are gonnna change
         this.speed = 0
         this.lives = 5
         this.vy = 0
@@ -11,8 +9,6 @@ export default class Player {
         this.crouch = true
         this.coyoteTime = 0; // Initialize coyote time counter
         this.coyoteDuration = 90; // Set coyote time duration in seconds
-        //
-
         this.gameWidth = gameWidth
         this.gameHeight = gameHeight
         this.width = playerElem.clientWidth;
@@ -20,7 +16,6 @@ export default class Player {
         this.gravity = 0.022;
         this.backgroundScroll = 0;
         this.world = document.getElementById('gameWorldWrapper');
-
     }
 
     get x() {
@@ -39,11 +34,7 @@ export default class Player {
 
 
     update(value, delta) {
-
         //move cam
-        //this.world.scrollLeft = this.x - 450
-
-
         if (this.x < this.world.scrollLeft + 400) {
             this.world.scrollLeft = this.x - 400;
         } else if (this.x > this.world.scrollLeft + 500) {
@@ -54,15 +45,11 @@ export default class Player {
         } else if (this.y > this.world.scrollTop + 400) {
             this.world.scrollTop = this.y - 400;
         }
-
-
         //move player
         const friction = 0.4
         const horizontalAcceleration = 0.8;
         const maxHorizontalSpeed = 0.7;
         const jumpVelocity = -3;
-
-
 
         if (value.keys.indexOf('d') > -1 && !this.stunned) {
             this.playerElem.style.transform = 'scaleX(1)';
@@ -84,22 +71,14 @@ export default class Player {
         this.speed = Math.max(-maxHorizontalSpeed, Math.min(maxHorizontalSpeed, this.speed));
 
         //vertical input
-        
-        
         if (value.keys.indexOf('s') > -1) {
-            console.log("crouching")
             this.crouch = true
         } else {
             this.crouch = false;
         }
-        
-        
         //horizontal movement
         this.x += this.speed * delta
-        
         if (this.x <= 0) this.x = 0;
-        
-        
         if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
         
         //vertical movement
@@ -114,7 +93,6 @@ export default class Player {
             this.vy = 0;
             this.coyoteTime = 0; // Reset coyote time if the player is on the ground
         }
-        //console.log(onGround)
         if ((value.keys.indexOf('w') > -1 || value.keys.indexOf(' ') > -1) && (onGround || (this.coyoteTime < this.coyoteDuration && !this.isJumping)) && !this.stunned) {
             this.vy = jumpVelocity;
             this.AABB.grounded = false;
@@ -128,11 +106,6 @@ export default class Player {
         if (this.y > this.gameHeight - this.height) {
             this.y = this.gameHeight - this.height;
         }
-
-        // Vertical input (jump)
-     
-
-        // Other movement code
     }
 
     onGround() {
@@ -140,5 +113,4 @@ export default class Player {
         if (this.AABB.grounded) return true;
         return this.y >= this.gameHeight - this.height;
     }
-
 }
