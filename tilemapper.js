@@ -1,7 +1,6 @@
 function createTextureLayerDiv(gameWorldElem, objectArray) {
     const assignedGameTiles = (generateTextures(objectArray)).assignedTiles;
     const tilemap = (generateTextures(objectArray)).tilemap;
-    // displayGameTiles(tilemap);
     const textureLayer = document.createElement('div');
     textureLayer.id = 'textureLayer';
     textureLayer.style.width = gameWorldElem.offsetWidth + 'px';
@@ -16,7 +15,7 @@ function createTextureLayerDiv(gameWorldElem, objectArray) {
             if (value === 0) {
                 continue;
             }
-            // for 1-ground objects
+            // For 1-ground objects
             if (value === 1) {
                 let tileChunck = assignedGameTiles[y][x];
                 // Use a different tilemap for scorched ground // scorched with lava
@@ -41,9 +40,8 @@ function createTextureLayerDiv(gameWorldElem, objectArray) {
                 const tile = buildTileDiv({className: 'tile-ground', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/MainTileSet.webp")`});
                 textureLayer.appendChild(tile);
                 } 
-
             }
-            // for 2-platform objects
+            // For 2-platform objects
             if (value === 2) {
                 let tileChunck = assignedGameTiles[y][x];
                 if (tileChunck !== 3) {
@@ -52,10 +50,9 @@ function createTextureLayerDiv(gameWorldElem, objectArray) {
                 }
 
             }
-            // for 3-hazard objects
+            // For 3-hazard objects
             if (value === 3) {
                 let tileChunck = assignedGameTiles[y][x];
-                // for debug (if)
                 if (tileChunck !== 3) {
                     const tile = buildTileDiv({className: 'tile-lava', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/LavaTileSet02.webp")`});
                     textureLayer.appendChild(tile);
@@ -109,8 +106,7 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
         case 'SP':
             tile.style.backgroundPosition =  `${-144}px ${-144}px`;
             break;
-        // for debugging
-        case 'XX':
+        case 'XX':  // for debugging
             tile.style.background = 'none';
             tile.style.backgroundColor = 'pink';
             break;
@@ -162,7 +158,6 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
         case 'BX':
             tile.style.backgroundPosition =  `${-336}px ${-48}px`;
             break;
-        // Lava cases
         case 'LaTT':
             tile.style.backgroundPosition =  `${0}px ${0}px`;
             break;
@@ -177,13 +172,6 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
     tile.style.backgroundRepeat = 'no-repeat';
     tile.style.zIndex = 10
 
-    // // Special case for lava wider (to cover the gaps)
-    // if (className === 'tile-lava') {
-    //     tile.style.zIndex = 6
-    //     tile.style.width = '60px';
-    //     tile.style.left = ((x * 48)-6)+ 'px';
-    // }
-
     // Special case for platform taller (to raise the tiles by 2px)
     if (className === 'tile-platform') {
         tile.style.zIndex = 9
@@ -194,7 +182,6 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
 }
 
 function generateTextures(objectArray) {
-    // These come from bitmapReader width/height (currently hardcoded)
     let width = 100
     let height = 50
 
@@ -271,15 +258,12 @@ function overlayPlatformTiles(gameTiles, assignedGameTiles, assignedPlatformTile
 function pickATile(gameTiles, tileType) {
     let assignedGameTiles = clone2Darray(gameTiles);
 
-
-    // for 1-ground tiles && 2-platform tiles
+    // For 1-ground tiles && 2-platform tiles
     if (tileType === 1 || tileType === 2) {
         for (let y = 0; y < gameTiles.length; y++) {
             for (let x = 0; x < gameTiles[y].length; x++) {
                 const value = gameTiles[y][x]
-                // if matches the tileTYpe we are looking to add tileTypes
                 if (value === tileType) {
-                    // should be left-up/LT?
                     if (
                     checkTile(gameTiles, 'left', y, x) !== tileType &&
                     checkTile(gameTiles, 'right', y, x) === tileType && 
@@ -287,7 +271,6 @@ function pickATile(gameTiles, tileType) {
                     ) {
                         assignedGameTiles[y][x] = 'LT';
                     }
-                    // should be right-up/RT?
                     if (
                     checkTile(gameTiles, 'left', y, x) === tileType &&
                     checkTile(gameTiles, 'right', y, x) !== tileType &&
@@ -295,7 +278,6 @@ function pickATile(gameTiles, tileType) {
                     ) {
                         assignedGameTiles[y][x] = 'RT';
                     }
-                    // should be left-dn/LB?
                     if (
                     checkTile(gameTiles, 'up', y, x) === tileType &&
                     checkTile(gameTiles, 'right', y, x) === tileType &&
@@ -304,7 +286,6 @@ function pickATile(gameTiles, tileType) {
                     ) {
                         assignedGameTiles[y][x] = 'LB';
                     }
-                    // should be right-dn/RB?
                     if (
                     checkTile(gameTiles, 'up', y, x) === tileType &&
                     checkTile(gameTiles, 'left', y, x) === tileType &&
@@ -313,7 +294,6 @@ function pickATile(gameTiles, tileType) {
                     ) {
                         assignedGameTiles[y][x] = 'RB';
                     }
-                    // should be top/T?
                     if (
                     (checkTile(gameTiles, 'up', y, x) !== tileType &&
                     checkTile(gameTiles, 'left', y, x) === tileType &&
@@ -325,8 +305,6 @@ function pickATile(gameTiles, tileType) {
                     ) {
                         assignedGameTiles[y][x] = 'TT';
                     }
-
-                    // should be bot/B?
                     if (
                     (checkTile(gameTiles, 'up', y, x) === tileType &&
                     checkTile(gameTiles, 'left', y, x) === tileType &&
@@ -339,8 +317,6 @@ function pickATile(gameTiles, tileType) {
                     ) {
                         assignedGameTiles[y][x] = 'BB';
                     }
-
-                    // should be center/C?
                     if (
                     checkTile(gameTiles, 'dn', y, x) === tileType &&
                     checkTile(gameTiles, 'up', y, x) === tileType &&
@@ -349,8 +325,6 @@ function pickATile(gameTiles, tileType) {
                     ) {
                         assignedGameTiles[y][x] = 'CC';
                     }
-
-                    // should be left/LC?
                     if (
                     checkTile(gameTiles, 'left', y, x) !== tileType &&
                     checkTile(gameTiles, 'right', y, x) === tileType &&
@@ -359,8 +333,6 @@ function pickATile(gameTiles, tileType) {
                     ) {
                         assignedGameTiles[y][x] = 'LC';
                     }
-
-                    // should be right/RC?
                     if (
                     checkTile(gameTiles, 'left', y, x) === tileType &&
                     checkTile(gameTiles, 'right', y, x) !== tileType &&
@@ -369,8 +341,6 @@ function pickATile(gameTiles, tileType) {
                     ) {
                         assignedGameTiles[y][x] = 'RC';
                     }
-
-                    // if is single pixel should be T
                     if (
                     checkTile(gameTiles, 'left', y, x) !== tileType &&
                     checkTile(gameTiles, 'right', y, x) !== tileType &&
@@ -379,9 +349,6 @@ function pickATile(gameTiles, tileType) {
                     ) {
                         assignedGameTiles[y][x] = 'TT';
                     }
-
-                    // STAGE 1.5 checks (extra checks to fix some cases)
-
                     if (
                     (checkTile(gameTiles, 'left', y, x) !== tileType &&
                     checkTile(gameTiles, 'right', y, x) !== tileType &&
@@ -394,12 +361,9 @@ function pickATile(gameTiles, tileType) {
                     checkTile(gameTiles, 'left-dn', y, x) === tileType &&
                     checkTile(gameTiles, 'dn', y, x) === tileType
                     )
-
                     ) {
                         assignedGameTiles[y][x] = 'LC';
                     }
-
-
                     if (
                     checkTile(gameTiles, 'left', y, x) !== tileType &&
                     checkTile(gameTiles, 'right', y, x) !== tileType &&
@@ -408,8 +372,6 @@ function pickATile(gameTiles, tileType) {
                     ) {
                         assignedGameTiles[y][x] = 'CC';
                     }
-
-                    // For single grassblocks (SP) single pixel
                     if (
                     checkTile(gameTiles, 'left', y, x) !== tileType &&
                     checkTile(gameTiles, 'right', y, x) !== tileType &&
@@ -421,13 +383,10 @@ function pickATile(gameTiles, tileType) {
                 }
             }
         }
-
-        // Second layer checks (on the assignedGameTiles) for 'advanced tiles'
-        // uses both assignedgameTiles and unassigned (gameTiles)
+        // Uses both assignedgameTiles and unassigned (gameTiles)
         for (let y = 0; y < assignedGameTiles.length; y++) {
             for (let x = 0; x < assignedGameTiles[y].length; x++) {
                 const value = assignedGameTiles[y][x];
-                
                 if (value === 'RB') {
                     if (
                     checkTile(gameTiles, 'dn', y, x) !== tileType &&
@@ -436,11 +395,9 @@ function pickATile(gameTiles, tileType) {
                     (checkTile(assignedGameTiles, 'up', y, x) === 'CC' || checkTile(assignedGameTiles, 'up', y, x) === 'SC') &&
                     (checkTile(assignedGameTiles, 'left', y, x) === 'TT' || checkTile(assignedGameTiles, 'left', y, x) === 'ST')
                     ) {
-                        // Inverse RB -- BR
                         assignedGameTiles[y][x] = 'BR';
                     }
                 }
-
                 if (value === 'LB') {
                     if (
                     checkTile(gameTiles, 'dn', y, x) !== tileType &&
@@ -449,11 +406,9 @@ function pickATile(gameTiles, tileType) {
                     (checkTile(assignedGameTiles, 'up', y, x) === 'CC' || checkTile(assignedGameTiles, 'up', y, x) === 'SC') &&
                     (checkTile(assignedGameTiles, 'right', y, x) === 'TT' || checkTile(assignedGameTiles, 'left', y, x) === 'ST')
                     ) {
-                        // Inverse LB -- BL
                         assignedGameTiles[y][x] = 'BL';
                     }
                 }
-
                 if (value === 'TT') {
                     if (
                     checkTile(gameTiles, 'dn', y, x) !== tileType &&
@@ -461,32 +416,24 @@ function pickATile(gameTiles, tileType) {
                     checkTile(gameTiles, 'left', y, x) === tileType &&
                     checkTile(gameTiles, 'right', y, x) === tileType
                     ) {
-                        // Single width TT --> ST
                         assignedGameTiles[y][x] = 'ST';
                     }
                 }
-
                 if (value === 'CC') {
                     if (
                     checkTile(gameTiles, 'dn', y, x) === tileType &&
                     checkTile(gameTiles, 'up', y, x) === tileType &&
                     checkTile(gameTiles, 'left', y, x) !== tileType &&
                     checkTile(gameTiles, 'right', y, x) !== tileType
-                    
                     ) {
-                        // Single width CC --> SC
                         assignedGameTiles[y][x] = 'SC';
                     }
                 }
             }
         }
-
-        // Third layer checks (on the assignedGameTiles) for 'advanced tiles'
-        // uses both assignedgameTiles and unassigned (gameTiles)
         for (let y = 0; y < assignedGameTiles.length; y++) {
             for (let x = 0; x < assignedGameTiles[y].length; x++) {
                 const value = assignedGameTiles[y][x];
-
                 if (value === 'CC') {
                     if (
                     (checkTile(assignedGameTiles, 'left', y, x) === 'TT' &&
@@ -498,10 +445,8 @@ function pickATile(gameTiles, tileType) {
                     (checkTile(assignedGameTiles, 'dn', y, x) === 'LC' || checkTile(assignedGameTiles, 'dn', y, x) === 'CC') &&
                     checkTile(gameTiles, 'left-up', y, x) !== tileType)
                     ) {
-                        // Inverse corner, connection with LT and TT/LT -- CL
                         assignedGameTiles[y][x] = 'CL';
                     }
-
                     if (
                     (checkTile(assignedGameTiles, 'right', y, x) === 'TT' &&
                     checkTile(assignedGameTiles, 'up', y, x) === 'RT' &&
@@ -512,33 +457,27 @@ function pickATile(gameTiles, tileType) {
                     (checkTile(assignedGameTiles, 'dn', y, x) === 'BB' || checkTile(assignedGameTiles, 'dn', y, x) === 'CC') &&
                     checkTile(gameTiles, 'right-up', y, x) !== tileType)
                     ) {
-                        // Inverse corner, connection with RT and TT/LT -- CR
                         assignedGameTiles[y][x] = 'CR';
                     }
                 }
-
                 if (value === 'LT') {
                     if (
                     checkTile(gameTiles, 'up', y, x) !== tileType &&
                     checkTile(gameTiles, 'dn', y, x) !== tileType &&
                     checkTile(assignedGameTiles, 'right', y, x) === 'ST'
                     ) {
-                        // Single height edges (compare against ST) (single-left SL)
                         assignedGameTiles[y][x] = 'SL';
                     }
                 }
-
                 if (value === 'RT') {
                     if (
                     checkTile(gameTiles, 'up', y, x) !== tileType &&
                     checkTile(gameTiles, 'dn', y, x) !== tileType &&
                     checkTile(assignedGameTiles, 'left', y, x) === 'ST'
                     ) {
-                        // Single height edges (compare against ST) (single-right SR)
                         assignedGameTiles[y][x] = 'SR';
                     }
                 }
-
                 if (value === 'BB') {
                     if (
                     checkTile(gameTiles, 'left', y, x) !== tileType &&
@@ -546,19 +485,14 @@ function pickATile(gameTiles, tileType) {
                     checkTile(gameTiles, 'dn', y, x) !== tileType &&
                     checkTile(gameTiles, 'up', y, x) === tileType
                     ) {
-                        // Single width BB attatched to piece only at the top --> BH
                         assignedGameTiles[y][x] = 'BH';
                     }
                 }
             }
         }
-
-        // Fourth layer checks (on the assignedGameTiles) for 'advanced tiles'
-        // uses both assignedgameTiles and unassigned (gameTiles)
         for (let y = 0; y < assignedGameTiles.length; y++) {
             for (let x = 0; x < assignedGameTiles[y].length; x++) {
                 const value = assignedGameTiles[y][x];
-
                 if (value === 'TT') {
                     if (
                     checkTile(gameTiles, 'left', y, x) !== tileType &&
@@ -569,11 +503,9 @@ function pickATile(gameTiles, tileType) {
                     (checkTile(assignedGameTiles, 'dn', y, x) === 'RB' || checkTile(assignedGameTiles, 'left-dn', y, x) === 'ST')
                     )
                     ) {
-                        // Single Width Top (checks against SC/BH at bottom) SW
                         assignedGameTiles[y][x] = 'SW';
                     }
                 }
-
                 if (value === 'BB') {
                     if (
                     checkTile(gameTiles, 'right-up', y, x) !== tileType &&
@@ -593,9 +525,7 @@ function pickATile(gameTiles, tileType) {
                         }
                     }
                 }
-
                 if (value === 'RB') {
-                    // Inverse bottom right corners
                     if (
                         checkTile(gameTiles, 'left-up', y, x) !== tileType &&
                         checkTile(gameTiles, 'dn', y, x) !== tileType &&
@@ -616,9 +546,7 @@ function pickATile(gameTiles, tileType) {
                         }
                     }
                 }
-
                 if (value === 'LB') {
-                    // Inverse bottom left corners
                     if (
                     checkTile(assignedGameTiles, 'up', y, x) === 'RT' ||
                     checkTile(assignedGameTiles, 'up', y, x) === 'SW'
@@ -626,7 +554,6 @@ function pickATile(gameTiles, tileType) {
                         assignedGameTiles[y][x] = 'BL';
                     }
                 }
-
                 if (value === 'RT') {
                     if (
                     checkTile(gameTiles, 'dn', y, x) !== tileType
@@ -634,7 +561,6 @@ function pickATile(gameTiles, tileType) {
                         assignedGameTiles[y][x] = 'SR';
                     }
                 }
-
                 if (value === 'LC') {
                     if (
                     checkTile(gameTiles, 'dn', y, x) !== tileType
@@ -644,11 +570,9 @@ function pickATile(gameTiles, tileType) {
                     if (
                     checkTile(assignedGameTiles, 'right', y, x) === 'RT'
                     ) {
-                        // out of descriptive 2 letter combos...
                         assignedGameTiles[y][x] = 'LS';
                     }
                 }
-
                 if (value === 'LT') {
                     if (
                     checkTile(gameTiles, 'dn', y, x) !== tileType
@@ -658,9 +582,6 @@ function pickATile(gameTiles, tileType) {
                 }
             }
         }
-
-        // Fifth layer checks (on the assignedGameTiles) for 'advanced tiles'
-        // uses both assignedgameTiles and unassigned (gameTiles)
         for (let y = 0; y < assignedGameTiles.length; y++) {
             for (let x = 0; x < assignedGameTiles[y].length; x++) {
                 const value = assignedGameTiles[y][x];
@@ -675,40 +596,31 @@ function pickATile(gameTiles, tileType) {
                         checkTile(assignedGameTiles, 'right', y, x) === 'SR' &&
                         checkTile(assignedGameTiles, 'left', y, x) === 'SL'
                         ) {
-                            // Between 2 single height edges SR/SL and is bottom piece
                             assignedGameTiles[y][x] = 'MM';
                         }
                     }
                 }
-
                 if (value === 'RB') {
-                    // Inverse corners
                     if (
                     checkTile(assignedGameTiles, 'left', y, x) === 'SL'
                     ) {
                         assignedGameTiles[y][x] = 'BR';
                     }
                 }
-
                 if (value === 'CC') {
-                    // Inverse corners
                     if (
                     checkTile(assignedGameTiles, 'left', y, x) === 'LT'
                     ) {
                         assignedGameTiles[y][x] = 'CL';
                     }
                 }
-
                 if (value === 'RC') {
                     if (
                     checkTile(assignedGameTiles, 'up', y, x) === 'LC'
                     ) {
-                        // Inverse corner with side edge.. weird case
                         assignedGameTiles[y][x] = 'CP';
                     }
-
                 }
-
                 if (value === 'BB') {
                     if (
                     checkTile(assignedGameTiles, 'right', y, x) === 'RT'
@@ -718,13 +630,9 @@ function pickATile(gameTiles, tileType) {
                 }
             }
         }
-
-        // Sixth layer checks (on the assignedGameTiles) for 'advanced tiles'
-        // uses both assignedgameTiles and unassigned (gameTiles)
         for (let y = 0; y < assignedGameTiles.length; y++) {
             for (let x = 0; x < assignedGameTiles[y].length; x++) {
                 const value = assignedGameTiles[y][x];
-
                 if (value === 'LB') {
                     if (
                     checkTile(assignedGameTiles, 'right', y, x) === 'RT' &&
@@ -735,7 +643,6 @@ function pickATile(gameTiles, tileType) {
                         assignedGameTiles[y][x] = 'BL';
                     }
                 }
-
                 if (value === 'CC') {
                     if (
                     (checkTile(assignedGameTiles, 'right', y, x) === 'TT' || 
@@ -748,7 +655,6 @@ function pickATile(gameTiles, tileType) {
                     }
                     if (
                     checkTile(assignedGameTiles, 'left', y, x) === 'SL'
-
                     ) {
                         assignedGameTiles[y][x] = 'CL';
                     }
@@ -758,7 +664,6 @@ function pickATile(gameTiles, tileType) {
                     checkTile(assignedGameTiles, 'up', y, x) === 'SW' &&
                     checkTile(gameTiles, 'dn', y, x) === tileType
                     ) {
-                        // Like MM but has something below
                         assignedGameTiles[y][x] = 'MX';
                     }
                     if (
@@ -770,7 +675,6 @@ function pickATile(gameTiles, tileType) {
                         assignedGameTiles[y][x] = 'CL';
                     }
                 }
-
                 if (value === 'CL') {
                     if (
                     checkTile(assignedGameTiles, 'left', y, x) === 'LT' &&
@@ -783,12 +687,9 @@ function pickATile(gameTiles, tileType) {
                 }
             }
         }
-
-        // Sevent layer check 
         for (let y = 0; y < assignedGameTiles.length; y++) {
             for (let x = 0; x < assignedGameTiles[y].length; x++) {
                 const value = assignedGameTiles[y][x];
-
                 if (value === 'RC') {
                     if (
                     (checkTile(assignedGameTiles, 'left', y, x) === 'LT' ||
@@ -798,7 +699,6 @@ function pickATile(gameTiles, tileType) {
                         assignedGameTiles[y][x] = 'CP';
                     }
                 }
-
                 if (value === 'BB') {
                     if (
                     checkTile(gameTiles, 'dn', y, x) !== tileType &&
@@ -813,9 +713,7 @@ function pickATile(gameTiles, tileType) {
                     checkTile(assignedGameTiles, 'right', y, x) === 'BB' &&
                     checkTile(assignedGameTiles, 'left', y, x) === 'SL'
                     ) {
-                        // assignedGameTiles[y][x] = 'BX';
                         assignedGameTiles[y][x] = 'BX';
-
                     }
                     if (
                     checkTile(gameTiles, 'dn', y, x) !== tileType &&
@@ -835,7 +733,6 @@ function pickATile(gameTiles, tileType) {
                         assignedGameTiles[y][x] = 'MM';
                     }
                 }
-
                 if (value === 'LB') {
                     if (
                     checkTile(gameTiles, 'dn', y, x) !== tileType &&
@@ -846,7 +743,6 @@ function pickATile(gameTiles, tileType) {
                         assignedGameTiles[y][x] = 'BL';
                     }
                 }
-
                 if (value === 'TT') {
                     if (
                     checkTile(gameTiles, 'left', y, x) !== tileType &&
@@ -859,17 +755,14 @@ function pickATile(gameTiles, tileType) {
                 }
             }
         }
-        // Eight layer checks
         for (let y = 0; y < assignedGameTiles.length; y++) {
             for (let x = 0; x < assignedGameTiles[y].length; x++) {
                 const value = assignedGameTiles[y][x];
-
                 if (value === 'CL') {
                     if (
                     checkTile(assignedGameTiles, 'up', y, x) === 'SW' &&
                     checkTile(gameTiles, 'left', y, x) === tileType && 
                     checkTile(gameTiles, 'right', y, x) === tileType
-
                     ) {
                         assignedGameTiles[y][x] = 'MX';
                     }
@@ -878,7 +771,7 @@ function pickATile(gameTiles, tileType) {
         }
 
     }
-    // for 3-lava tiles
+    // For 3-lava tiles
     if (tileType === 3) {
         for (let y = 0; y < gameTiles.length; y++) {
             for (let x = 0; x < gameTiles[y].length; x++) {
@@ -899,7 +792,7 @@ function pickATile(gameTiles, tileType) {
             }
         }
     }
-    // for 4-collectible tiles
+    // For 4-collectible tiles
     if (tileType === 4) {
         for (let y = 0; y < gameTiles.length; y++) {
             for (let x = 0; x < gameTiles[y].length; x++) {
@@ -911,13 +804,11 @@ function pickATile(gameTiles, tileType) {
         }
     }
 
-
     return assignedGameTiles;
 }
 
-
-// Checks adjacent and diagonal tiles and returns their value
 /**
+ * Checks adjacent and diagonal tiles and returns their value
  * Directions:
  * +---------+------+----------+
  * | left-up |  up  | right-up |
@@ -963,8 +854,6 @@ function checkTile(gameTiles, direction, y, x) {
             checkY += 1;
             break;
     }
-
-
     if (
         checkY >= 0 &&
         checkY < gameTiles.length &&
@@ -979,9 +868,7 @@ function checkTile(gameTiles, direction, y, x) {
     return tileValue;
 }
 
-
-
-//Helper function for debugging
+// Helper function for debugging
 function displayGameTiles(gameTiles) {
     let output = '\n'
     for (let i = 0; i < gameTiles.length; i++) {
@@ -996,15 +883,6 @@ function displayGameTiles(gameTiles) {
     }
     console.log(output);
 }
-
-//Helper function for debugging
-// function displayGameTiles(gameTiles) {
-//     let output = '\n'
-//     for (let i = 0; i < gameTiles.length; i++) {
-//         output += JSON.stringify(gameTiles[i]) + '\n';
-//     }
-//     console.log(output);
-// }
 
 // Reverses y coord on array
 function reverse2Darray(array) {
@@ -1032,20 +910,5 @@ function create2Dtilemap(height, width) {
     }
     return array;
 }
-
-// function c() {
-//     /**
-//      * 
-//      * 
-//      * 
-//      * 
-//      * 
-//      * 
-//      * 
-//      * 
-//      * 
-//      * 
-//      */
-// }
 
 export { generateTextures, createTextureLayerDiv };
