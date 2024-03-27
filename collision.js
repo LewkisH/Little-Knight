@@ -1,6 +1,5 @@
 import { updateHud } from "./hud.js";
 
-
 const gameWorld = document.getElementById('gameWorldWrapper')
 const wrapperRect = gameWorld.getBoundingClientRect();
 export class AABBItem { //class to turn any object into a collidable.
@@ -13,12 +12,6 @@ export class AABBItem { //class to turn any object into a collidable.
             entity.AABB = this
             this.entity = entity;
             this.grounded = false
-
-
-            /*   } else if (type === "goblin") {
-                  entity.AABB = this
-                  this.entity = entity
-                  this.elem = entity.elem */
         } else if (type === "door" || type === "goblin") {
             entity.AABB = this
             this.entity = entity
@@ -27,7 +20,6 @@ export class AABBItem { //class to turn any object into a collidable.
             this.width = rect.right - rect.left;
             this.height = rect.bottom - rect.top;
         } else {
-
             this.elem = entity
             let rect = this.elem.getBoundingClientRect();
             this.id = entity.id;
@@ -36,7 +28,6 @@ export class AABBItem { //class to turn any object into a collidable.
         }
         this._x = null;
         this._y = null;
-
         // Calculate initial x and y coordinates
         this.calculatePosition();
         this.type = type
@@ -86,7 +77,6 @@ export class AABBItem { //class to turn any object into a collidable.
         this._y = value; // Update stored y coordinate
     }
 
-
     //did we collide with 'other' entity?
     checkCollision(other) {
         return (
@@ -113,7 +103,6 @@ export class AABBItem { //class to turn any object into a collidable.
         }
     }
 
-
     //displays x,y,height,width under game window
     addToDebug() {
         this.debug = document.getElementById('collisiondebug');
@@ -136,12 +125,10 @@ export class AABBItem { //class to turn any object into a collidable.
 
     //put this in game loop to update moveable objects' coordinates when debugging
     updateDebug() {
-
         this.debugY.textContent = "Y: " + this.y
         this.debugX.textContent = "X: " + this.x
     }
 }
-
 
 export class CollisionManager { // put all collidable objects into the manager
     constructor(player) {
@@ -150,8 +137,6 @@ export class CollisionManager { // put all collidable objects into the manager
     }
     addEntity(entity) {
         this.entities.push(entity)
-        console.log("PUSHED: " + entity.type)
-
     }
 
     //checks collisions between all objects and player.
@@ -200,7 +185,6 @@ export class CollisionManager { // put all collidable objects into the manager
     }
 
     handlePlayerCollision(player, env, playerCol, atEnd) {
-
         if (env.type === "yellow" && env.elem.getAttribute('gem-collected') !== 'true') {
             if (player.checkCollision(env)) {
                 env.elem.setAttribute('gem-collected', 'true');
@@ -209,7 +193,6 @@ export class CollisionManager { // put all collidable objects into the manager
                 env.elem.style.transition = 'top 0.3s linear, opacity 0.3s linear';
                 env.elem.style.top = (envTop - 20) + 'px';
                 env.elem.style.opacity = '0';
-                // Could also add pickup .webp here
                 // Reset the position 
                 setTimeout(() => {
                     env.elem.style.transition = '';
@@ -220,7 +203,6 @@ export class CollisionManager { // put all collidable objects into the manager
 
         if (env.type === "door" && !player.entity.stunned && !env.entity.collided) {
             if (player.checkCollision(env)) {
-
                 let side = player.collisionSide(env);
                 env.entity.collided = true
                 player.entity.stunned = true;
@@ -233,7 +215,6 @@ export class CollisionManager { // put all collidable objects into the manager
                     env.elem.style.backgroundImage = "url('assets/enterdoor-right.webp')";
                 }
                 setTimeout(() => {
-
                     atEnd.end = true
                     env.elem.style.backgroundImage = "url('assets/EndDoorTileSet.webp')"
                     env.elem.style.width = "96px"
@@ -246,15 +227,9 @@ export class CollisionManager { // put all collidable objects into the manager
             }
         }
 
-
         if (env.type === "red" || (env.type === "goblin" && !env.entity.dead)) {
-
-
-
-
             if (player.checkCollision(env)) {
                 let side = player.collisionSide(env)
-                console.log(side)
                 if (env.type === "goblin" && side === "top") {
                     env.entity.speed = 0
                     env.elem.style.backgroundImage = "url('assets/goblindead.webp')"
@@ -268,7 +243,6 @@ export class CollisionManager { // put all collidable objects into the manager
                     player.entity.vy = env.type === "goblin" ? -1 : -3;
 
                     if (side === "right") {
-                        console.log("yo")
                         player.entity.speed += 50
                     }
                     if (side === "left") {
@@ -290,17 +264,12 @@ export class CollisionManager { // put all collidable objects into the manager
         }
 
         if ((env.type === "blue" || env.type === "green")) {
-
             if (player.checkCollision(env)) {
                 playerCol = true
                 let side = player.collisionSide(env)
 
-
                 if (side === "top") {
-                    //console.log(`top collision: PLAYER: ${player.x};${player.y}, ENV: ${env.x};${env.y}`)
-                    //console.log(env.y, player.y)
                     if (env.type === "blue" && (player.entity.crouch || player.y + player.height - 25 > env.y)) {
-
                     } else if (player.entity.vy >= 0) {
                         player.entity.vy = 0;
                         player.y = env.y - player.height
@@ -311,31 +280,19 @@ export class CollisionManager { // put all collidable objects into the manager
                     return
                 }
                 if (side === "right") {
-                    // console.log(`right collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
                     player.x = env.x + env.width
-
                 } else if (side === "left") {
-                    //console.log(`left collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
-
-
                     player.x = env.x - player.width
-
                 }
                 if (side === "bottom") {
-                    //console.log(`bottom collision: PLAYER: X:${player.x};Y:${player.y}, ENV: X:${env.x};Y:${env.y}`)
                     player.y = env.y + env.height
                     player.entity.vy += 1
                 }
-
-
             }
-            // else {env.elem.style.backgroundColor = env.id}
         }
         if (playerCol === false) {//if player has not collided with anything this frame then player is no longer grounded.
             player.grounded = false
         }
         return (playerCol)
-
     }
-
 }

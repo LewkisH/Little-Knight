@@ -1,14 +1,9 @@
 import { readBitmap } from "./bitmapReader.js";
 
-// Add all level names here:
 const GameLevels = ['level01.bmp', 'level02.bmp', 'level03.bmp', 'level04.bmp', 'level05.bmp', 'level06.bmp']
-// Path
 const pathToLevels = './data/'
 
-
-// This function initiates main menu and returns game settings to initiate certain level/difficulty/sound
 async function waitForMainMenu() {
-    // Set visibility when returning from game *TODO
     let levelData = {
         levels: GameLevels,
         path: pathToLevels,
@@ -24,12 +19,9 @@ async function waitForMainMenu() {
         gemsPerMap: {},
     };
 
-    // add all GameLevels to map with default values (This will need total emeralds in the bmp + how many user collected (after finishing the level))
     await Promise.all(GameLevels.map(async level => {
         let totalCollectibles = await collectibleCount(level);
         defaultUserData.gemsPerMap[level] = `0/${totalCollectibles}`;
-
-        // how many emeralds user got after finishing map/ total emeralds in that map *TODO !!!!
     }));
 
     // Initialize 
@@ -37,13 +29,7 @@ async function waitForMainMenu() {
     if (!storedUserData) {
         localStorage.setItem('userData', JSON.stringify(defaultUserData));
     }
-
     defaultUserData = JSON.parse(localStorage.getItem('userData'));
-    /* const mainMenuSettings = document.querySelector('.mainMenuSettings');
-    mainMenuSettings.addEventListener('click', () => {
-        displayMainSettings(defaultUserData);
-    }); */
-
     const mainMenuPlay = document.querySelector('.mainMenuPlay')
     mainMenuPlay.addEventListener('click', () => {
         let existingData = JSON.parse(localStorage.getItem('userData'));
@@ -54,17 +40,9 @@ async function waitForMainMenu() {
         }
     });
 
-    // Currently using this just to stdout the object (ABOUT BUTTON)
- /*    const mainMenuAbout = document.querySelector('.mainMenuAbout')
-    mainMenuAbout.addEventListener('click', () => {
-        console.log(JSON.parse(localStorage.getItem('userData')));
-    });
- */
-   
     const goButtonPromise = new Promise((resolve) => {
         const goButton = document.querySelector('.goButton');
         goButton.addEventListener('click', () => {
-            console.log("AAAAA")
             if (!goButton.disabled) {
                 let userSettings = JSON.parse(localStorage.getItem('userData'));
                 // Resolve when 'Go' button is clicked
@@ -73,8 +51,7 @@ async function waitForMainMenu() {
         });
     });
 
-        return await goButtonPromise;
-    
+    return await goButtonPromise;
 }
 
 function displayMainPlay(defaultUserData, levelData) {
@@ -85,7 +62,6 @@ function displayMainPlay(defaultUserData, levelData) {
     // Display MainMenuPlay
     const MainMenuPlay = document.querySelector('.playMenu');
     MainMenuPlay.style.display = 'flex';
-
     const eventListeners = [];
 
     // Go! button
@@ -101,20 +77,16 @@ function displayMainPlay(defaultUserData, levelData) {
         // Return to main menu
         MainMenuPlay.style.display = 'none';
         MainMenuMenu.style.display = 'flex';
-        // Hide MainMenu and prepare for gameloop --> script.js
-        // Might need to add a display: flex; later when re-calling this loop!! **WARN
         const parentMainMenu = document.getElementById('mainMenu');
         parentMainMenu.style.display = 'none';
     }
     }
-
     goButton.addEventListener('click', goButtonlistener);
     eventListeners.push({ element: goButton, listener: goButtonlistener });
 
     // Load in all the levels/previews (This is the template)
     const levelContainer = document.querySelector('.levelContainer');
     const templateCard = document.getElementById("level00");
-    // console.log(templateCard);
 
     levelData.levels.forEach(level => {
         // Check if it exists, before adding
@@ -132,20 +104,15 @@ function displayMainPlay(defaultUserData, levelData) {
             // Emerald/gem count
             let emeraldCountElem = clonedTemplate.querySelector('.emeraldCount');
             let emeraldCountChild = emeraldCountElem.children;
-            // console.log(typeof defaultUserData.gemsPerMap[level]);
-            // There is a bug here ^ UNRESOLVED
             let realEmeraldCount = (defaultUserData.gemsPerMap[level]).split('/');
             emeraldCountChild[0].innerHTML = realEmeraldCount[0];
             emeraldCountChild[1].innerHTML = realEmeraldCount[1];
-
             clonedTemplate.style.display = 'block';
             levelContainer.appendChild(clonedTemplate);
         }
     });
 
     const levelCards = document.querySelectorAll('.levelCard');
-    // let selectedMap = null; ROP
-
     // If selection is in progress already (data entry exists, enable the selection)
     let storedUserData = JSON.parse(localStorage.getItem('userData'));
     if (storedUserData === null) {
@@ -168,15 +135,12 @@ function displayMainPlay(defaultUserData, levelData) {
             });
             // Toggle selection for clicked
             const isSelected = this.getAttribute('selected') === 'yes';
-
             this.setAttribute('selected', isSelected ? 'no' : 'yes');
             // Update userData and localstorage
             defaultUserData.selectedLevel = isSelected ? "" : this.id;
             localStorage.setItem('userData', JSON.stringify(defaultUserData));
-
             updateSelectedState(levelCards);
         };
-
         levelCard.addEventListener('click', listener);
         eventListeners.push({ element: levelCard, listener: listener });
     });
@@ -211,7 +175,6 @@ function updateSelectedState(levelCards) {
         goButton.disabled = true; // Disable the button
         goButton.style.opacity = '0.5'; // Change opacity to make it appear grayed out
         goButton.style.cursor = 'not-allowed'; // Change cursor to 'not-allowed' to indicate it's disabled
-
     }
 
     levelCards.forEach(levelCard => {
@@ -222,7 +185,6 @@ function updateSelectedState(levelCards) {
         const notSelectedOverlay = levelCard.querySelector('.notSelectedOverlay');
         if (isSelected) {
             selectedOverlay.style.display = 'block';
-
             if (notSelectedOverlay) {
                 notSelectedOverlay.style.display = 'none';
             }
@@ -316,17 +278,15 @@ function displayMainSettings(defaultUserData) {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
         const userDataObj = JSON.parse(storedUserData);
-        // set it to the volume slider
         updateVolume(userDataObj.audioLevel)
-        // set it to the difficulty slider
         updateDifficulty(userDataObj.difficulty)
-        // set dev tools checkbox
         toggleDevTools(userDataObj.developerMode);
     } else {
         defaultUserData.audioLevel = volumeSlider.value;
         defaultUserData.difficulty = difficultySlider.value;
         defaultUserData.developerMode = customCheckbox.checked;
     }
+
     // BackButton
     const backButton = document.querySelector('.backButton1');
     backButton.addEventListener('click', () => {
@@ -352,6 +312,5 @@ async function collectibleCount(bitmapURL) {
 
     return count
 }
-
 
 export { waitForMainMenu }
