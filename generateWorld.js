@@ -20,8 +20,6 @@ import { Goblin } from "./goblin.js";
 import { Door } from "./door.js";
 
 function generateWorld(objectArray, gameWorldElem, colMan, goblinArr, level) {
-    // Contains the gameWorld div height/width (for dynamic purpowses)
-    // Bring this in from style, rather than clientHeight/width
     const gameWorldDimension = {
         height: gameWorldElem.clientHeight,
         width: gameWorldElem.clientWidth,
@@ -30,14 +28,9 @@ function generateWorld(objectArray, gameWorldElem, colMan, goblinArr, level) {
         let objCol;
         let elem = parseObjToDiv(object, gameWorldDimension)
         gameWorldElem.appendChild(elem);
-
-
         if (object.objectType === "magenta") {
            let door = new Door(elem, level)
-           
             objCol = new AABBItem(door, "door")
-
-
         } else if (object.objectType === "brown") {
             let goblin = new Goblin(elem)
             goblinArr.push(goblin)
@@ -47,7 +40,6 @@ function generateWorld(objectArray, gameWorldElem, colMan, goblinArr, level) {
         }
 
         colMan.addEntity(objCol)
-
     });
 }
 
@@ -66,8 +58,6 @@ function parseObjToDiv(bitmapObj, gameWorldDimension) {
     newDivElem.id = bitmapObj.objectType;
     newDivElem.style.width = (bitmapObj.width * SizeRatio) + 'px';
     newDivElem.style.height = (bitmapObj.height * SizeRatio) + 'px';
-    // Color depending on the object Type *TODO
-
     if (bitmapObj.objectType === "magenta") {
         newDivElem.style.backgroundImage = "url('assets/EndDoorTileSet.webp')"
     }
@@ -76,14 +66,12 @@ function parseObjToDiv(bitmapObj, gameWorldDimension) {
     } else {
         newDivElem.style.backgroundColor = 'none';
     }
-    //console.log(bitmapObj);
-
-
     let leftPos = bitmapObj.x * ScaleRatio + 'px';
     let topPos = (gameWorldDimension.height - (bitmapObj.y * ScaleRatio)) - (bitmapObj.height * SizeRatio) + 'px';
     newDivElem.style.position = 'absolute';
     newDivElem.style.left = leftPos;
     newDivElem.style.top = topPos;
+
     return newDivElem;
 }
 
