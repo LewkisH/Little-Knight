@@ -7,8 +7,6 @@ export class Goblin {
         
     }
     
-    
-    
     update(delta){
         this.AABB.x += -this.speed;
         this.leftPoint = {
@@ -16,7 +14,6 @@ export class Goblin {
             y:this.AABB.y+this.AABB.height+10,
             width: 5,
             height:5}
-
         this.rightPoint = {
             x:this.AABB.x+this.AABB.width+10,
             y:this.AABB.y+this.AABB.height+10,
