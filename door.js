@@ -4,5 +4,4 @@ export class Door {
         this.level = level;
         this.collided = false;
     }
-
 }
