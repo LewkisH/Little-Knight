@@ -170,7 +170,7 @@ export class CollisionManager { // put all collidable objects into the manager
     handleGoblinCollision(goblin) {
         let pointCollision = false
         for (let j = 0; j < this.entities.length; j++) {
-            if (this.entities[j] !== goblin && this.entities[j].id !== "undefined") {
+            if (this.entities[j] !== goblin && this.entities[j].id !== "undefined" && this.entities[j].id !== "yellow") {
                 if (goblin.checkCollision(this.entities[j])) {
                     let side = goblin.collisionSide(this.entities[j])
                     if (side === "left" || side === "right") {
