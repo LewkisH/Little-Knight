@@ -1,11 +1,7 @@
-//
-// for commit
 function createTextureLayerDiv(gameWorldElem, objectArray) {
-
     const assignedGameTiles = (generateTextures(objectArray)).assignedTiles;
     const tilemap = (generateTextures(objectArray)).tilemap;
-    console.log("TILETILE")
-    displayGameTiles(tilemap);
+    // displayGameTiles(tilemap);
     const textureLayer = document.createElement('div');
     textureLayer.id = 'textureLayer';
     textureLayer.style.width = gameWorldElem.offsetWidth + 'px';
@@ -13,9 +9,6 @@ function createTextureLayerDiv(gameWorldElem, objectArray) {
     textureLayer.style.position = 'absolute';
     textureLayer.style.top = '0';
     textureLayer.style.left = '0';
-    let collectibleCount = 0;
-    // tiles
-
 
     for (let y = 0; y < tilemap.length; y++) {
         for (let x = 0; x < tilemap[y].length; x++) {
@@ -26,8 +19,29 @@ function createTextureLayerDiv(gameWorldElem, objectArray) {
             // for 1-ground objects
             if (value === 1) {
                 let tileChunck = assignedGameTiles[y][x];
+                // Use a different tilemap for scorched ground // scorched with lava
+                if (
+                checkTile(tilemap, 'dn', y, x) === 3 || 
+                checkTile(tilemap, 'left', y, x) === 3 || 
+                checkTile(tilemap, 'right', y, x) === 3 
+                ) {
+                const tile = buildTileDiv({className: 'tile-ground', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/MainTileSetLavaScorched.webp")`});
+                textureLayer.appendChild(tile);
+                // Just scorched without lava backdrop
+                } else if (
+                checkTile(tilemap, 'up', y, x) === 3 ||
+                checkTile(tilemap, 'right-up', y, x) === 3 || 
+                checkTile(tilemap, 'right-dn', y, x) === 3 || 
+                checkTile(tilemap, 'left-dn', y, x) === 3 || 
+                checkTile(tilemap, 'left-up', y, x) === 3
+                ) {
+                const tile = buildTileDiv({className: 'tile-ground', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/MainTileSetScorched.webp")`});
+                textureLayer.appendChild(tile);
+                } else {
                 const tile = buildTileDiv({className: 'tile-ground', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/MainTileSet.webp")`});
                 textureLayer.appendChild(tile);
+                } 
+
             }
             // for 2-platform objects
             if (value === 2) {
@@ -41,37 +55,16 @@ function createTextureLayerDiv(gameWorldElem, objectArray) {
             // for 3-hazard objects
             if (value === 3) {
                 let tileChunck = assignedGameTiles[y][x];
-                // for dev purposes (can remove this later)
+                // for debug (if)
                 if (tileChunck !== 3) {
-                    const tile = buildTileDiv({className: 'tile-lava', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/LavaTileSet.webp")`});
+                    const tile = buildTileDiv({className: 'tile-lava', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/LavaTileSet02.webp")`});
                     textureLayer.appendChild(tile);
                 }
-                // const tile = buildTileDiv({className: 'tile-lava', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/LavaTileSet.webp")`});
-                // textureLayer.appendChild(tile);
             }
-            // MIGRATE COLLECTIBLES TO GENERATEWORLD ONLY. NO TEXTURE LAYER #LOG001
-            // // for 4-collectible objects
-            // if (value === 4) {
-            //     collectibleCount ++;
-            //     let tileChunck = assignedGameTiles[y][x];
-            //     if (tileChunck !== 4) {
-            //         const tile = buildTileDiv({className: 'tile-collectible', color: 'white', x: x, y: y, tileChunck: tileChunck, textureURL: `url("./assets/CollectibleTileSet.webp")`});
-            //         textureLayer.appendChild(tile);
-            //     }
-            //     console.log("Collectible count: ",collectibleCount)
-            // }
         }
     }
-    // console.log(assignedGameTiles[1][1]);
-
-    // textureLayer.appendChild(tile);
-
-
-
-
 
     gameWorldElem.appendChild(textureLayer);
-
 }
 
 function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
@@ -80,7 +73,6 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
     tile.className = tileChunck;
     tile.style.width = '48px';
     tile.style.height = '48px';
-    // tile.style.backgroundColor = color;
     tile.style.position = 'absolute';
     tile.style.bottom = (y * 48) + 'px';
     tile.style.left = (x * 48) + 'px';
@@ -117,24 +109,11 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
         case 'SP':
             tile.style.backgroundPosition =  `${-144}px ${-144}px`;
             break;
-        // debugging cases(REMOVE later)
+        // for debugging
         case 'XX':
             tile.style.background = 'none';
             tile.style.backgroundColor = 'pink';
             break;
-        case 'X1':
-            tile.style.background = 'none';
-            tile.style.backgroundColor = 'cyan';
-            break;
-        case 'X2':
-            tile.style.background = 'none';
-            tile.style.backgroundColor = 'white';
-            break;
-        case 'X3':
-            tile.style.background = 'none';
-            tile.style.backgroundColor = 'green';
-            break;
-
         case 'BR':
             tile.style.backgroundPosition =  `${-240}px ${-48}px`;
             break;
@@ -183,21 +162,13 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
         case 'BX':
             tile.style.backgroundPosition =  `${-336}px ${-48}px`;
             break;
-        // Lava cases will have their own naming starting with L(TT)
-        case 'LTT':
-            tile.style.backgroundPosition =  `${-48}px ${0}px`;
+        // Lava cases
+        case 'LaTT':
+            tile.style.backgroundPosition =  `${0}px ${0}px`;
             break;
-        case 'LCC':
-            tile.style.backgroundPosition =  `${-48}px ${-48}px`;
+        case 'LaCC':
+            tile.style.backgroundPosition =  `${0}px ${-48}px`;
             break;
-        case 'LBB':
-            tile.style.backgroundPosition =  `${-48}px ${-96}px`;
-            break;
-        // MIGRATE COLLECTIBLES TO GENERATEWORLD ONLY. NO TEXTURE LAYER #LOG001
-        // // Collectible cases
-        // case 'COL1':
-        //     tile.style.backgroundPosition =  `${-48}px ${0}px`;
-        //     break;
 
         default:
             tile.style.backgroundColor = 'gray';
@@ -206,12 +177,12 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
     tile.style.backgroundRepeat = 'no-repeat';
     tile.style.zIndex = 10
 
-    // Special case for lava wider (to cover the gaps)
-    if (className === 'tile-lava') {
-        tile.style.zIndex = 6
-        tile.style.width = '60px';
-        tile.style.left = ((x * 48)-6)+ 'px';
-    }
+    // // Special case for lava wider (to cover the gaps)
+    // if (className === 'tile-lava') {
+    //     tile.style.zIndex = 6
+    //     tile.style.width = '60px';
+    //     tile.style.left = ((x * 48)-6)+ 'px';
+    // }
 
     // Special case for platform taller (to raise the tiles by 2px)
     if (className === 'tile-platform') {
@@ -219,8 +190,6 @@ function buildTileDiv({className, color, x, y, tileChunck, textureURL}) {
         tile.style.bottom = ((y * 48)+2) + 'px';
     }
     
-    
-
     return tile;
 }
 
@@ -230,14 +199,11 @@ function generateTextures(objectArray) {
     let height = 50
 
     let gameTiles = create2Dtilemap(height, width);
-    console.log("This");
-    // add Objects to 2d array
     objectArray.forEach(object => {
         let startX = object.x;
         let startY = height - object.y - object.height;
         let endX = startX + object.width;
         let endY = height - object.y;
-
         for (let i = startY; i < endY; i++) {
             for (let j = startX; j < endX; j++) {
                 switch (object.objectType) {
@@ -253,7 +219,6 @@ function generateTextures(objectArray) {
                     case ('red'): // red hazard
                     gameTiles[i][j] = 3;
                     break;
-                    // MIGRATE COLLECTIBLES TO GENERATEWORLD ONLY. NO TEXTURE FOR THIS LAYER #LOG001 keep it for matrix tho.
                     case ('yellow'): // yellow collectible 
                     gameTiles[i][j] = 4;
                     break;
@@ -270,52 +235,23 @@ function generateTextures(objectArray) {
                     gameTiles[i][j] = -1;
                     break;
                 }
-                // gameTiles[i][j] = object.objectType;
             }
         }
     });
 
     // Create a seperate array for platforms (2), then add them to the return array
     let assignedPlatformTiles = pickATile(gameTiles, 2);
-    console.log("Platform tiles:");
-    displayGameTiles(assignedPlatformTiles);
-
     let assignedGameTiles = pickATile(gameTiles, 1); 
-    console.log("Ground tiles:");
-    displayGameTiles(assignedGameTiles);
-
-
-    // New function to add assignedPlatformTiles(2) OVER assignedGameTiles (!NB!NB!NB has to happen after ground tiles have been added)
     assignedGameTiles = overlayPlatformTiles(gameTiles, assignedGameTiles, assignedPlatformTiles, 2)
-    console.log("Platform + Ground tiles:");
-    displayGameTiles(assignedGameTiles);
+
     // Hazard/Lava
     assignedGameTiles = pickATile(assignedGameTiles, 3);
-
-    // MIGRATE COLLECTIBLES TO GENERATEWORLD ONLY. NO TEXTURE LAYER #LOG001
-    // // Collectibles
-    // assignedGameTiles = pickATile(assignedGameTiles, 4);
-    // console.log("COLLECTIBLES");
-    // displayGameTiles(assignedGameTiles);
-
-
     let reversedAssignedGTiles = reverse2Darray(assignedGameTiles);
     let reversedGameTiles = reverse2Darray(gameTiles);
-    // displayGameTiles(gameTiles);
-    displayGameTiles(assignedGameTiles);
-    // displayGameTiles(reversedAssignedGTiles);
 
-    // displayGameTiles(clonedArray);
-
-    // console.log(objectArray);
-
-    // return assignedGameTiles;
     return {assignedTiles: reversedAssignedGTiles, tilemap: reversedGameTiles};
 }
 
-// Overlays all the int(2) Values with the assignedPlatFormTiles and returns that array
-// !NB this will create a mixed value 2D Matrix (with both 1 and 2 tilePosition(SW, SP, TT, CC, etc) values, which overlap)
-// This might cause ISSUES, so refer back to this when generation issues with ground/platform occur.
 function overlayPlatformTiles(gameTiles, assignedGameTiles, assignedPlatformTiles, tileType=2) {
     let overlayedGameTiles = clone2Darray(assignedGameTiles);
 
@@ -330,6 +266,7 @@ function overlayPlatformTiles(gameTiles, assignedGameTiles, assignedPlatformTile
 
     return overlayedGameTiles;
 }
+
 // Changes the tile to a tileposition (using tileType 1-9)
 function pickATile(gameTiles, tileType) {
     let assignedGameTiles = clone2Darray(gameTiles);
@@ -922,6 +859,24 @@ function pickATile(gameTiles, tileType) {
                 }
             }
         }
+        // Eight layer checks
+        for (let y = 0; y < assignedGameTiles.length; y++) {
+            for (let x = 0; x < assignedGameTiles[y].length; x++) {
+                const value = assignedGameTiles[y][x];
+
+                if (value === 'CL') {
+                    if (
+                    checkTile(assignedGameTiles, 'up', y, x) === 'SW' &&
+                    checkTile(gameTiles, 'left', y, x) === tileType && 
+                    checkTile(gameTiles, 'right', y, x) === tileType
+
+                    ) {
+                        assignedGameTiles[y][x] = 'MX';
+                    }
+                }
+            }
+        }
+
     }
     // for 3-lava tiles
     if (tileType === 3) {
@@ -929,55 +884,16 @@ function pickATile(gameTiles, tileType) {
             for (let x = 0; x < gameTiles[y].length; x++) {
                 const value = gameTiles[y][x]
                 if (value === tileType) {
-                    if (checkTile(gameTiles, 'up', y, x) === tileType) {
-                        assignedGameTiles[y][x] = 'LCC';
-
+                    if (
+                    checkTile(gameTiles, 'up', y, x) !== tileType
+                    ) {
+                        assignedGameTiles[y][x] = 'LaTT';
                     } else {
-                        assignedGameTiles[y][x] = 'LTT';
+                        assignedGameTiles[y][x] = 'LaCC';
                     }
-
-                }
-
-            }
-        }
-        //2nd pass
-        for (let y = 0; y < gameTiles.length; y++) {
-            for (let x = 0; x < gameTiles[y].length; x++) {
-                const value = gameTiles[y][x]
-                if (value === tileType) {
-                    if (
-                    checkTile(assignedGameTiles, 'up', y, x) === 'LCC'||
-                    checkTile(assignedGameTiles, 'up', y, x) === 'LBB'
+                    if (checkTile(gameTiles, 'up', y, x) !== 0
                     ) {
-                        assignedGameTiles[y][x] = 'LBB';
-                    }
-
-                }
-                if (
-                assignedGameTiles[y][x] === 'LTT' && 
-                checkTile(assignedGameTiles, 'up', y, x) !== 0 &&
-                checkTile(gameTiles, 'left', y, x) !== tileType &&
-                checkTile(gameTiles, 'right', y, x) !== tileType
-                    
-                ) {
-                    assignedGameTiles[y][x] = 'LCC';
-                }
-            }
-        }
-        //3rd pass
-        for (let y = 0; y < gameTiles.length; y++) {
-            for (let x = 0; x < gameTiles[y].length; x++) {
-                const value = gameTiles[y][x]
-                if (value === tileType) {
-                    if (
-                    assignedGameTiles[y][x] === 'LTT' &&
-                    checkTile(assignedGameTiles, 'up', y, x) !== 0
-                    ) {
-                        if (
-                        checkTile(assignedGameTiles, 'left', y, x) !== 'LTT' &&
-                        checkTile(assignedGameTiles, 'right', y, x !== 'LTT')) {
-                        assignedGameTiles[y][x] = 'LBB'
-                        } 
+                        assignedGameTiles[y][x] = 'LaCC';
                     }
                 }
             }
