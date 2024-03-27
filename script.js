@@ -9,43 +9,24 @@ let lastTime;
 let isPaused = false;
 let atEnd = {end: false}
 
-
 window.addEventListener('load', async function () {
     const userDataCache = await waitForMainMenu();
     const hudElem = document.getElementById('HUD');
     const game = document.getElementById('gameWorld');
     const player = new Player(game.offsetWidth, game.offsetHeight, document.getElementById("player"))
-    // Something todo here:
-    // update player.lives based on userDataCache (difficulty)
-    // e.g. 5 lives, 3 lives, 2 lives
     const playerAABB = new AABBItem(player, "character")
     const colMan = new CollisionManager(playerAABB)
-    //colMan.addEntity(playerAABB)
-
-    
     let result = await readBitmap(`data/${userDataCache.selectedLevel}.bmp`)
-    // let objArr = await readBitmap("assets/lalala.bmp")
-    // let objArr = await readBitmap("assets/lava.bmp")
-    // let objArr = await readBitmap("assets/newTest.bmp")
-    // let objArr = await readBitmap("assets/bmpbruh.bmp")
-    // let objArr = await readBitmap("assets/test69.bmp")
-    // let result = await readBitmap("assets/spawntest.bmp")
     let goblinArr = []
     let objArr = result[0];
     let startPos = result[1];
     player.x = startPos.x
     player.y = startPos.y
-
-
-
     let gameWorldElem = document.getElementById('gameWorld');
 
     generateWorld(objArr, gameWorldElem, colMan, goblinArr, userDataCache.selectedLevel);
-    generateTextures(objArr); // tilemapper sub function 
-    createTextureLayerDiv(gameWorldElem, objArr); // tilemapper;
-    /* let audio = new Audio('/assets/Audio/Ner_music.mp3')
-    audio.play()
-    audio.volume = 0.3; */
+    generateTextures(objArr);
+    createTextureLayerDiv(gameWorldElem, objArr);
 
     // Initial vertical Scroll value
     let gameWorldWrapper = document.getElementById('gameWorldWrapper');
@@ -53,12 +34,11 @@ window.addEventListener('load', async function () {
     let pausedPlayerState = null;
     // Initial HUD update
     let HUD = {
-        maxTime: 0, // seconds
+        maxTime: 0,
         maxHealth: player.lives,
     }
 
     updateHud(HUD, hudElem, "init")
-    // let lastTime
     const gameLoop = function (time) {
         if (atEnd.end){
             isPaused = true;
@@ -79,9 +59,7 @@ window.addEventListener('load', async function () {
                     goblin.update(delta)
                 }));
 
-
                 colMan.checkAllCollision(atEnd)}
-                // console.log(playerAABB.checkCollision(blackAABB))
             }
             lastTime = time
             window.requestAnimationFrame(gameLoop)
@@ -93,7 +71,6 @@ window.addEventListener('load', async function () {
             this.keys = [];
 
             window.addEventListener("keydown", e => {
-                //console.log(e.key)
                 if ((e.key === "d" ||
                     e.key === "a" ||
                     e.key === "w" ||
@@ -119,14 +96,12 @@ window.addEventListener('load', async function () {
                     e.key === "ArrowRight" ||
                     e.key === " ")) {
                     this.keys.splice(this.keys.indexOf(e.key), 1)
-
                 }
-
             })
         }
     }
 
-    //if passing in entities other than player, use their html element
+    // if passing in entities other than player, use their html element
     const input = new InputHandler()
     window.requestAnimationFrame(gameLoop)
     // Pause game
@@ -190,7 +165,6 @@ window.addEventListener('load', async function () {
     function togglePauseMenu(isPaused) {
         let pauseMenu = document.getElementById("pauseMenu");
         pauseMenu.style.display = isPaused ? "flex" : "none";
-
         const restartButton = document.querySelector(".restart");
         const continueButton = document.querySelector(".continue");
         const toMainMenu = document.querySelector(".toMainMenu")
@@ -207,8 +181,6 @@ window.addEventListener('load', async function () {
 
     function handleContinue() {
         player.playerElem.style.opacity = "1";
-
-        console.log("Continue was pressed");
         togglePauseMenu(false);
         toggleEndMenu(false);
         isPaused = false;
@@ -218,7 +190,6 @@ window.addEventListener('load', async function () {
     }
 
     function handleRestart() {
-        console.log("Restart was pressed");
         player.x = startPos.x
         player.y = startPos.y
         player.lives = 5
@@ -252,7 +223,6 @@ window.addEventListener('load', async function () {
         player.playerElem.style.backgroundImage = "url('assets/BobDead.webp')"
         updateHud(HUD, hudElem, undefined)
         isPaused=true
-        console.log("player died.")
         player.stunned = true
         setTimeout(() => {
             
