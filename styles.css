@@ -400,7 +400,7 @@ input[type="range"]::-moz-range-thumb {
 
 .levelContainer {
     display: flex;
-    align-items:flex-start;
+    align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     position: absolute;
