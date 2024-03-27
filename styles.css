@@ -1,3 +1,4 @@
+/* CLEANUP */
 body {
     background-color: rgb(19, 40, 56);
     margin: 0;
@@ -11,23 +12,14 @@ body {
     position: relative;
     background-image: url(assets/sky.webp);
     background-size: 100%; 
-    /* Width has to be (bitmap.width(100) * Scalefactor(48))  */
     width: 4800px;
-    /* Height has to be (bitmap.height(50) * Scalefactor(48))  */
     height: 2400px;
-    /* border: solid 2px #575757; */
 }
 
-/* Wrapper for gameWorld to allow scrolling with negative top values and set the gamewindow size */
 #gameWorldWrapper {
     width: 1000px;
     height: 700px;
     overflow: hidden;
-   /*border: solid 2px #575757;
-    /* background-color: rgb(126, 176, 236); */
-
-
-
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Sixtyfour&display=swap');
@@ -36,9 +28,6 @@ body {
 #player {
     --xCoord: 30;
     --yCoord: 2000;
-    /* For testing */
-    /* --xCoord: 3293;s
-    --yCoord: 1778; */
     background: url('assets/Bob.webp');
     width: 64px;
     height: 96px;
@@ -46,41 +35,6 @@ body {
     left: calc(var(--xCoord) * 1px);
     top: calc(var(--yCoord) * 1px);
 }
-
-/*
-.goblin {
-    top: 506px;
-    left: 500px;
-    background: url('assets/goblin.webp');
-    width: 96px;
-    height: 96px;
-    position: absolute;
-}
-
-.goblin {
-    top: 506px;
-    left: 500px;
-    background: url('assets/goblin.webp');
-    width: 96px;
-    height: 96px;
-    position: absolute;
-}
-*/
-
-
-/* Lava CSS */
-/* .LTT {
-    position: relative;
-    overflow: hidden;
-    box-shadow: -10px 8px 15px -5px #f37e02, 
-    10px 8px 15px -5px #f37e02; /* Adjust shadow parameters as needed */
-    /* z-index: 3; */
-/* } */
-/* .LTT { */
-    /* width: calc(100% + 10px);
-    position: ; */
-/* } */
-
 
 #pauseMenu {
     user-select: none;
@@ -95,6 +49,7 @@ body {
     position: absolute;
     text-align: center;
 }
+
 #endMenu {
     user-select: none;
     display: none;
@@ -477,8 +432,6 @@ input[type="range"]::-moz-range-thumb {
     max-height: 80px;
     right: 1px;
     top: 1px;
-    /* width: 79%;
-    height: 70%; */
     width: 120px;
     height: 80px;
     z-index: 5;
