@@ -1,6 +1,6 @@
 import { readBitmap } from "./bitmapReader.js";
 
-const GameLevels = ['level01.bmp', 'level02.bmp', 'level03.bmp', 'level04.bmp', 'level05.bmp', 'level06.bmp']
+const GameLevels = ['level01.bmp', 'level02.bmp', 'level03.bmp']
 const pathToLevels = './data/'
 
 async function waitForMainMenu() {
