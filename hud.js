@@ -51,7 +51,7 @@ function updateHud(HUD=JSON.parse(sessionStorage.getItem('HUD')), HUDelem=docume
     HUD.deltaTime = (performance.now() - HUD.startTime)
     // If 1 second passed remove from total timer & update timer
     if (HUD.deltaTime >= 1000) {
-        HUD.timer -= 1
+        HUD.timer += 1
         updateTimer(HUD, HUDelem);
         HUD.startTime = performance.now();
         HUD.deltaTime = 0
@@ -138,6 +138,10 @@ function updateTimer(HUD, HUDelem) {
     const formatedTime = {
         mins: String(Math.floor(HUD.timer / 60)).padStart(2, '0'),
         secs: String((HUD.timer % 60)).padStart(2, '0'),
+    }
+    if (HUD.timer < 60) {
+        formatedTime.mins = '00'
+        formatedTime.secs = String(HUD.timer).padStart(2, '0')
     }
     timerValue.innerHTML = `${formatedTime.mins}:${formatedTime.secs}`;
 }

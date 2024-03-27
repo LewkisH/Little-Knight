@@ -53,7 +53,7 @@ window.addEventListener('load', async function () {
     let pausedPlayerState = null;
     // Initial HUD update
     let HUD = {
-        maxTime: 120, // seconds
+        maxTime: 0, // seconds
         maxHealth: player.lives,
     }
 
@@ -278,12 +278,7 @@ window.addEventListener('load', async function () {
 
     // Updates Local cache gemsPerMap with session cache gemCount
     function updateScore() {
-        // If max time was surpassed, exit (invalid score log)
         let currentSessionData = JSON.parse(sessionStorage.getItem('HUD'))
-        if (currentSessionData.timer >= currentSessionData.maxTime) {
-            console.log("Timer exceeded maxTime Value! Not Logging.")
-            return;
-        }
         let currentLocalData = JSON.parse(localStorage.getItem('userData'))
         let currentGemsForMap = (currentLocalData.gemsPerMap)[`${currentLocalData.selectedLevel}.bmp`]
         let localGemValue = currentGemsForMap.split('/')[0]
