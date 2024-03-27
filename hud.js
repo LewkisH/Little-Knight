@@ -40,7 +40,7 @@ function updateHud(HUD=JSON.parse(sessionStorage.getItem('HUD')), HUDelem=docume
     }
     // HealthBar
     if (HUD.currentHealth !== HUD.lastHealth) updateHealthbar(HUD, HUDelem)
-    //Gems
+    // Gems
     let sessGemCount = JSON.parse(sessionStorage.getItem('HUD_gems'))
     if (HUD.gemCount !== sessGemCount) {
         HUD.gemCount = sessGemCount
