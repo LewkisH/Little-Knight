@@ -75,13 +75,13 @@ function updateBobState(HUD, HUDelem) {
     switch (HUD.bobState.state) {
         case 'Bob':
             bobDeadFXElem.style.display = 'none';
-            bobPicElem.style.backgroundImage = 'url("./assets/Bob.png")'
+            bobPicElem.style.backgroundImage = 'url("./assets/Bob.webp")'
             break;
         case 'BobHurt':
-            bobPicElem.style.backgroundImage = 'url("./assets/BobHurt.png")'
+            bobPicElem.style.backgroundImage = 'url("./assets/BobHurt.webp")'
             break;
         case 'BobDead':
-            bobPicElem.style.backgroundImage = 'url("./assets/BobDeadnoloop.gif")'
+            bobPicElem.style.backgroundImage = 'url("./assets/BobDeadnoloop.webp")'
             bobDeadFXElem.style.display = 'block';
             break;
         default:

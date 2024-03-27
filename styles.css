@@ -9,7 +9,7 @@ body {
 
 #gameWorld {
     position: relative;
-    background-image: url(assets/sky.png);
+    background-image: url(assets/sky.webp);
     background-size: 100%; 
     /* Width has to be (bitmap.width(100) * Scalefactor(48))  */
     width: 4800px;
@@ -39,7 +39,7 @@ body {
     /* For testing */
     /* --xCoord: 3293;s
     --yCoord: 1778; */
-    background: url('assets/Bob.png');
+    background: url('assets/Bob.webp');
     width: 64px;
     height: 96px;
     position: absolute;
@@ -51,7 +51,7 @@ body {
 .goblin {
     top: 506px;
     left: 500px;
-    background: url('assets/goblin.png');
+    background: url('assets/goblin.webp');
     width: 96px;
     height: 96px;
     position: absolute;
@@ -60,7 +60,7 @@ body {
 .goblin {
     top: 506px;
     left: 500px;
-    background: url('assets/goblin.png');
+    background: url('assets/goblin.webp');
     width: 96px;
     height: 96px;
     position: absolute;
@@ -237,7 +237,7 @@ body {
     width: 1000px;
     height: 700px;
     background-color: black;
-    background-image: url("./assets/menubackground.png");
+    background-image: url("./assets/menubackground.webp");
     filter: blur(4px);
     background-size: cover;
     background-repeat: no-repeat;
@@ -677,7 +677,7 @@ input[type="range"]::-moz-range-thumb {
     height: 52px;
     top: 33px;
     left: 26px;
-    background-image: url('./assets/Bob.png');
+    background-image: url('./assets/Bob.webp');
     background-repeat: no-repeat;
     background-position: 2px -4px;
     z-index: 36;

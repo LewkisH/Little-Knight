@@ -228,9 +228,9 @@ export class CollisionManager { // put all collidable objects into the manager
                 env.elem.style.width = "160px";
                 if (side === "left" || side === "top") {
                     env.elem.style.left = (parseFloat(env.elem.style.left || 0) - 64) + "px";
-                    env.elem.style.backgroundImage = "url('assets/enterdoor-left.gif')";
+                    env.elem.style.backgroundImage = "url('assets/enterdoor-left.webp')";
                 } else {
-                    env.elem.style.backgroundImage = "url('assets/enterdoor-right.gif')";
+                    env.elem.style.backgroundImage = "url('assets/enterdoor-right.webp')";
                 }
                 setTimeout(() => {
 
@@ -257,14 +257,14 @@ export class CollisionManager { // put all collidable objects into the manager
                 console.log(side)
                 if (env.type === "goblin" && side === "top") {
                     env.entity.speed = 0
-                    env.elem.style.backgroundImage = "url('assets/goblindead.png')"
+                    env.elem.style.backgroundImage = "url('assets/goblindead.webp')"
                     env.entity.dead = true
                     player.entity.vy = -1
                     setTimeout(() => {
                         env.elem.remove()
                     }, 300)
                 } else {
-                    player.entity.playerElem.style.backgroundImage = "url('assets/BobHurt.png')";
+                    player.entity.playerElem.style.backgroundImage = "url('assets/BobHurt.webp')";
                     player.entity.vy = env.type === "goblin" ? -1 : -3;
 
                     if (side === "right") {
@@ -281,7 +281,7 @@ export class CollisionManager { // put all collidable objects into the manager
                     player.entity.stunned = true
                     setTimeout(() => {
                         if (player.entity.lives > 0) {
-                            player.entity.playerElem.style.backgroundImage = "url('assets/Bob.png')";
+                            player.entity.playerElem.style.backgroundImage = "url('assets/Bob.webp')";
                         }
                         player.entity.stunned = false;
                     }, 200); // 1000 milliseconds = 1 second

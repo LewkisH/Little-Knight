@@ -237,7 +237,7 @@ window.addEventListener('load', async function () {
             goblin.speed = 3;
             goblin.dead = false
             goblin.AABB.elem.style.transform = 'scaleX(1)'
-            goblin.AABB.elem.style.backgroundImage = "url('assets/goblin.png')"
+            goblin.AABB.elem.style.backgroundImage = "url('assets/goblin.webp')"
 
         })
         handleContinue()
@@ -249,7 +249,7 @@ window.addEventListener('load', async function () {
     }
     
     function playerDead(){
-        player.playerElem.style.backgroundImage = "url('assets/BobDead.gif')"
+        player.playerElem.style.backgroundImage = "url('assets/BobDead.webp')"
         updateHud(HUD, hudElem, undefined)
         isPaused=true
         console.log("player died.")
@@ -257,7 +257,7 @@ window.addEventListener('load', async function () {
         setTimeout(() => {
             
             handleRestart()
-           player.playerElem.style.backgroundImage = "url('assets/Bob.png')";
+           player.playerElem.style.backgroundImage = "url('assets/Bob.webp')";
         }, 950);
         
     }

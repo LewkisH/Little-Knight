@@ -72,7 +72,7 @@ function parseObjToDiv(bitmapObj, gameWorldDimension) {
         newDivElem.style.backgroundImage = "url('assets/EndDoorTileSet.webp')"
     }
     if (bitmapObj.objectType === "brown") {
-        newDivElem.style.backgroundImage = "url('assets/goblin.png')"
+        newDivElem.style.backgroundImage = "url('assets/goblin.webp')"
     } else {
         newDivElem.style.backgroundColor = 'none';
     }
