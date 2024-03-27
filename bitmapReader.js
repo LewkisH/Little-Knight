@@ -1,25 +1,17 @@
 // Function to read a bitmap file from a URL
-
-
 export async function readBitmap(url) {
-    console.log(url)
     let objArr
     let spawnX, spawnY
     try {
         const response = await fetch(url);
-        console.log(response)
         const arrayBuffer = await response.arrayBuffer();
         // get the bitmap data
         var dataView = new DataView(arrayBuffer);
-
         // get file info from bpm header 
         var width = dataView.getUint32(18, true);
         var height = dataView.getUint32(22, true);
         let colorArr = create2DArray(height)
-
-
         var pixelArrayOffset = dataView.getUint32(10, true); // the offset for where the first pixel's first byte is
-
         let padding = (4 - (width * 3) % 4) % 4 //bmp wants each row of the picture to start at a bytevalue with a multiple of 4. so they added padding at the end of rows.
         for (var y = 0; y < height; y++) {
             for (var x = 0; x < width; x++) {
@@ -27,37 +19,26 @@ export async function readBitmap(url) {
                 let red = dataView.getUint8(pixelOffset + 2)
                 let green = dataView.getUint8(pixelOffset + 1)
                 let blue = dataView.getUint8(pixelOffset)
-                // console.log(x, y, ": ", red, green, blue)
                 let colorValue = readRGB(red, green, blue)
                 if (green === 255 && blue ===255 && red === 0){
                     spawnX = x * 48;
                     spawnY = ((height-2) * 48)- y * 48
                 }
-
                 colorArr[Math.abs(y - height) - 1].push({ objectType: colorValue, x: x, y: y, checked: false })
             }
-
-
         }
-
-        objArr = parseObjects(colorArr, width, height)
-        console.log("XY",spawnX, spawnY)
-
+        objArr = parseObjects(colorArr, width, height);
+        
         return [objArr, {x: spawnX || 0, y: spawnY || 0}];
-
     } catch (error) {
         console.error("Error reading bitmap:", error);
         throw error;
-
     }
 }
 
-
 function readRGB(red, green, blue) {
     const rgbMap = new Map();
-    //console.log(red,green,blue)
     let key = String(red) + String(green) + String(blue)
-
     rgbMap.set('2550255', 'magenta'); //endDoor
     rgbMap.set('02550', 'green'); //green solid
     rgbMap.set('00255', 'blue'); //blue platform
@@ -67,12 +48,12 @@ function readRGB(red, green, blue) {
     rgbMap.set('255255255', 'invisible');//white invisible
     rgbMap.set('000', 'air');//black air
     rgbMap.set('1257653', "brown") //enemy
+
     return rgbMap.get(key)
 }
 
 function create2DArray(y) {
     const array = new Array(y);
-
     for (let i = 0; i < y; i++) {
         array[i] = new Array;
     }
@@ -89,7 +70,7 @@ function parseObjects(matrix, width, height) {
             }
         }
     }
-    //console.log(objArr)
+
     return objArr
 }
 
@@ -100,13 +81,7 @@ function getObjectRect(matrix, row, col, width, height) {
     let worldWidth = width;
     let cell = matrix[row][col]
     let findType = cell.objectType
-
-    //uncomment below to have a div for each tile
-    //   return { objectType: findType, x: col, y: Math.abs(row - height) - 1, width: xLen, height: yCount }
-
-    // For collectibles
     if (findType === "yellow") {
-        console.log("FOUND YELLOW", findType);
         return { objectType: findType, x: col, y: Math.abs(row - height) - 1, width: 1, height: 1 }
     }
     if (width + col > worldWidth) {
@@ -120,7 +95,6 @@ function getObjectRect(matrix, row, col, width, height) {
                 markChecked(matrix, col, row, xLen, yCount, findType)
                 return { objectType: findType, x: col, y: Math.abs(row - height) - 1, width: xLen, height: yCount }
             }
-
             else if (matrix[i][j].objectType !== findType) {
                 if (width + col > worldWidth) {
                     width = worldWidth - col
@@ -139,17 +113,13 @@ function getObjectRect(matrix, row, col, width, height) {
         }
     }
     markChecked(matrix, col, row, xLen, yCount, findType)
-    return { objectType: findType, x: col, y: Math.abs(row - height) - 1, width: xLen, height: yCount }
 
+    return { objectType: findType, x: col, y: Math.abs(row - height) - 1, width: xLen, height: yCount }
 }
 
 function markChecked(matrix, col, row, x, y) {
-
-    //console.log(`marking ${x} by ${y} square starting from (${col};${row}) out of ${type}`)
     for (let i = row; i > row - y; i--) {
         for (let j = col; j < x + col; j++) {
-
-
             matrix[i][j].checked = true
         }
     }
