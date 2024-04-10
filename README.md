@@ -2,8 +2,13 @@
 
 #### 📖 *This repository contains the make-your-game project*
 
+## Controls
+WASD to move, Space can also be used as a jump key.
+
+Esc to pause/unpause
+
 ## 📝 Auditing files
-[📝 Make-your-game 01-edu repository](https://github.com/01-edu/public/tree/master/subjects/make-your-game/audit#functional)
+[📝 Make-your-game 01-edu repository](https://github.com/01-edu/public/blob/master/subjects/make-your-game/different-maps/audit.md)
 
 ## 🛠 Installation & Setup
 
